@@ -1,0 +1,1310 @@
+[
+    {
+        "stem": "In Requirements Engineering, the activity that seeks to identify and document the needs of the user and the client is known as:",
+        "options": [
+            "Requirements check.",
+            "Viability analysis.",
+            "Request of requirements.",
+            "Requirements Validation.",
+            "Architecture project."
+        ],
+        "correctOption": 2,
+        "explanation": "The Request of Requirements is the activity of discovering the needs and information of customers and users, being the first phase of the Requirements Engineering."
+    },
+    {
+        "stem": "What is the main difference between Customer Requirements (User) and System Requirements?",
+        "options": [
+            "Customer requirements are technical, and System requirements are business.",
+            "Customer requirements are descriptions in natural language of what the system should do; System requirements are detailed and describe operational functions and restrictions.",
+            "System Requirements specify only features, and Customers specify performance.",
+            "Customer requirements are used for acceptance tests, and System requirements are used for coding.",
+            "There's no difference, just different levels of detail."
+        ],
+        "correctOption": 1,
+        "explanation": "Customer/User requirements are statements in natural language, focused on what the user wants. System requirements are detailed, technical and describe the system functions and operational restrictions."
+    },
+    {
+        "stem": "A requirement that 'The time to respond to the company's active debt should not exceed 13 ms in normal processing situations' is an example of what type of requirement?",
+        "options": [
+            "Functional Request.",
+            "Interface request.",
+            "Security requirement.",
+            "Non-Functional Request.",
+            "Domain Request."
+        ],
+        "correctOption": 3,
+        "explanation": "This is a Non-Functional Request (Restriction) that deals with service quality, specifically performance (response time)."
+    },
+    {
+        "stem": "Which specification technique is most commonly associated with agile methodologies such as Scrum?",
+        "options": [
+            "Data Flow Diagram (DFD).",
+            "Entity-Relationship Model (ER).",
+            "Use Cases (UML).",
+            "User Stories (User Stories).",
+            "Traceability matrix."
+        ],
+        "correctOption": 3,
+        "explanation": "User Stories (User Stories) are the most common specification technique in agile methodologies, focusing on the value to be delivered to the user, in the format 'As <paper>, I want <objective>, so that <reason>'."
+    },
+    {
+        "stem": "Which of the following alternatives presents a possible Functional Requirement for an e-commerce system?",
+        "options": [
+            "The system should be available 99.9% of the time.",
+            "The system must calculate the total purchase value by applying discounts and freight.",
+            "The system must be compatible with Chrome and Firefox browsers.",
+            "The page loading time shall not exceed 2 seconds.",
+            "The system must encrypt credit card data."
+        ],
+        "correctOption": 1,
+        "explanation": "Functional Requirement defines a function or service that the system must perform, such as 'calculating the total purchase value'."
+    },
+    {
+        "stem": "The verification of requirements shall have the role of ensuring that:",
+        "options": [
+            "The final system meets customer needs (Validation).",
+            "They are correctly described, consistent and complete (Verification).",
+            "Safety requirements are the first to be implemented.",
+            "Traceability is performed only after acceptance tests.",
+            "They are turned into source code directly."
+        ],
+        "correctOption": 1,
+        "explanation": "The Requirements Check ensures that the requirements are correct, complete and consistent, focusing on the quality of the documentation."
+    },
+    {
+        "stem": "In relation to the Requirements Traceability Matrix (MRR), what alternative correctly represents its meaning?",
+        "options": [
+            "It is a tool to manage costs associated with project requirements.",
+            "It is a technique to prioritize requirements based on their importance.",
+            "It is a structure to track the relationship between requirements, from their origin to their implementation and testing.",
+            "It is a methodology to identify inconsistencies between non-functional requirements.",
+            "It's a model for designing software architecture."
+        ],
+        "correctOption": 2,
+        "explanation": "The Requirements Trackability Matrix (MRR) is a tool to track the connection and relationship between the requirements and other project artifacts (such as tests and code modules)."
+    },
+    {
+        "stem": "What is the stage of Requirements Engineering where conflicts between requirements are resolved and what is essential (priorization)?",
+        "options": [
+            "Exciting.",
+            "Validation.",
+            "Elaboration.",
+            "Conception.",
+            "Negotiation."
+        ],
+        "correctOption": 4,
+        "explanation": "Negotiation is the stage where conflicts are resolved and stakeholders agree with a set of priority requirements, defining the final scope."
+    },
+    {
+        "stem": "What is the technique of eliciting requirements in which the requirements engineer accompanies the user in his work environment to understand the flow of tasks, even if this may alter the normal behavior of the user (Hawthorne Effect)?",
+        "options": [
+            "JAD (Joint Application Development) meeting.",
+            "Field Observation (Ethnography).",
+            "Brainstorming.",
+            "Structured Interviews.",
+            "Rapid Prototyping."
+        ],
+        "correctOption": 1,
+        "explanation": "Field Observation or Ethnography is the technique where the analyst accompanies users to observe the system in use and understand the operational context."
+    },
+    {
+        "stem": "The acronym FURPS+ (Functionality, Usability, Reliability, Performance, Supportability) is commonly used to classify what type of requirement?",
+        "options": [
+            "Customer Requirements.",
+            "Legal requirements.",
+            "Functional requirements.",
+            "Interface requirements.",
+            "Requirements Not Working."
+        ],
+        "correctOption": 4,
+        "explanation": "FURPS+ is a model that categorizes and details the Non-Functional Requirements, providing a complete structure for system qualities."
+    },
+    {
+        "stem": "Which of the following requirements is an example of Non-Functional Request of the category 'Usability'?",
+        "options": [
+            "The system must allow login with username and password.",
+            "The system should have a maximum of 1 hour unavailability per month.",
+            "The system must be implemented in Python language.",
+            "The system should be intuitive, with a learning curve less than 30 minutes for new users.",
+            "The system must issue electronic invoice."
+        ],
+        "correctOption": 3,
+        "explanation": "Usability requirements describe the ease of use of the system, such as the learning curve or the intuitiveness of the interface."
+    },
+    {
+        "stem": "In the context of Requirements Engineering, what does the term 'Validation' mean?",
+        "options": [
+            "Ensure that the requirements are technically feasible.",
+            "Ensure that the system is being developed correctly (Verification).",
+            "Ensure that the system meets the real needs and wishes of the customer.",
+            "Ensure that the documentation is complete and unambiguous.",
+            "Ensure that the project will be delivered on time and budget."
+        ],
+        "correctOption": 2,
+        "explanation": "The Requirements Validation ('Are we building the right system?') ensures that the built system meets the needs of *stakeholders*."
+    },
+    {
+        "stem": "Which of the following elements should be included in a Requirements Document (IEEE/ANSI 830-1998)?",
+        "options": [
+            "The complete system source code.",
+            "The team's development schedule.",
+            "A Glossary that defines technical terms and abbreviations.",
+            "The list of all unit tests.",
+            "The structure of the final database."
+        ],
+        "correctOption": 2,
+        "explanation": "The IEEE 830-1998 standard requires the requirement document to include Definitions, Acronyms and Abbreviations (Glossary) to ensure uniformity of language."
+    },
+    {
+        "stem": "One of the main factors that lead to rework and failures in software projects is ambiguity in requirements, which can be caused by:",
+        "options": [
+            "Overuse of UML diagrams.",
+            "Inconsistent terminology and use of complex conditional clauses.",
+            "Full and detailed documentation.",
+            "High user participation in the process.",
+            "Adoption of agile methodologies."
+        ],
+        "correctOption": 1,
+        "explanation": "Common problems in the writing of requirements include the use of complex conditional clauses (which confuse) and inconsistent terminology (which generates different interpretations)."
+    },
+    {
+        "stem": "The requirement allocation activity to subsystems (hardware or software) in a broader process of System Engineering is called:",
+        "options": [
+            "Systems Integration.",
+            "Architecture project.",
+            "Requirements Partition.",
+            "Subsystem Development.",
+            "System validation."
+        ],
+        "correctOption": 2,
+        "explanation": "The Partition of Requirements (or Allocation) is the process of decomposing the system and allocating the requirements to the subsystems that will compose it (hardware, software, etc.)."
+    },
+    {
+        "stem": "What is the primary target audience of the Customer Requirements documentation (User)?",
+        "options": [
+            "Test engineers and programmers.",
+            "Project managers and software architects.",
+            "System customers, end users and management.",
+            "Maintenance engineers and *devops*.",
+            "Only the systems analyst."
+        ],
+        "correctOption": 2,
+        "explanation": "Customer requirements are written in natural language to be understood by the various stakeholders (stakeholders), mainly customers and users."
+    },
+    {
+        "stem": "Which of the alternatives is an example of Non-Functional Request of the category 'Performance'?",
+        "options": [
+            "The system should be able to register new users.",
+            "The system must operate in a Linux environment.",
+            "The system shall support at least 20 transactions per second.",
+            "The system shall conform to ISO 9001.",
+            "The system must have an exit button."
+        ],
+        "correctOption": 2,
+        "explanation": "Performance Requirements (Performance) are non-functional requirements that define metrics such as response time, transfer rate or transaction capacity per second."
+    },
+    {
+        "stem": "What is a Domain Requirement?",
+        "options": [
+            "System security-related request.",
+            "Request that defines what the system should do.",
+            "Request that emerges from the application, restricting functionality and operation, based on the knowledge of the problem (the 'domain').",
+            "Request that limits the number of simultaneous users.",
+            "Request that is defined by the project manager."
+        ],
+        "correctOption": 2,
+        "explanation": "Domain Requirements are those that come from the knowledge of the application area of the system, restricting the system according to the rules or characteristics of the business."
+    },
+    {
+        "stem": "The Traceability Matrix is essentially important for which requirement management activity?",
+        "options": [
+            "Code generation.",
+            "Cost analysis and project risks.",
+            "Software version control.",
+            "Conduct impact analysis when there are changes in requirements.",
+            "Documentation of non-functional requirements."
+        ],
+        "correctOption": 3,
+        "explanation": "The tracking of requirements (MRR) is of great importance to conduct impact analysis when there are changes, allowing to identify which artifacts will be affected."
+    },
+    {
+        "stem": "What is Requirements Partition?",
+        "options": [
+            "The division of functional requirements from non-functional.",
+            "The allocation of requirements to different subsystems (hardware, software, operational).",
+            "The disposal of low priority requirements.",
+            "The verification of the consistency of the requirements.",
+            "The initial design phase of the system."
+        ],
+        "correctOption": 1,
+        "explanation": "The Partition of Requirements is the activity where the requirements are allocated or distributed to the different components (subsystems) of the system as a whole."
+    },
+    {
+        "stem": "What is the main disadvantage of using the 'Quick Prototyping' technique in eliciting requirements?",
+        "options": [
+            "It generates excessive documentation.",
+            "It can lead stakeholders to focus on graphical interface details, ignoring performance or security.",
+            "It's too slow and expensive.",
+            "It is useful only for non-functional requirements.",
+            "It does not allow user participation."
+        ],
+        "correctOption": 1,
+        "explanation": "A common disadvantage of prototyping is that users can focus too much on appearance and superficial aspects of the interface, losing focus on business rules and non-functional requirements."
+    },
+    {
+        "stem": "Which of the following elements is considered an 'Emergent Property' of a software system?",
+        "options": [
+            "User login.",
+            "Tax calculation.",
+            "Reliability.",
+            "Reporting.",
+            "Data log."
+        ],
+        "correctOption": 2,
+        "explanation": "Properties Emerging are system properties as a whole that arise from the integration of subsystems. Examples include Reliability, Performance and Usability."
+    },
+    {
+        "stem": "The validation of requirements is ideally performed at what time of the project life cycle?",
+        "options": [
+            "Only after final delivery of the system.",
+            "Only after the coding phase.",
+            "At the beginning of the project, as the first activity.",
+            "At all stages of the project, continuously.",
+            "Only in negotiation, before development."
+        ],
+        "correctOption": 3,
+        "explanation": "The validation (and verification) of requirements should be a continuous process carried out at all stages of the project to ensure that the system meets the needs of the customer."
+    },
+    {
+        "stem": "Which of the following is an example of 'Organizational Requirement'?",
+        "options": [
+            "The system must use the PostgreSQL database.",
+            "The system shall be compatible with mobile devices.",
+            "The system must have a GUI that follows the Windows interface pattern.",
+            "The system aims to increase the company's profits by 10% in the first year.",
+            "The system should allow password change every 30 days."
+        ],
+        "correctOption": 3,
+        "explanation": "Organizational requirements concern company goals, strategic policies, or business objectives, such as increasing profits or following corporate standards."
+    },
+    {
+        "stem": "What is the main disadvantage of having 'Undocumented Assumptions' in a requirement document?",
+        "options": [
+            "They lead to a cleaner code.",
+            "They are the main cause of rework, as they lead to conflicting expectations among stakeholders.",
+            "They facilitate traceability.",
+            "They simplify the testing phase.",
+            "They ensure compliance with the IEEE standard."
+        ],
+        "correctOption": 1,
+        "explanation": "Undocumented assumptions (30%) are listed as the main cause of rework, as each part assumes something different, leading to errors and high costs for further correction."
+    },
+    {
+        "stem": "What does it mean to say that a requirement should be 'not ambiguous'?",
+        "options": [
+            "It must be possible to trace its origin to the client.",
+            "It should be possible to verify the requirement by testing.",
+            "It shall be interpreted in a single manner by all parties concerned.",
+            "It must conform to the IEEE 830 standard.",
+            "It should be the most important requirement for the success of the project."
+        ],
+        "correctOption": 2,
+        "explanation": "A non-ambiguous requirement is one that has only one possible interpretation, avoiding misunderstandings between customers and developers."
+    },
+    {
+        "stem": "In the context of 'X Cost Correction', which phase presents the lowest relative cost (value 1) for correcting an error?",
+        "options": [
+            "Design.",
+            "Coding.",
+            "Requirements.",
+            "Development Testing.",
+            "Operation."
+        ],
+        "correctOption": 2,
+        "explanation": "The X Cost Correction chart shows that the relative cost for correcting an error in the Requirements phase is 1, with the lowest."
+    },
+    {
+        "stem": "What is the main disadvantage of the interview technique for the elicitation of requirements?",
+        "options": [
+            "The generation of incomplete source code.",
+            "The great difficulty of formal documentation.",
+            "The risk of the user omitting relevant information or focusing on exceptions without describing the normal workflow.",
+            "The high cost of prototyping.",
+            "It is used only for non-functional requirements."
+        ],
+        "correctOption": 2,
+        "explanation": "Interviews run the risk of being influenced by the analyst or the user, who may not be able to verbalize all the requirements or omit important information."
+    },
+    {
+        "stem": "According to the IEEE/ANSI 830-1998 standard, which section of the Requirements Document should cover functional, non-functional and interface requirements?",
+        "options": [
+            "Introduction.",
+            "General description.",
+            "Specific requirements.",
+            "Appendices.",
+            "Glossary."
+        ],
+        "correctOption": 2,
+        "explanation": "Section 3 of the standard, 'Specific Requirements', is where the functional, non-functional and interface requirements are detailed."
+    },
+    {
+        "stem": "Which alternative is an example of Security Request?",
+        "options": [
+            "The system should be available 99.9% of the time.",
+            "The system must be implemented using the Spring Boot framework.",
+            "The system shall use SSL/TLS encryption in all sensitive data communications.",
+            "The system should be easily tested by test engineers.",
+            "The system must be accessible via WWW browser."
+        ],
+        "correctOption": 2,
+        "explanation": "Safety requirements are non-functional requirements that define system protection, such as the use of encryption or access control."
+    },
+    {
+        "stem": "What are the Emergent Properties of a system?",
+        "options": [
+            "Requirements that are defined at the coding stage.",
+            "Requirements that are limited by budget issues.",
+            "Properties that arise only when all subsystems are integrated and interconnected.",
+            "Requirements describing basic system functionality.",
+            "Requirements that are defined by the client, but are not critical."
+        ],
+        "correctOption": 2,
+        "explanation": "Properties Emerging are system properties as a whole that only emerge when all subsystems are integrated (e.g. reliability, performance, security)."
+    },
+    {
+        "stem": "One of the Top 3 success factors (Top 3 success factors) for software projects, according to Standish Group research, is:",
+        "options": [
+            "Use of advanced AI.",
+            "Project manager experience.",
+            "Clear statement of requirements.",
+            "Low initial budget.",
+            "Focus on non-functional requirements."
+        ],
+        "correctOption": 2,
+        "explanation": "The Standish Group search lists 'Clear status of requirements' as one of the three main success factors."
+    },
+    {
+        "stem": "What is the primary responsibility of the system test engineers in relation to the requirements document?",
+        "options": [
+            "Ensure the integrity of the source code.",
+            "Use requirements to develop system validation tests.",
+            "Define non-functional requirements.",
+            "Ensure that the system architecture is scalable.",
+            "Implement the user interface."
+        ],
+        "correctOption": 1,
+        "explanation": "System Test Engineers use the requirements as a basis for developing system validation tests."
+    },
+    {
+        "stem": "What kind of requirement concerns the company's goals, strategic policies or business objectives?",
+        "options": [
+            "Functional requirements.",
+            "Non-Functional Requirements.",
+            "Interface requirements.",
+            "Organizational requirements.",
+            "Domain requirements."
+        ],
+        "correctOption": 3,
+        "explanation": "Organizational requirements concern the company's goals, strategic policies adopted and the entire structure of the organization."
+    },
+    {
+        "stem": "Requirements Engineering is described as a discipline to develop a specification that serves as the basis for an agreement between all parties involved. This highlights the property of:",
+        "options": [
+            "No ambiguity and consistency.",
+            "Ease of maintenance.",
+            "Low cost of implementation.",
+            "Simple encryption.",
+            "Focus on software architecture."
+        ],
+        "correctOption": 0,
+        "explanation": "The discipline seeks a 'complete, consistent and non-ambiguous' specification, and consistency and non-ambiguosity are key to the agreement."
+    },
+    {
+        "stem": "Which one is 'Top 3 factors leading to failure' (Top 3 failure factors) in projects, according to Standish Group research?",
+        "options": [
+            "Lack of competent personnel.",
+            "Requirements and incomplete specifications.",
+            "Overfocus on the user interface.",
+            "Use of agile methodologies.",
+            "No project manager."
+        ],
+        "correctOption": 1,
+        "explanation": "One of the main failure factors is 'Incomplete requirements & specs'."
+    },
+    {
+        "stem": "What requirement defines the system's features, as 'The system should allow book purchases'?",
+        "options": [
+            "Non-Functional Request.",
+            "Organizational request.",
+            "Performance Request.",
+            "Functional Request.",
+            "Emerging Property."
+        ],
+        "correctOption": 3,
+        "explanation": "Functional requirements define the functionalities or services that the system must provide."
+    },
+    {
+        "stem": "What does the term 'Inconsistent' mean in relation to requirements?",
+        "options": [
+            "That the requirement cannot be traced to its origin.",
+            "That the requirement is written vaguely and ambiguously.",
+            "There are contradictions between different requirements or between the requirement and the system model.",
+            "That the cost of implementation is too high.",
+            "That the requirement was set by the developer."
+        ],
+        "correctOption": 2,
+        "explanation": "Inconsistent requirements are those that have contradictions with each other or with the rules of the domain, which prevents clear implementation."
+    },
+    {
+        "stem": "What is the main function of System Engineering in relation to Requirements Engineering?",
+        "options": [
+            "Encoding the software at a high level.",
+            "Treat the system as a whole, including hardware, software and operational processes.",
+            "Focus exclusively on functional requirements.",
+            "Set database architecture.",
+            "Guarantee the low cost of the project."
+        ],
+        "correctOption": 1,
+        "explanation": "Systems Engineering treats the system as a whole, including hardware, software, and operational processes, while Software Requirements Engineering focuses specifically on the software component."
+    },
+    {
+        "stem": "What's the meaning of the phrase 'the pencil only costs pennies... Can rubber cost millions' in the context of software development?",
+        "options": [
+            "The writing of requirements is the most expensive part.",
+            "Encoding errors are more expensive than design errors.",
+            "It is more expensive to fix requirements late (the rubber) than to spend time with the initial specification ('the pencil').",
+            "The use of diagrams is unnecessary.",
+            "The cost of the software is inversely proportional to the hardware cost."
+        ],
+        "correctOption": 2,
+        "explanation": "The popular phrase reinforces the exponential cost of error correction (rework), encouraging accuracy in the initial stage of requirements."
+    },
+    {
+        "stem": "In which section of the IEEE 830-1998 standard would be detailed the requirement 'The system should be implemented to be accessible via WWW (World-Wide-Web) browser'?",
+        "options": [
+            "1.1 Purpose of the Requirements document.",
+            "2.3 User characteristics.",
+            "3. Specific requirements (Interface/Non-Functional).",
+            "4. Appendices.",
+            "1.5 Summary of the rest of the document."
+        ],
+        "correctOption": 2,
+        "explanation": "This is an interface and non-functional requirement that would be detailed in the 'Specific Requirements' section (Section 3)."
+    },
+    {
+        "stem": "Which of the following activities is not part of the System Engineering process according to diagram V?",
+        "options": [
+            "Architecture project.",
+            "Requirements Partition.",
+            "Systems Integration.",
+            "Source code creation of operating systems.",
+            "System validation."
+        ],
+        "correctOption": 3,
+        "explanation": "The System Engineering process focuses on the decomposition, development and integration of subsystems (hardware, software, etc.), but the creation of source code of operating systems is not explicitly one of its main activities in this context."
+    },
+    {
+        "stem": "What are Domain Requirements?",
+        "options": [
+            "Requirements defining response time restrictions.",
+            "Requirements describing the rules and characteristics of the business or application area.",
+            "Requirements related to system compatibility with other systems.",
+            "Requirements that are ignored during encoding.",
+            "Requirements that are defined exclusively by the software engineer."
+        ],
+        "correctOption": 1,
+        "explanation": "Domain requirements arise from the knowledge of the application domain and impose restrictions based on the rules and characteristics of this business."
+    },
+    {
+        "stem": "Which of the following is one of the 'Requirements Problems' listed in the slides?",
+        "options": [
+            "The lack of a dedicated GPU.",
+            "The requirements are inconsistent and/or incomplete.",
+            "The low cost to make changes in requirements late.",
+            "Easy to get the correct solution format.",
+            "The excessive clarity of the requirements."
+        ],
+        "correctOption": 1,
+        "explanation": "Problems listed include 'Requirements are inconsistent and/or incomplete'."
+    },
+    {
+        "stem": "What should be included in the 'General Description' section of the Requirements Document (IEEE/ANSI 830-1998)?",
+        "options": [
+            "The purpose of the document.",
+            "Definitions, acronyms and abbreviations.",
+            "Product perspective, product functions and user characteristics.",
+            "Functional and non-functional requirements.",
+            "Reference index."
+        ],
+        "correctOption": 2,
+        "explanation": "The 'General Description' section includes the Product Perspective, Product Functions, User Characteristics, General Limitations and Assumptions/dependencies."
+    },
+    {
+        "stem": "At the beginning of computing, what was the typical approach to finding requirements, according to the motivation presented?",
+        "options": [
+            "Use of rapid prototyping.",
+            "Implementation of JAD sessions.",
+            "The programmers sat down and started coding, without formal proceedings.",
+            "Complete documentation, not ambiguous.",
+            "Total focus on non-functional requirements."
+        ],
+        "correctOption": 2,
+        "explanation": "The 'Motivation' slide mentions that 'In the beginning of computing there was no process for discovering the requirements' and 'The programmers sat down and started coding'."
+    },
+    {
+        "stem": "What does 'Maintainability Requirements' mean?",
+        "options": [
+            "Requirements defining the ease of use of the system.",
+            "Requirements defining the ability of the system to be corrected, adapted and improved over time.",
+            "Requirements specifying the number of simultaneous users.",
+            "Requirements defining the software architecture.",
+            "Requirements that deal with user training."
+        ],
+        "correctOption": 1,
+        "explanation": "Maintenance (Maintainability) is an emerging property and a non-functional requirement that defines the ease with which the system can be changed or corrected."
+    },
+    {
+        "stem": "What is the definition of 'Stakeholders of the system'?",
+        "options": [
+            "Just the project manager.",
+            "Anyone affected in any way by the system.",
+            "Only the developers and test engineers.",
+            "People who have no knowledge of the domain.",
+            "People who signed the requirements contract."
+        ],
+        "correctOption": 1,
+        "explanation": "Stakeholders are 'Anyone affected somehow by the system' (FAQ)."
+    },
+    {
+        "stem": "According to the graph, the requirement error can cost from 40 to 1000 times more to be corrected when detected at the stage of:",
+        "options": [
+            "Requirements.",
+            "Design.",
+            "Coding.",
+            "Development Testing.",
+            "Operation."
+        ],
+        "correctOption": 4,
+        "explanation": "The X Cost Correction chart (and the supporting text) shows that the correction cost is exponential in the final phase, with Operation being the most expensive phase (40-1000 times or 100 times depending on the source)."
+    },
+    {
+        "stem": "What is a portability requirement?",
+        "options": [
+            "Request that defines system performance.",
+            "Request that defines the ease of transferring the software to different environments or platforms.",
+            "Request that defines data export features.",
+            "Request that you handle the reliability of the system.",
+            "Request specifying the communication protocol."
+        ],
+        "correctOption": 1,
+        "explanation": "Portability is a non-functional requirement that refers to the software's ability to operate on different platforms or hardware/software environments."
+    },
+    {
+        "stem": "What is the definition of 'Organizational Requirements' according to slides?",
+        "options": [
+            "Requirements defining the software architecture.",
+            "Requirements relating to company targets, strategic policies and employee objectives.",
+            "Requirements dealing with system safety and performance.",
+            "Requirements describing the functionality of the product.",
+            "Requirements limiting the usability of the interface."
+        ],
+        "correctOption": 1,
+        "explanation": "Organizational requirements concern the company's goals, strategic policies adopted and the company's employees with their respective objectives, in short, the entire structure of the organization[cite: 251, 252]."
+    },
+    {
+        "stem": "What is the main disadvantage of Rapid Prototyping in requirements eliciting?",
+        "options": [
+            "The customer cannot view the final product.",
+            "It can lead users to focus on graphical interface details, ignoring performance and security requirements.",
+            "It is an expensive process that requires high initial investment.",
+            "It generates an excessively detailed final documentation.",
+            "It is useful only for functional requirements."
+        ],
+        "correctOption": 1,
+        "explanation": "A common disadvantage of Rapid Prototyping is that users can focus too much on appearance and superficial aspects of the interface, losing focus on non-functional aspects (performance, security)."
+    },
+    {
+        "stem": "Which of the following Emerging Properties is NOT mentioned in the material?",
+        "options": [
+            "Reliability.",
+            "Maintenance.",
+            "Portability.",
+            "Performance.",
+            "Usability."
+        ],
+        "correctOption": 2,
+        "explanation": "The material lists Reliability, Maintenance, Performance, Usability and Safety as examples of emerging properties[cite: 366, 367, 368, 369, 370]."
+    },
+    {
+        "stem": "What is the estimated cost of correction of a requirement error if it is detected and corrected in the Operation phase, in relation to the cost in the Requirements phase?",
+        "options": [
+            "Ten times more expensive.",
+            "Three to six times more expensive.",
+            "15 to 40 times more expensive.",
+            "40 to 1000 times more expensive.",
+            "About 27 times more expensive."
+        ],
+        "correctOption": 3,
+        "explanation": "The X Cost Correction chart indicates that the relative cost in the Operation phase is 40 to 1000 (or 100 times more expensive, according to another source) than the cost 1 in the Requirements phase[cite: 159, 186]."
+    },
+    {
+        "stem": "What is the main function of the Requirements Document?",
+        "options": [
+            "Serve as end-user system manual.",
+            "Describe detailed architecture and system code.",
+            "Be a formal document used to communicate requirements to customers, engineers and managers.",
+            "List only functional and safety requirements.",
+            "Set the schedule and total cost of the project."
+        ],
+        "correctOption": 2,
+        "explanation": "The Requirements Document is a formal document used to communicate requirements to customers, engineers and managers[cite: 374]."
+    },
+    {
+        "stem": "One of the problems of the listed requirements is 'The requirements do not reflect the real needs of the system customers'. What is the most likely factor that causes this problem?",
+        "options": [
+            "Use Python as a programming language.",
+            "Lack of support from executive management.",
+            "Late encryption.",
+            "Inadequate or incomplete solicitation.",
+            "Excess of non-functional requirements."
+        ],
+        "correctOption": 3,
+        "explanation": "The direct cause of the requirements not reflecting the needs of the customer is failure to elicit or analyze the requirements."
+    },
+    {
+        "stem": "In the System Engineering Process (Diagram V), what activity precedes the 'Subsystem Development'?",
+        "options": [
+            "Systems validation.",
+            "Systems Integration.",
+            "Software Requirements Engineering.",
+            "Architecture project.",
+            "System Requirements Engineering."
+        ],
+        "correctOption": 2,
+        "explanation": "Diagram V (Slide 28) shows that the 'Software Requirements Engineering' feeds the 'Subsystem Development'[cite: 333, 331]."
+    },
+    {
+        "stem": "What is the definition of 'Non-Functional Request' given by the material?",
+        "options": [
+            "Define system functionality.",
+            "They concern development restrictions, performance aspects, user interfaces, reliability and security.",
+            "Define the requirements the client does not need.",
+            "They only concern the company's goals.",
+            "Define the cost and time frame of the project."
+        ],
+        "correctOption": 1,
+        "explanation": "Non-Functional requirements concern development constraints, performance aspects, user interfaces, reliability, safety, maintenance, portability, standards to be followed[cite: 245]."
+    },
+    {
+        "stem": "What is the main consequence when requirements are wrong according to FAQs?",
+        "options": [
+            "The cost of requirements engineering increases to 50%.",
+            "The system delays, remains unreliable and does not meet the needs of customers.",
+            "There's an 82% encoding error.",
+            "The design is adapted to the IEEE 830 standard.",
+            "There is a change in the organizational structure."
+        ],
+        "correctOption": 1,
+        "explanation": "When the requirements are wrong, 'The system delays, is unreliable and does not meet the needs of customers' [cite: 280]."
+    },
+    {
+        "stem": "Which of the following sections DO NOT belong to the 'General Description' (Section 2) of the IEEE/ANSI 830-1998 standard?",
+        "options": [
+            "Product perspective.",
+            "Product functions.",
+            "Specific requirements.",
+            "User characteristics.",
+            "General limitations."
+        ],
+        "correctOption": 2,
+        "explanation": "The 'General Description' section includes Product Perspective, Product Functions, User Characteristics, General Limitations. [ ]'Specific Requirements' is section 3[cite: 427, 428, 429, 430, 432]."
+    },
+    {
+        "stem": "Who are System Customers and what is their function in relation to the Requirements Document?",
+        "options": [
+            "It's the programmers who implement the code.",
+            "It's the managers who plan the development.",
+            "It is the parties that specify the requirements and read them to see if they meet their needs.",
+            "It's the maintenance engineers who use the document to understand the system.",
+            "It's the test engineers who develop validation."
+        ],
+        "correctOption": 2,
+        "explanation": "Customers of the System 'Specify the requirements and read them to check if they satisfy their needs'[cite: 395, 396]."
+    },
+    {
+        "stem": "What does the Requirement activity establish?",
+        "options": [
+            "The structure of the organization.",
+            "The decomposition of the system into subsystems.",
+            "The allocation of requirements to the different subsystems.",
+            "The cost of developing the system.",
+            "The emerging properties of the system."
+        ],
+        "correctOption": 2,
+        "explanation": "The Requirements Partition is the activity in which 'Requirements are allocated to these sub-systems'[cite: 343]."
+    },
+    {
+        "stem": "Software Requirements Engineering plays a role in the System Engineering Process?",
+        "options": [
+            "Ensure System Validation.",
+            "Derive more detailed software requirements for the system software.",
+            "Set the system requirements as a whole.",
+            "Integrate hardware and software subsystems.",
+            "Set system architecture."
+        ],
+        "correctOption": 1,
+        "explanation": "Software Requirements Engineering is the activity where 'most detailed software requirements are derived for the system software'[cite: 346]."
+    },
+    {
+        "stem": "Which of the following is a recommended guideline for writing requirements?",
+        "options": [
+            "Use language in a complex and ambiguous way.",
+            "Specify requirements in a quantitative manner.",
+            "Assume that readers have knowledge of the domain.",
+            "Restrict yourself only to natural language.",
+            "Focus only on functional requirements."
+        ],
+        "correctOption": 1,
+        "explanation": "A writing guideline is 'Specify requirements quantitatively'[cite: 521]."
+    },
+    {
+        "stem": "What is the ideal relationship, but in impossible practice, between Requirements and Design?",
+        "options": [
+            "They should always be integrated, but in practice they are separated.",
+            "They should be separated, but in practice they are interconnected.",
+            "Requirements shall be defined after the design.",
+            "Project must be defined after encoding.",
+            "They should always be ambiguous."
+        ],
+        "correctOption": 1,
+        "explanation": "The ideal relationship is that 'Requirements and design are interconnected. [ ]Ideally they should be separated, but in practice this is impossible' [cite: 292]."
+    },
+    {
+        "stem": "In the XYZ company standard, which chapter defines all technical terms and abbreviations used in the document?",
+        "options": [
+            "Preface.",
+            "Introduction.",
+            "Glossary.",
+            "General user requirements.",
+            "System architecture."
+        ],
+        "correctOption": 2,
+        "explanation": "In the XYZ company standard, Glossary defines 'all technical terms and abbreviations used in the document'[cite: 452]."
+    },
+    {
+        "stem": "Why is the Undocumented Assumptions error the biggest cause of rework?",
+        "options": [
+            "The error is related to the encoding failure.",
+            "The error is related to lack of executive support.",
+            "It causes different conflicting interpretations and expectations, leading to costly changes.",
+            "It occurs due to excessive use of diagrams.",
+            "It's a system portability problem."
+        ],
+        "correctOption": 2,
+        "explanation": "Undocumented Assumptions (30%) are the main cause of rework, as they lead to inconsistencies and misunderstandings between the parties."
+    },
+    {
+        "stem": "What do System Maintenance Engineers use the Requirements Document to do?",
+        "options": [
+            "Develop new validation tests.",
+            "Planning the development process.",
+            "Understand the system.",
+            "Specify new requirements.",
+            "Make sure they meet your needs."
+        ],
+        "correctOption": 2,
+        "explanation": "The System Maintenance Engineers 'Use the requirements to understand the system' [cite: 409]."
+    },
+    {
+        "stem": "What is the main problem of writing requirements in natural language, as quoted in the slides?",
+        "options": [
+            "Excess of mathematical equations.",
+            "Use of complex conditional clauses that may confuse.",
+            "The lack of diagrams.",
+            "The high cost of writing.",
+            "The difficulty in finding a document pattern."
+        ],
+        "correctOption": 1,
+        "explanation": "Problems with requirements include 'Using complex conditional clauses that can confuse' and 'Consistent terminology'[cite: 497, 500]."
+    },
+    {
+        "stem": "Which of the following alternatives is an activity of the System Engineering process?",
+        "options": [
+            "Source verification.",
+            "Hardware performance analysis.",
+            "Systems Integration.",
+            "Source code creation of operating systems.",
+            "Creating user interfaces."
+        ],
+        "correctOption": 2,
+        "explanation": "The 'System Integration' is one of the main activities of the System Engineering process, where hardware and software subsystems are put together[cite: 354, 355, 356]."
+    },
+    {
+        "stem": "Which of the following must always contain an introductory chapter in the Requirements Document?",
+        "options": [
+            "A summary of the system and a glossary.",
+            "Safety and performance requirements.",
+            "The system architecture and data structure.",
+            "The system validation tests.",
+            "The list of all system users."
+        ],
+        "correctOption": 0,
+        "explanation": "The requirements document should always contain an introductory chapter providing a summary of the system, business needs supported by the system and a glossary[cite: 389]."
+    },
+    {
+        "stem": "In the XYZ company standard, which section presents a high-level view of the system architecture, showing the distribution of module functions?",
+        "options": [
+            "Preface.",
+            "General user requirements.",
+            "System architecture.",
+            "Hardware specification.",
+            "Detailed software specification."
+        ],
+        "correctOption": 2,
+        "explanation": "The 'System architecture' section presents a 'high-level view of the system's expected architecture, showing the distribution of the system module functions'[cite: 459, 460]."
+    },
+    {
+        "stem": "What does 'Incomplete Requirements' mean?",
+        "options": [
+            "Requirements that cannot be encoded.",
+            "Requirements that are written ambiguously.",
+            "Requirements that do not cover all the necessary system functionality.",
+            "Requirements that are very detailed.",
+            "Requirements that aren't traceable."
+        ],
+        "correctOption": 2,
+        "explanation": "Requirements Incomplete means that there is no information needed to build the system completely (the opposite of a 'Complete' requirement)."
+    },
+    {
+        "stem": "What is the definition of Requirements Engineering?",
+        "options": [
+            "Only the requirements documentation.",
+            "Just coding the requirements.",
+            "The discipline to develop a complete, consistent and non-ambiguous specification of what the software product will do.",
+            "The process involved in system maintenance.",
+            "The discipline focused on validation tests."
+        ],
+        "correctOption": 2,
+        "explanation": "Requirements Engineering is the discipline to develop a complete, consistent and non-ambiguous specification – which serves as the basis for an agreement between all parties involved – describing what the software product will do[cite: 298]."
+    },
+    {
+        "stem": "In terms of cost of correction, if a requirement error is found in the design phase, the relative cost is 3 to 6. What would be the relative cost in the development testing phase?",
+        "options": [
+            "1.",
+            "10.",
+            "3-6.",
+            "15-40.",
+            "30-70."
+        ],
+        "correctOption": 3,
+        "explanation": "The X Cost Correction chart shows that the relative cost in the development testing phase is 15-40[cite: 171]."
+    },
+    {
+        "stem": "What does the requirements engineering discipline NOT define regarding the software product?",
+        "options": [
+            "What the product will do.",
+            "What the product will NOT do (limits).",
+            "The operating limitations.",
+            "How the product will be implemented (architecture and coding).",
+            "The basis for an agreement between the parties."
+        ],
+        "correctOption": 3,
+        "explanation": "Requirements Engineering develops a specification that describes what the software product will do, but not how it will be done (implemented)."
+    },
+    {
+        "stem": "What is the main function of the Appendix in the IEEE/ANSI 830-1998 standard for the requirements document?",
+        "options": [
+            "Define technical terms.",
+            "List functional and non-functional requirements.",
+            "Include additional information such as data flow models or Hardware interface specifications.",
+            "Describe the product perspective.",
+            "Summarize product scope."
+        ],
+        "correctOption": 2,
+        "explanation": "Appendixes (section 4) are used to add additional information such as data flow models, Hardware interface specifications, and reusable Software Components."
+    },
+    {
+        "stem": "The System Validation activity is done for which artifact?",
+        "options": [
+            "The final source code.",
+            "The project schedule.",
+            "The safety requirements.",
+            "Requirements (The system is validated in relation to requirements).",
+            "The coding pattern."
+        ],
+        "correctOption": 3,
+        "explanation": "System Validation is the process in which the system is validated in relation to the defined requirements."
+    },
+    {
+        "stem": "In terms of correction costs, what phase has the relative cost of 30 to 70, according to the 'X Cost Correction' chart?",
+        "options": [
+            "Design.",
+            "Coding.",
+            "Acceptance testing.",
+            "Requirements.",
+            "Operation."
+        ],
+        "correctOption": 2,
+        "explanation": "The X Cost Correction chart indicates that the Acceptance testing phase has a relative cost of 30 to 70."
+    },
+    {
+        "stem": "Which of the following Properties Does Emerging refer to the ease with which the system can be corrected, adapted or improved?",
+        "options": [
+            "Reliability.",
+            "Security.",
+            "Performance.",
+            "Maintenance.",
+            "Usability."
+        ],
+        "correctOption": 3,
+        "explanation": "Maintenance (Maintainability) is the property that allows system correction, adaptation and improvement over time."
+    },
+    {
+        "stem": "What is the main risk of a requirement writer assuming that readers have knowledge of the domain?",
+        "options": [
+            "It increases the cost of correction.",
+            "Increases maintenance.",
+            "It may lead to omission of crucial details and ambiguities for readers outside the domain.",
+            "Make sure the source code is faster.",
+            "Help with System Validation."
+        ],
+        "correctOption": 2,
+        "explanation": "Assuming knowledge of the domain is a problem, because 'The writers assume that readers have knowledge of the domain', which leads to incomplete or ambiguous requirements for those outside."
+    },
+    {
+        "stem": "In which section of the Requirements Document (IEEE standard) are listed 'Assumptions and Dependencies'?",
+        "options": [
+            "Introduction.",
+            "General description.",
+            "Specific requirements.",
+            "Appendices.",
+            "Glossary."
+        ],
+        "correctOption": 1,
+        "explanation": "The 'Consumptions and dependencies' are listed in section 2, 'General Description' of the IEEE 830-1998 standard."
+    },
+    {
+        "stem": "What is the main target audience for the 'System Architecture' section in the XYZ company standard?",
+        "options": [
+            "System customers.",
+            "Project Managers.",
+            "End Users.",
+            "System Engineers and Programmers.",
+            "Test engineers."
+        ],
+        "correctOption": 3,
+        "explanation": "System Architecture presents a high-level view, showing the distribution of module functions, being crucial for Engineers and Programmers."
+    },
+    {
+        "stem": "Which project failure factor of Standish Group (CHAOS) is directly related to Requirements Engineering, plus 'Incomplete requirements & specs'?",
+        "options": [
+            "Lack of executive support.",
+            "Lack of competent personnel.",
+            "Change of requirements and specifications.",
+            "Inappropriate planning.",
+            "Use of obsolete technology."
+        ],
+        "correctOption": 2,
+        "explanation": "The third listed failure factor is 'Changing requirements & specs'."
+    },
+    {
+        "stem": "What is the main function of Software Requirements Engineering within the System Engineering Process?",
+        "options": [
+            "Validate hardware subsystems.",
+            "Manage requirements changes.",
+            "Derive more detailed software requirements for the system software.",
+            "Set the system architecture as a whole.",
+            "Perform acceptance tests."
+        ],
+        "correctOption": 2,
+        "explanation": "Software Requirements Engineering is the activity where 'most detailed software requirements are derived for the system software'."
+    },
+    {
+        "stem": "What defines the 'Information Systems' system category?",
+        "options": [
+            "Systems where the software is used as a hardware controller.",
+            "Special purpose systems for military control.",
+            "Systems related mainly to the processing of information that are stored in some database.",
+            "Systems that do not have non-functional requirements.",
+            "Systems that can be configured from existing products (COTS)."
+        ],
+        "correctOption": 2,
+        "explanation": "Information Systems are 'Related mainly to the processing of information that is stored in some database'."
+    },
+    {
+        "stem": "What does Reliability Requirement mean?",
+        "options": [
+            "The ability of the system to be used on different platforms.",
+            "The system's ability to operate continuously, seamlessly, for a defined period of time.",
+            "The system response time to a query.",
+            "Easy use of the system.",
+            "The loading speed of the interface."
+        ],
+        "correctOption": 1,
+        "explanation": "Reliability is an emerging property that refers to the system's ability to operate continuously, flawless."
+    },
+    {
+        "stem": "What is the correct definition of 'System stakeholders'?",
+        "options": [
+            "Only the clients who pay for the project.",
+            "Anyone affected in any way by the system.",
+            "Just the analyst and the project manager.",
+            "Just the developers and testers.",
+            "Only the end users of the system."
+        ],
+        "correctOption": 1,
+        "explanation": "System stakeholders are 'Anyone affected somehow by the system'."
+    },
+    {
+        "stem": "What is the main guideline for the writing of requirements, aiming at clarity?",
+        "options": [
+            "Use complex and technical language.",
+            "Use diagrams only at the end of the document.",
+            "Use language in a simple, consistent and concise way.",
+            "Speculate on the knowledge of the reader.",
+            "Focus only on hardware requirements."
+        ],
+        "correctOption": 2,
+        "explanation": "A writing guideline is 'Use language in a simple, consistent and concise way'."
+    },
+    {
+        "stem": "What does Requirements Engineering seek to avoid with specification discipline?",
+        "options": [
+            "High cost of coding.",
+            "Full, consistent, non-ambiguous specification.",
+            "Misunderstandings between customers and software engineers.",
+            "Use of diagrams and models.",
+            "The performance requirement."
+        ],
+        "correctOption": 2,
+        "explanation": "The discipline aims to avoid misunderstandings between customers, requirements developers and software engineers."
+    },
+    {
+        "stem": "What is the main function of the project manager in relation to the Requirements Document?",
+        "options": [
+            "Implement source code.",
+            "Use requirements to plan the system development process.",
+            "Develop validation tests.",
+            "Write functional requirements.",
+            "Be the end user of the system."
+        ],
+        "correctOption": 1,
+        "explanation": "Project Managers 'Use requirements documents to plan a proposal for the system and the system development process'."
+    },
+    {
+        "stem": "What is the difference between Embedded Systems and Information Systems?",
+        "options": [
+            "Embedded systems process database information; Information systems control hardware.",
+            "Embedded systems use software to control hardware; Information Systems process stored data.",
+            "Embedded systems are always COTS; Information systems are always customized.",
+            "There's no difference, they're synonymous.",
+            "Embedded systems are more expensive."
+        ],
+        "correctOption": 1,
+        "explanation": "Embedded systems use software as hardware controller. Information Systems are related to the processing of information stored in a database."
+    },
+    {
+        "stem": "What is the relative cost of fixing an error if it is found in the Coding phase?",
+        "options": [
+            "1.",
+            "3-6.",
+            "10.",
+            "15-40.",
+            "30-70."
+        ],
+        "correctOption": 2,
+        "explanation": "The X Cost Correction chart indicates that the relative cost in the Coding phase is 10."
+    },
+    {
+        "stem": "What should the Requirements Document (in addition to services and functions) describe as slides?",
+        "options": [
+            "The company's sales structure.",
+            "The limitations on which the system should operate.",
+            "The programming language preferences.",
+            "The 1% encoding errors.",
+            "The cost of the project."
+        ],
+        "correctOption": 1,
+        "explanation": "The requirement document describes 'The services and functions that the system must provide; • The limitations on which the system should operate'."
+    },
+    {
+        "stem": "What is a common problem with the writing of requirements, listed in the material?",
+        "options": [
+            "Use of functional programming languages.",
+            "Adoption of standard IEEE 830.",
+            "Consistent terminology.",
+            "The concise and simple writing.",
+            "The use of diagrams."
+        ],
+        "correctOption": 2,
+        "explanation": "Problems with requirements include inconsistent terminology."
+    },
+    {
+        "stem": "In which section of the standard IEEE/ANSI 830-1998 would the requirement 'The system should support at least 20 transactions per second' be detailed?",
+        "options": [
+            "1. Introduction.",
+            "2. General description.",
+            "3. Specific requirements (Non-Functional/Performance).",
+            "4. Appendices.",
+            "1.3 Definitions."
+        ],
+        "correctOption": 2,
+        "explanation": "This is a Non-Functional Performance Requirement and would be detailed in section 3, 'Specific Requirements'."
+    },
+    {
+        "stem": "The 'Architecture Project' (Architecture Design) activity is the first activity in Systems Engineering (diagram V). What's the matter?",
+        "options": [
+            "Systems validation.",
+            "System Requirements Engineering.",
+            "Requirements Partition.",
+            "Subsystem Development.",
+            "Systems Integration."
+        ],
+        "correctOption": 2,
+        "explanation": "The diagram V shows that the 'Requirement Partition' follows the 'Architecture Project'."
+    },
+    {
+        "stem": "What is the main function of the 'Preface' in the standard XYZ company?",
+        "options": [
+            "Define technical terms.",
+            "Describe the software features.",
+            "Describe the hardware on which the system will run.",
+            "Describe the history of the versions and define the readers of the document.",
+            "Specify detailed algorithms."
+        ],
+        "correctOption": 3,
+        "explanation": "The Preface 'Defines the readers of the document and describes the history of the versions, including an explanation of the creation of new versions and a summary of the changes made in each version'."
+    },
+    {
+        "stem": "According to the graph, most of the rework is related to requirements that present what characteristic?",
+        "options": [
+            "They're functional.",
+            "They're accurate and consistent.",
+            "They are inadequate, inconsistent and inaccurate.",
+            "They focus on programming logic.",
+            "They do not contain diagrams."
+        ],
+        "correctOption": 2,
+        "explanation": "The 'Reasons for Rework' slide states that 'Most rework is related to inadequate, inconsistent, inaccurate requirements'."
+    },
+    {
+        "stem": "Which of the following is an example of 'Domain Request'?",
+        "options": [
+            "The system must be available 24/7.",
+            "The system should be compatible with government API for tax calculation ( domain-specific rule).",
+            "The system must use Python language.",
+            "The system must be highly usable.",
+            "The system must allow login."
+        ],
+        "correctOption": 1,
+        "explanation": "Domain requirements arise from the rules and characteristics of the application area. Integration with a government-specific API is a clear example of domain restriction."
+    },
+    {
+        "stem": "What is the correct description of 'Command and Control Systems'?",
+        "options": [
+            "Systems that only process database information.",
+            "Systems where the software is used as a hardware controller.",
+            "A combination of information systems and embedded systems, providing information to make decisions.",
+            "Systems that only issue management reports.",
+            "Systems that are configured from existing products."
+        ],
+        "correctOption": 2,
+        "explanation": "Command and Control systems are 'essentially a combination of information systems and embedded systems, where special purpose computers provide information that is collected, stored and used to make decisions'."
+    },
+    {
+        "stem": "According to the graph, what error has a correction cost of 82% in the 'Requirements Errors' phase?",
+        "options": [
+            "Logic Error.",
+            "Design Errors.",
+            "Coding Errors.",
+            "Other Errors.",
+            "Requirements Errors."
+        ],
+        "correctOption": 4,
+        "explanation": "The 'The Cost to Fix Software Effects' chart indicates that 82% of the correction cost is in 'Requirements Errors'."
+    },
+    {
+        "stem": "What is the main function of 'Summary of the rest of the document' in the Introduction section of the IEEE 830-1998?",
+        "options": [
+            "Define technical terms.",
+            "Ensure traceability.",
+            "Allow the reader to easily find the section that interests you.",
+            "List software versions.",
+            "Describe product features."
+        ],
+        "correctOption": 2,
+        "explanation": "The summary of the remainder of the document allows the reader an overview of the structure, facilitating navigation."
+    },
+    {
+        "stem": "What is the main problem that Requirements Engineering tries to solve, according to motivation?",
+        "options": [
+            "The lack of programmers.",
+            "The high cost of changing requirements after they have been agreed.",
+            "The difficulty in choosing the best programming language.",
+            "The excess of functional requirements.",
+            "Low quality source code."
+        ],
+        "correctOption": 1,
+        "explanation": "The motivation is to solve the problem of 'high cost for changing requirements after they have been agreed'."
+    },
+    {
+        "stem": "What is the correct definition of 'Functional Requirement'?",
+        "options": [
+            "Define performance and safety restrictions.",
+            "Define the services and functions the system must provide.",
+            "Define the company's goals.",
+            "Define hardware limitations.",
+            "Define the emerging properties."
+        ],
+        "correctOption": 1,
+        "explanation": "Functional requirements define the services and functions the system must provide."
+    },
+    {
+        "stem": "What do 'Request, Analysis and Documentation' represent in Requirements Engineering?",
+        "options": [
+            "The software life cycle.",
+            "The test phases of the system.",
+            "The main activities of Requirements Engineering.",
+            "Project failure factors.",
+            "The components of software architecture."
+        ],
+        "correctOption": 2,
+        "explanation": "Requirements engineering concerns the elicitation, analysis and documentation of the system requirements."
+    },
+    {
+        "stem": "What is the purpose of 'Specify requirements quantitatively'?",
+        "options": [
+            "Make sure they're ambiguous.",
+            "Make sure they're easy to encode.",
+            "Help in objective verification and measurement of requirements.",
+            "Increase correction cost.",
+            "Decrease traceability."
+        ],
+        "correctOption": 2,
+        "explanation": "Specify requirements in a quantitative way (e.g. '20 transactions per second') is a guideline to assist in objective verification and measurement of the requirement."
+    },
+    {
+        "stem": "What is the main activity of System Requirements Engineering at the beginning of the process?",
+        "options": [
+            "Encoding subsystems.",
+            "Integrate hardware.",
+            "Establish and write the system requirements as a whole to be understood by stakeholders.",
+            "Do acceptance tests.",
+            "Set the detailed architecture."
+        ],
+        "correctOption": 2,
+        "explanation": "System Requirements Engineering is the activity where 'System requirements as a whole are established and written to be understood by all stakeholders (stakeholders)'."
+    },
+    {
+        "stem": "What should be avoided in writing requirements not to confuse readers?",
+        "options": [
+            "The use of diagrams.",
+            "The use of simple and concise language.",
+            "The use of complex conditional clauses.",
+            "The use of consistent terminology.",
+            "The definition of standard templates."
+        ],
+        "correctOption": 2,
+        "explanation": "We must avoid 'Using complex conditional clauses that may confuse' and 'Consistent Terminology'."
+    }
+]
