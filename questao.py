@@ -1,72 +1,53 @@
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
-# ==========================================
-# 1. Configuração (Modo CPU Leve)
-# ==========================================
+# 1. Configuração CPU
 model_name = "TinyLlama/TinyLlama-1.1B-Chat-v1.0"
-
-print(f"Carregando o modelo base {model_name}... (Pode demorar uns minutos)")
-
-# Carrega o Tokenizer
 tokenizer = AutoTokenizer.from_pretrained(model_name)
+model = AutoModelForCausalLM.from_pretrained(model_name, device_map="cpu", torch_dtype=torch.float32)
 
-# Carrega o Modelo (Usando float32 para estabilidade na CPU)
-model = AutoModelForCausalLM.from_pretrained(
-    model_name,
-    device_map="cpu", 
-    torch_dtype=torch.float32 
-)
+# 2. O Prompt com EXEMPLO (One-Shot)
+# Aqui nós mostramos para ele EXATAMENTE o que queremos antes de pedir
+prompt_text = """### Instruction:
+You are a Software Engineering professor. Create a multiple-choice question following the example format.
 
-# ==========================================
-# 2. Definição do Prompt Zero-Shot
-# ==========================================
-# O segredo do Zero-Shot em modelos pequenos é ser MUITO ESPECÍFICO na instrução.
-# Estamos pedindo explicitamente o formato JSON-like ou estruturado.
+---
+Example Question:
+Stem: Which of the following is a Functional Requirement?
+Options:
+A) The system shall be able to handle 1000 users.
+B) The system shall allow users to log in with email and password.
+C) The system code must be written in Python.
+D) The background color must be blue.
+E) The system must respond in 2 seconds.
+Correct Answer: B
+Explanation: Logging in is a specific behavior/function the system provides to the user.
+---
 
-prompt_system = (
-    "You are a strict Software Engineering professor. "
-    "Create a multiple-choice question about 'Requirements Engineering'."
-)
+Now, generate a NEW question about 'Non-Functional Requirements'.
 
-prompt_instruction = (
-    "Generate a question with the following format:\n"
-    "Stem: [The question text]\n"
-    "Options: [List of 5 options labelled A-E]\n"
-    "Correct Answer: [The correct option letter]\n"
-    "Explanation: [Why it is correct]\n\n"
-    "Make the question about 'Non-Functional Requirements'."
-)
+### Response:
+Stem:"""
 
-# Monta o prompt no formato que o TinyLlama entende (Alpaca/Chat)
-final_prompt = (
-    f"### Instruction:\n{prompt_system} {prompt_instruction}\n\n"
-    f"### Response:\n"
-)
-
-# ==========================================
-# 3. Geração (Inferência)
-# ==========================================
-print("\n" + "="*40)
-print("Gerando questão Zero-Shot (sem treino)...")
-print("="*40 + "\n")
-
-inputs = tokenizer(final_prompt, return_tensors="pt").to("cpu")
+# 3. Gerar
+print("Gerando com exemplo (One-Shot)...")
+inputs = tokenizer(prompt_text, return_tensors="pt").to("cpu")
 
 with torch.no_grad():
     outputs = model.generate(
         **inputs, 
-        max_new_tokens=256,   # Limite para não demorar uma eternidade
-        do_sample=True,       # Habilita criatividade
-        temperature=0.7,      # 0.7 é um bom equilíbrio (nem muito louco, nem robótico)
+        max_new_tokens=200, 
+        do_sample=True, 
+        temperature=0.6, # Baixei um pouco a temperatura para ele não "viajar" muito
         top_p=0.9,
-        repetition_penalty=1.2 # Evita que ele repita frases
+        repetition_penalty=1.2
     )
 
-# Decodifica e imprime
+# 4. Mostrar resultado
+# O split remove o prompt e mostra só o que ele gerou novo
 generated_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
+final_answer = "Stem:" + generated_text.split("Stem:")[-1] 
 
-# Limpeza visual para mostrar só a resposta
-response_only = generated_text.split("### Response:")[-1].strip()
-
-print(response_only)
+print("-" * 40)
+print(final_answer)
+print("-" * 40)
