@@ -1,4 +1,9 @@
-# import torch, json
+
+
+#GERAÇÃO COM SLM LOCAL SIMPLES  
+
+
+# # import torch, json
 # from transformers import AutoModelForCausalLM, AutoTokenizer
 # from peft import PeftModel
 
@@ -51,6 +56,8 @@
 #         print("\nQUESTÃO GERADA:")
 #         print(json.dumps(questao, indent=4, ensure_ascii=False))
 
+
+#GERAÇÃO COM SLM LOCAL E VÁRIAS TÉCNICAS DE PROMPTING
 
 import torch, json
 from transformers import AutoModelForCausalLM, AutoTokenizer
