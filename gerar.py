@@ -67,11 +67,17 @@ import torch, json, re
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from peft import PeftModel
 
+SCHEMA = """{
+  "pergunta": "",
+  "opcoes": ["", "", "", ""],
+  "correta": 0,
+  "feedback": ""
+}"""
+
 class GeradorCyberOtimizado:
     def __init__(self, base_model="TinyLlama/TinyLlama-1.1B-Chat-v1.0", lora_path="tinyllama_lora_final"):
         print("🔧 Carregando SLM otimizado...")
         self.tokenizer = AutoTokenizer.from_pretrained(base_model)
-        # Carregando em float32 para estabilidade em CPU/GPU simples
         base = AutoModelForCausalLM.from_pretrained(
             base_model, torch_dtype=torch.float32, device_map="auto"
         )
@@ -79,83 +85,107 @@ class GeradorCyberOtimizado:
         self.model.eval()
 
     def preparar_prompt(self, tema, tecnica):
-        """
-        Prompts simplificados para as 5 técnicas (Foco em modelos de 1.1B).
-        """
-        # Instrução de sistema ultra-curta
-        sys = "<|system|>\nProfessor de Cibersegurança. Responda apenas em JSON e Português.<|end|>\n"
-        
-        if tecnica == "zero-shot":
-            user = f"<|user|>\nGere uma questão sobre {tema}.<|end|>\n"
-            
-        elif tecnica == "few-shot":
-            user = (
-                f"<|user|>\nExemplo: Tema: Senhas. Resposta: {{\"pergunta\": \"O que é senha forte?\", \"opcoes\": [\"123\", \"Abc@12\", \"nome\", \"111\"], \"correta\": 1}}\n"
-                f"Agora faça do Tema: {tema}.<|end|>\n"
-            )
-            
-        elif tecnica == "chain-of-thought":
-            user = f"<|user|>\nExplique o risco de {tema}, defina a prevenção e gere a questão em JSON.<|end|>\n"
-            
-        elif tecnica == "exemplar-guided":
-            user = f"<|user|>\nCrie um cenário com um personagem sobre {tema} e gere a questão em JSON.<|end|>\n"
-            
-        else: # template-based
-            user = f"<|user|>\nPreencha: {{\"pergunta\": \"...\", \"opcoes\": [\"A\", \"B\", \"C\", \"D\"], \"correta\": 0}} para o tema {tema}.<|end|>\n"
+        system = (
+            "<|system|>\n"
+            "Você é um professor de Cibersegurança.\n"
+            "Gere APENAS um objeto JSON válido.\n"
+            "Não escreva explicações fora do JSON.\n"
+            "<|end|>\n"
+        )
 
-        # O segredo: terminar o prompt com '{' para forçar o início do JSON
-        return f"{sys}{user}<|assistant|>\n{{"
+        if tecnica == "zero-shot":
+            user = f"""
+Gere UMA questão objetiva sobre {tema}.
+Use exatamente este formato:
+{SCHEMA}
+Pense silenciosamente antes de responder.
+"""
+
+        elif tecnica == "few-shot":
+            user = f"""
+Exemplo:
+{{
+  "pergunta": "O que caracteriza uma senha forte?",
+  "opcoes": ["123456", "senha", "Abc@1234", "nome123"],
+  "correta": 2,
+  "feedback": "Senhas fortes combinam letras, números e símbolos."
+}}
+
+Agora gere UMA questão sobre {tema}, no mesmo formato.
+"""
+
+        elif tecnica == "chain-of-thought":
+            user = f"""
+Pense silenciosamente sobre riscos e prevenção relacionados a {tema}.
+Depois gere UMA questão objetiva seguindo este formato:
+{SCHEMA}
+"""
+
+        elif tecnica == "exemplar-guided":
+            user = f"""
+Crie um pequeno cenário realista envolvendo {tema}.
+Depois gere UMA questão objetiva baseada nesse cenário.
+Use exatamente este formato:
+{SCHEMA}
+"""
+
+        else:  # template-based
+            user = f"""
+Preencha corretamente o seguinte template para o tema {tema}:
+{SCHEMA}
+"""
+
+        return f"{system}<|user|>{user}<|end|>\n<|assistant|>\n{{"
 
     def limpar_e_carregar_json(self, texto):
-        """
-        Tenta recuperar o JSON mesmo que o modelo gere lixo ao redor.
-        """
         try:
-            # Adiciona a chave de abertura que forçamos no prompt
-            texto_completo = "{" + texto 
-            # Busca o bloco mais externo de chaves
-            match = re.search(r"(\{.*\})", texto_completo, re.DOTALL)
-            if match:
-                str_json = match.group(1)
-                # Remove possíveis quebras de linha ou caracteres de escape que quebram o parser
-                str_json = str_json.replace("\n", " ").replace(".safe()", "")
-                return json.loads(str_json)
-        except:
+            texto = "{" + texto
+            match = re.search(r"\{.*\}", texto, re.DOTALL)
+            if not match:
+                return None
+            candidato = match.group(0)
+            candidato = candidato.replace("\n", " ").replace("\t", " ")
+            return json.loads(candidato)
+        except Exception:
             return None
-        return None
 
     def criar_questao(self, tema, tecnica):
         prompt = self.preparar_prompt(tema, tecnica)
         inputs = self.tokenizer(prompt, return_tensors="pt").to(self.model.device)
-        
+
         with torch.no_grad():
             output = self.model.generate(
-                **inputs, 
-                max_new_tokens=250, 
-                temperature=0.1,         # Baixíssima para evitar "alucinação idiomática"
-                repetition_penalty=1.1,  # Leve para não quebrar a sintaxe JSON
+                **inputs,
+                max_new_tokens=220,
+                temperature=0.05,
+                repetition_penalty=1.1,
                 do_sample=True,
                 top_p=0.9,
                 eos_token_id=self.tokenizer.eos_token_id
             )
-        
-        # Pega apenas a parte gerada após o prompt
-        gerado = self.tokenizer.decode(output[0][inputs.input_ids.shape[1]:], skip_special_tokens=True)
-        
+
+        gerado = self.tokenizer.decode(
+            output[0][inputs.input_ids.shape[1]:],
+            skip_special_tokens=True
+        )
+
         resultado = self.limpar_e_carregar_json(gerado)
-        
         if resultado:
+            resultado["tecnica"] = tecnica
             return resultado
         else:
-            return {"erro": "Falha na estrutura", "bruto": gerado}
+            return {"erro": "JSON inválido", "tecnica": tecnica, "bruto": gerado}
 
-# --- TESTE ---
+
+# ==========================
+# TESTE COMPARATIVO
+# ==========================
 if __name__ == "__main__":
     gerador = GeradorCyberOtimizado()
     tema = "Phishing em Redes Sociais"
     tecnicas = ["zero-shot", "few-shot", "chain-of-thought", "exemplar-guided", "template-based"]
 
     for t in tecnicas:
-        print(f"🛠️ Testando {t}...")
+        print(f"\n🛠️ Técnica: {t}")
         q = gerador.criar_questao(tema, t)
         print(json.dumps(q, indent=2, ensure_ascii=False))
