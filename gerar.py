@@ -57,13 +57,7 @@
 #         print(json.dumps(questao, indent=4, ensure_ascii=False))
 
 
-<<<<<<< HEAD
-#GERAÇÃO COM SLM LOCAL E VÁRIAS TÉCNICAS DE PROMPTING
-
-import torch, json
-=======
 import torch, json, re
->>>>>>> 54b48eb (att)
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from peft import PeftModel
 
