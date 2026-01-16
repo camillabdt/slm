@@ -266,7 +266,7 @@ if __name__ == "__main__":
     tema = "Phishing em Redes Sociais"
     tecnicas = ["zero-shot", "few-shot", "chain-of-thought", "exemplar-guided", "template-based"]
 
-    N_POR_TECNICA = 20
+    N_POR_TECNICA = 10
     ARQ_SAIDA = "resultados.jsonl"
 
     total_ok = 0
