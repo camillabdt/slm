@@ -11,7 +11,7 @@ from transformers import (
 
 # Configurações
 MODEL_NAME = "TinyLlama/TinyLlama-1.1B-Chat-v1.0"
-DATASET_FILE = "tinyllama_9thgrade_cybersecurity_mixed_train.jsonl"
+DATASET_FILE = "datasetoficial.jsonl"
 LORA_DIR = "tinyllama_lora_final"
 MAX_LENGTH = 384
 
