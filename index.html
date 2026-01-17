@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Visualizador - resultados5.json (formato com "bruto")</title>
+  <style>
+    :root { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+    body { margin:0; background:#0b1220; color:#e8eefc; }
+    header { padding:16px; border-bottom:1px solid rgba(255,255,255,.08); }
+    header h1 { margin:0; font-size:16px; }
+    main { max-width:1050px; margin:0 auto; padding:16px; }
+    .card { background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.10); border-radius:14px; padding:14px; box-shadow:0 10px 30px rgba(0,0,0,.25); }
+    .row { display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between; }
+    .muted { color:rgba(232,238,252,.72); font-size:12px; }
+    .controls { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+    input[type="file"]{
+      width:100%; padding:10px; border-radius:12px; border:1px solid rgba(255,255,255,.15);
+      background:rgba(0,0,0,.25); color:rgba(232,238,252,.85);
+    }
+    input[type="search"]{
+      padding:10px 12px; border-radius:12px; border:1px solid rgba(255,255,255,.15);
+      background:rgba(0,0,0,.35); color:#e8eefc; outline:none; min-width:280px;
+    }
+    button{
+      appearance:none; border:1px solid rgba(255,255,255,.14);
+      background:#2563eb; color:white; padding:10px 12px; border-radius:12px;
+      cursor:pointer; font-weight:800;
+    }
+    button.secondary{ background:rgba(255,255,255,.06); color:#e8eefc; }
+    .badge{ display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border:1px solid rgba(255,255,255,.12); border-radius:999px; background:rgba(255,255,255,.04); font-size:12px; }
+    .ok{ color:#22c55e; font-weight:900; }
+    .warn{ color:#f59e0b; font-weight:900; }
+    .err{ color:#ef4444; font-weight:900; }
+
+    .q{ margin-top:12px; padding:14px; border-radius:14px; border:1px solid rgba(255,255,255,.10); background:rgba(255,255,255,.03); }
+    .q h3{ margin:0 0 10px 0; font-size:15px; }
+    .meta{ display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-bottom:10px; }
+    .opt{ display:flex; gap:10px; align-items:flex-start; padding:10px 10px; border-radius:12px; border:1px solid rgba(255,255,255,.10); background:rgba(0,0,0,.20); margin-top:8px; }
+    .idx{ min-width:34px; display:flex; justify-content:center; }
+    .footer{ margin-top:10px; font-size:12px; color:rgba(232,238,252,.65); }
+    code.inline{ background:rgba(255,255,255,.06); padding:2px 6px; border-radius:8px; }
+    details { margin-top: 10px; }
+    summary { cursor: pointer; color: rgba(232,238,252,.85); }
+    pre {
+      white-space: pre-wrap;
+      background: rgba(0,0,0,.25);
+      border: 1px solid rgba(255,255,255,.10);
+      padding: 10px;
+      border-radius: 12px;
+      color: rgba(232,238,252,.85);
+      font-size: 12px;
+      line-height: 1.35;
+    }
+  </style>
+</head>
+<body>
+<header>
+  <h1>Visualizador de Questões — formato com <code class="inline">{"erro","tecnica","tema","bruto"}</code></h1>
+</header>
+
+<main>
+  <section class="card">
+    <div class="controls">
+      <input id="file" type="file" accept=".json,application/json" />
+      <button id="btnLoad">Carregar</button>
+      <button class="secondary" id="btnClear">Limpar</button>
+      <button class="secondary" id="btnExportClean">Baixar JSON limpo</button>
+    </div>
+
+    <div class="row" style="margin-top:10px;">
+      <div class="badge" id="status">Nenhum arquivo carregado</div>
+      <div class="controls">
+        <input id="search" type="search" placeholder="Filtrar (pergunta/opções/tema/técnica)..." disabled />
+        <div class="badge" id="count">0 questões</div>
+      </div>
+    </div>
+
+    <div id="out" style="margin-top:12px;"></div>
+
+    <div class="footer">
+      Este visualizador lê o teu JSON “sujo” e tenta extrair as questões do campo <code class="inline">bruto</code>.
+      Se um item estiver truncado (ex.: termina no meio de uma opção), ele aparece como <span class="warn">incompleto</span>.
+    </div>
+  </section>
+</main>
+
+<script>
+  const $ = (s) => document.querySelector(s);
+
+  function escapeHTML(s) {
+    return String(s ?? "")
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+  }
+
+  function setStatus(kind, text) {
+    const st = $("#status");
+    st.className = "badge";
+    if (kind === "ok") st.innerHTML = `<span class="ok">${escapeHTML(text)}</span>`;
+    else if (kind === "warn") st.innerHTML = `<span class="warn">${escapeHTML(text)}</span>`;
+    else if (kind === "err") st.innerHTML = `<span class="err">${escapeHTML(text)}</span>`;
+    else st.textContent = text;
+  }
+
+  function stripTokens(s) {
+    return (s || "")
+      .replaceAll("<|end|>", "")
+      .replaceAll("<|user|>", "")
+      .replaceAll("<|assistant|>", "")
+      .replaceAll("```json", "")
+      .replaceAll("```", "")
+      .replace(/\uFFFD/g, "")
+      .trim();
+  }
+
+  // Extrai campos do "bruto" mesmo quando está quebrado
+  function extractFromBruto(brutoText) {
+    const raw = stripTokens(brutoText || "");
+
+    const perguntaMatch = raw.match(/"pergunta"\s*:\s*"([^"]*)"/);
+    const pergunta = perguntaMatch ? perguntaMatch[1] : null;
+
+    // tenta extrair o bloco de opcoes: "opcoes": [ ... ]
+    const opBlockMatch = raw.match(/"opco(?:e|õ|o)es"\s*:\s*\[([\s\S]*?)\]/);
+    let opcoes = [];
+    let opIncompleto = false;
+
+    if (opBlockMatch) {
+      const inner = opBlockMatch[1];
+      const re = /"([^"]*)"/g;
+      let m;
+      while ((m = re.exec(inner)) !== null) opcoes.push(m[1]);
+      // se tem bloco mas não achou nada, provavelmente truncado
+      if (!opcoes.length) opIncompleto = true;
+    } else {
+      // se parece que começou a lista mas não fechou, marca incompleto
+      if (raw.includes('"opcoes"') && raw.includes('[') && !raw.includes(']')) opIncompleto = true;
+    }
+
+    // correta pode vir como correta / correct / correctAnswer / correctResponse
+    const corretaMatch =
+      raw.match(/"correta"\s*:\s*([0-9]+)/) ||
+      raw.match(/"correct"\s*:\s*([0-9]+)/) ||
+      raw.match(/"correctAnswer"\s*:\s*([0-9]+)/) ||
+      raw.match(/"correctResponse"\s*:\s*([0-9]+)/);
+
+    const correta = corretaMatch ? Number(corretaMatch[1]) : null;
+
+    const feedbackMatch = raw.match(/"feedback"\s*:\s*"([\s\S]*?)"/);
+    const feedback = feedbackMatch ? feedbackMatch[1] : "";
+
+    // “completa” se tem pergunta + >=2 opções (ou 1 opção se o modelo quebrou) e não está marcado incompleto
+    const incompleta = !pergunta || (opcoes.length < 2) || opIncompleto;
+
+    return { pergunta, opcoes, correta, feedback, incompleta, bruto: raw };
+  }
+
+  function normalizeTopLevel(data) {
+    // Esperado: array de objetos {erro, tecnica, tema, bruto}
+    if (Array.isArray(data)) return data;
+
+    // às vezes pode vir encapsulado
+    if (data && typeof data === "object") {
+      for (const k of Object.keys(data)) {
+        if (Array.isArray(data[k])) return data[k];
+      }
+    }
+    return [];
+  }
+
+  function buildQuestions(items) {
+    const qs = [];
+    for (const it of items) {
+      if (!it || typeof it !== "object") continue;
+      const tecnica = it.tecnica ?? "";
+      const tema = it.tema ?? "";
+      const erro = it.erro ?? "";
+      const bruto = it.bruto ?? "";
+
+      const extracted = extractFromBruto(bruto);
+
+      // Só adiciona se pelo menos tem alguma pista de pergunta/opcoes
+      if (extracted.pergunta || extracted.opcoes.length) {
+        qs.push({
+          tecnica, tema, erro,
+          pergunta: extracted.pergunta || "(pergunta não reconhecida)",
+          opcoes: extracted.opcoes,
+          correta: extracted.correta,
+          feedback: extracted.feedback,
+          incompleta: extracted.incompleta,
+          bruto: extracted.bruto
+        });
+      }
+    }
+    return qs;
+  }
+
+  function render(all, filterText="") {
+    const out = $("#out");
+    out.innerHTML = "";
+
+    const ft = filterText.trim().toLowerCase();
+    const shown = !ft ? all : all.filter(q => {
+      const blob = (q.pergunta + " " + q.opcoes.join(" ") + " " + q.tema + " " + q.tecnica).toLowerCase();
+      return blob.includes(ft);
+    });
+
+    $("#count").textContent = `${shown.length} questão(ões)`;
+
+    if (!shown.length) {
+      out.innerHTML = `
+        <div class="q">
+          <h3>Nenhuma questão para mostrar</h3>
+          <div class="muted">Se você aplicou filtro, limpe o campo de busca.</div>
+        </div>
+      `;
+      return;
+    }
+
+    shown.forEach((q, i) => {
+      const status = q.incompleta ? `<span class="warn">incompleta</span>` : `<span class="ok">ok</span>`;
+      const corretaTxt = (q.correta === null) ? `<span class="warn">correta indefinida</span>` : `<span class="ok">correta: ${q.correta}</span>`;
+
+      const el = document.createElement("div");
+      el.className = "q";
+      el.innerHTML = `
+        <div class="meta">
+          <span class="badge">#${i+1}</span>
+          ${q.tema ? `<span class="badge">tema: ${escapeHTML(q.tema)}</span>` : ``}
+          ${q.tecnica ? `<span class="badge">técnica: ${escapeHTML(q.tecnica)}</span>` : ``}
+          <span class="badge">${status}</span>
+          <span class="badge">${corretaTxt}</span>
+        </div>
+
+        <h3>${escapeHTML(q.pergunta)}</h3>
+
+        <div>
+          ${q.opcoes.length ? q.opcoes.map((opt, idx) => `
+            <div class="opt">
+              <div class="badge idx">${idx}</div>
+              <div>
+                <div>${escapeHTML(opt)}</div>
+                ${q.correta === idx ? `<div class="ok">✔ correta</div>` : ``}
+              </div>
+            </div>
+          `).join("") : `<div class="muted">Sem opções reconhecidas.</div>`}
+        </div>
+
+        ${q.feedback?.trim() ? `<div class="footer"><strong>Feedback:</strong> ${escapeHTML(q.feedback)}</div>` : ``}
+
+        <details>
+          <summary>Ver trecho bruto extraído</summary>
+          <pre>${escapeHTML(q.bruto)}</pre>
+        </details>
+      `;
+      out.appendChild(el);
+    });
+  }
+
+  async function loadFile() {
+    const f = $("#file").files?.[0];
+    if (!f) { setStatus("warn", "Selecione o resultados5.json"); return; }
+
+    try {
+      const text = await f.text();
+      const data = JSON.parse(text);
+      const items = normalizeTopLevel(data);
+      const qs = buildQuestions(items);
+
+      window.__QUESTIONS__ = qs;
+
+      $("#search").disabled = !qs.length;
+      $("#search").value = "";
+
+      if (!items.length) setStatus("warn", "JSON carregado, mas não achei lista de itens");
+      else if (!qs.length) setStatus("warn", "Carregou, mas não consegui extrair perguntas/opções");
+      else setStatus("ok", `Carregado: ${f.name} (${qs.length} questões extraídas)`);
+
+      render(qs, "");
+
+    } catch (e) {
+      window.__QUESTIONS__ = [];
+      $("#search").disabled = true;
+      $("#count").textContent = "0 questão(ões)";
+      setStatus("err", "Erro ao ler/parsear JSON");
+      $("#out").innerHTML = `
+        <div class="q">
+          <h3>Erro ao abrir o arquivo</h3>
+          <div class="muted">Detalhe: ${escapeHTML(e.message || e)}</div>
+        </div>
+      `;
+    }
+  }
+
+  $("#btnLoad").addEventListener("click", loadFile);
+  $("#file").addEventListener("change", loadFile);
+
+  $("#btnClear").addEventListener("click", () => {
+    window.__QUESTIONS__ = [];
+    $("#out").innerHTML = "";
+    $("#count").textContent = "0 questão(ões)";
+    $("#search").value = "";
+    $("#search").disabled = true;
+    setStatus("", "Nenhum arquivo carregado");
+  });
+
+  $("#search").addEventListener("input", () => {
+    render(window.__QUESTIONS__ || [], $("#search").value);
+  });
+
+  // Exporta um JSON limpo só com o que foi extraído
+  $("#btnExportClean").addEventListener("click", () => {
+    const qs = (window.__QUESTIONS__ || []).map(q => ({
+      pergunta: q.pergunta,
+      opcoes: q.opcoes,
+      correta: q.correta,
+      feedback: q.feedback,
+      tema: q.tema,
+      tecnica: q.tecnica,
+      incompleta: q.incompleta
+    }));
+    if (!qs.length) { alert("Nada para exportar."); return; }
+    const blob = new Blob([JSON.stringify(qs, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "questoes_extraidas_limpo.json";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  });
+</script>
+</body>
+</html>
