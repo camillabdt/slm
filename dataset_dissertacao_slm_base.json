@@ -1,0 +1,227 @@
+[
+    {
+        "id": "SLM_BASE_zero-shot_Q1",
+        "modelo": "SLM_BASE",
+        "base_model": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+        "tecnica": "zero-shot",
+        "questao_n": 1,
+        "temperatura": 0.2,
+        "conteudo_gerado": "<|user|>\n[Pergunta]<|end|>\n<|assistant|>\nPergunta: [Texto]\nA) [Opção]\nB) [Opção]\nC) [Opção]\nD) [Opção]\nResposta correta: [Letra]"
+    },
+    {
+        "id": "SLM_BASE_zero-shot_Q2",
+        "modelo": "SLM_BASE",
+        "base_model": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+        "tecnica": "zero-shot",
+        "questao_n": 2,
+        "temperatura": 0.8,
+        "conteudo_gerado": "<|user|>\nPor favor, responde a seguinte pergunta em ChatML: \"Qual era a melhor maneira de proteger os dados pessoais da sua organização contra ataques por email em Redes Sociais?\" Responda apenas com uma letra. Se desejar responder com outra opção, recomendo que você fique à espera de outras respostas. \"A) Recomenda-se usar uma boa configuração de segurança para emails e aplicação de políticas de segurança.\" (Correta) \"B) Fazer uso de uma autenticação multi-factor do sistema para cada login\" (Errada) \"C) Utilizar uma boa solução antivírus e defesa de rede\" (Errada) \"D) Utilizar um serviço de anúncios de redes sociais com limites de tempo específicos para cada recurso\" (Correta)"
+    },
+    {
+        "id": "SLM_BASE_zero-shot_Q3",
+        "modelo": "SLM_BASE",
+        "base_model": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+        "tecnica": "zero-shot",
+        "questao_n": 3,
+        "temperatura": 0.5,
+        "conteudo_gerado": ""
+    },
+    {
+        "id": "SLM_BASE_zero-shot_Q4",
+        "modelo": "SLM_BASE",
+        "base_model": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+        "tecnica": "zero-shot",
+        "questao_n": 4,
+        "temperatura": 0.2,
+        "conteudo_gerado": "<|user|>\n[Pergunta]<|end|>\n<|assistant|>\nPergunta: [Texto]\nA) [Opção]\nB) [Opção]\nC) [Opção]\nD) [Opção]\nResposta correta: [Letra]"
+    },
+    {
+        "id": "SLM_BASE_zero-shot_Q5",
+        "modelo": "SLM_BASE",
+        "base_model": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+        "tecnica": "zero-shot",
+        "questao_n": 5,
+        "temperatura": 0.5,
+        "conteudo_gerado": "<|user|>\n[Pergunta]<|end|>\n<|assistant|>\nPergunta: [Texto]\nA) [Opção]\nB) [Opção]\nC) [Opção]\nD) [Opção]\nResposta correta: [Letra]<|end|>"
+    },
+    {
+        "id": "SLM_BASE_few-shot_Q1",
+        "modelo": "SLM_BASE",
+        "base_model": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+        "tecnica": "few-shot",
+        "questao_n": 1,
+        "temperatura": 0.5,
+        "conteudo_gerado": ""
+    },
+    {
+        "id": "SLM_BASE_few-shot_Q2",
+        "modelo": "SLM_BASE",
+        "base_model": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+        "tecnica": "few-shot",
+        "questao_n": 2,
+        "temperatura": 0.8,
+        "conteudo_gerado": ""
+    },
+    {
+        "id": "SLM_BASE_few-shot_Q3",
+        "modelo": "SLM_BASE",
+        "base_model": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+        "tecnica": "few-shot",
+        "questao_n": 3,
+        "temperatura": 0.2,
+        "conteudo_gerado": "Gere uma questão sobre a segurança da rede em um ambiente empresarial.\nResponda APENAS no formato ChatML abaixo:\n<|system|>\nVocê é um gerente de IT para a empresa [Empresa].<|end|>\n<|user|>\n[Pergunta]<|end|>\n<|assistant|>\nPergunta: [Texto]\nA) [Opção]\nB) [Opção]\nC) [Opção]\nD) [Opção]\nResposta correta: [Letra]<|end|>\n\nGere uma questão sobre a segurança dos dados pessoais na web.\nResponda APENAS no formato ChatML abaixo:\n<|system|>\nVocê é um analista de segurança de informações para a empresa [Empresa].<|end|>\n<|user|>\n[Pergunta]<|end|>\n<|assistant|>\nPergunta: [Texto]\nA) [Opção]\nB) [Opção]\nC) [Opção]\nD) [Opção]\nResposta correta: [Letra]<|end|>"
+    },
+    {
+        "id": "SLM_BASE_few-shot_Q4",
+        "modelo": "SLM_BASE",
+        "base_model": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+        "tecnica": "few-shot",
+        "questao_n": 4,
+        "temperatura": 0.5,
+        "conteudo_gerado": "Gera uma questão sobre a segurança da internet.\nResponda APAESSEIRA em ChatML abaixo:\n<|system|>\nQual aspecto da internet é mais vulnerável a ataques e roubos de dados?\nA) [Opção]\nB) [Opção]\nC) [Opção]\nD) [Opção]\nResposta correta: B<|end|>"
+    },
+    {
+        "id": "SLM_BASE_few-shot_Q5",
+        "modelo": "SLM_BASE",
+        "base_model": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+        "tecnica": "few-shot",
+        "questao_n": 5,
+        "temperatura": 0.8,
+        "conteudo_gerado": "Compartilhe com seu amigo ou outro profissional que trabalhe em segurança informática e lhes diga que estamos criando um novo projeto para ajudar a proteger suas redes. Entretanto, este projeto tem algumas limitações e você precisará entender se ele é adequado para sua empresa ou não. Escreva uma breve descrição do projeto na próxima linha. Em seguida, explique como funciona a sua autenticação de dois fatores e com qual tipo de senha seria considerada forte. Finalmente, apresente os principais riscos encontrados durante o teste de testemunho para o projeto."
+    },
+    {
+        "id": "SLM_BASE_chain-of-thought_Q1",
+        "modelo": "SLM_BASE",
+        "base_model": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+        "tecnica": "chain-of-thought",
+        "questao_n": 1,
+        "temperatura": 0.2,
+        "conteudo_gerado": ""
+    },
+    {
+        "id": "SLM_BASE_chain-of-thought_Q2",
+        "modelo": "SLM_BASE",
+        "base_model": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+        "tecnica": "chain-of-thought",
+        "questao_n": 2,
+        "temperatura": 0.5,
+        "conteudo_gerado": ""
+    },
+    {
+        "id": "SLM_BASE_chain-of-thought_Q3",
+        "modelo": "SLM_BASE",
+        "base_model": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+        "tecnica": "chain-of-thought",
+        "questao_n": 3,
+        "temperatura": 0.5,
+        "conteudo_gerado": "<|user|>\n[Pergunta]<|end|>\n<|assistant|>\nPergunta: [Texto]\nO que são os serviços de análise de dados do Google, e como eles podem ajudar as empresas a melhorar suas políticas de privacidade? Responda APAZIDO no formato ChatML abaixo:\n<|system|>\nVocê é um professor de cibersegurança para o 10º ano.<|end|>\n<|user|>\n[Pergunta]<|end|>\n<|assistant|>\nPergunta: [Texto]\nQuais são os benefícios da utilização de dispositivos móveis e tablets em uma empresa? Responda APAZIDO no formato ChatML abaixo:\n<|system|>\nVocê é um professor de cibersegurança para o 7º ano.<|end|>"
+    },
+    {
+        "id": "SLM_BASE_chain-of-thought_Q4",
+        "modelo": "SLM_BASE",
+        "base_model": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+        "tecnica": "chain-of-thought",
+        "questao_n": 4,
+        "temperatura": 0.2,
+        "conteudo_gerado": "<|user|>\n[Pergunta]<|end|>\n<|assistant|>\nPergunta: [Texto]\nA) [Opção]\nB) [Opção]\nC) [Opção]\nD) [Opção]\nResposta correta: [Letra]"
+    },
+    {
+        "id": "SLM_BASE_chain-of-thought_Q5",
+        "modelo": "SLM_BASE",
+        "base_model": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+        "tecnica": "chain-of-thought",
+        "questao_n": 5,
+        "temperatura": 0.5,
+        "conteudo_gerado": "<|user|>\n[Pergunta]<|end|>\n<|assistant|>\nPergunta: [Texto]\nA) [Opção]\nB) [Opção]\nC) [Opção]\nD) [Opção]\nResposta correta: [Letra]<|end|>"
+    },
+    {
+        "id": "SLM_BASE_exemplar-guided_Q1",
+        "modelo": "SLM_BASE",
+        "base_model": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+        "tecnica": "exemplar-guided",
+        "questao_n": 1,
+        "temperatura": 0.2,
+        "conteudo_gerado": "<|user|>\n[Pergunta]<|end|>\n<|assistant|>\nPergunta: [Texto]\nA) [Opção]\nB) [Opção]\nC) [Opção]\nD) [Opção]\nResposta correta: [Letra]<|end|>"
+    },
+    {
+        "id": "SLM_BASE_exemplar-guided_Q2",
+        "modelo": "SLM_BASE",
+        "base_model": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+        "tecnica": "exemplar-guided",
+        "questao_n": 2,
+        "temperatura": 0.2,
+        "conteudo_gerado": "<|user|>\n[Pergunta]<|end|>\n<|assistant|>\nPergunta: [Texto]\nA) [Opção]\nB) [Opção]\nC) [Opção]\nD) [Opção]\nResposta correta: [Letra]<|end|>"
+    },
+    {
+        "id": "SLM_BASE_exemplar-guided_Q3",
+        "modelo": "SLM_BASE",
+        "base_model": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+        "tecnica": "exemplar-guided",
+        "questao_n": 3,
+        "temperatura": 0.5,
+        "conteudo_gerado": ""
+    },
+    {
+        "id": "SLM_BASE_exemplar-guided_Q4",
+        "modelo": "SLM_BASE",
+        "base_model": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+        "tecnica": "exemplar-guided",
+        "questao_n": 4,
+        "temperatura": 0.2,
+        "conteudo_gerado": "<|user|>\n[Pergunta]<|end|>\n<|assistant|>\nPergunta: [Texto]\nA) [Opção]\nB) [Opção]\nC) [Opção]\nD) [Opção]\nResposta correta: [Letra]<|end|>"
+    },
+    {
+        "id": "SLM_BASE_exemplar-guided_Q5",
+        "modelo": "SLM_BASE",
+        "base_model": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+        "tecnica": "exemplar-guided",
+        "questao_n": 5,
+        "temperatura": 0.5,
+        "conteudo_gerado": "[Pergunta]<|end|>\n<|user|>\n[Pergunta]<|end|>\n<|assistant|>\nPergunta: [Texto]\nA) [Opção]\nB) [Opção]\nC) [Opção]\nD) [Opção]\nResposta correta: [Letra]<|end|>\n[Pergunta]<|end|>"
+    },
+    {
+        "id": "SLM_BASE_template-based_Q1",
+        "modelo": "SLM_BASE",
+        "base_model": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+        "tecnica": "template-based",
+        "questao_n": 1,
+        "temperatura": 0.5,
+        "conteudo_gerado": ""
+    },
+    {
+        "id": "SLM_BASE_template-based_Q2",
+        "modelo": "SLM_BASE",
+        "base_model": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+        "tecnica": "template-based",
+        "questao_n": 2,
+        "temperatura": 0.2,
+        "conteudo_gerado": "<|user|>\n[Pergunta]<|end|>\n<|assistant|>\nPergunta: [Texto]\nA) [Opção]\nB) [Opção]\nC) [Opção]\nD) [Opção]\nResposta correta: [Letra]<|end|>"
+    },
+    {
+        "id": "SLM_BASE_template-based_Q3",
+        "modelo": "SLM_BASE",
+        "base_model": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+        "tecnica": "template-based",
+        "questao_n": 3,
+        "temperatura": 0.2,
+        "conteudo_gerado": "<|user|>\n[Pergunta]<|end|>\n<|assistant|>\nPara ajudar os estudantes a entender melhor, podemos criar um exercício de aprendizado com base em um assunto relevante. O objetivo deste exercício é mostrar como usar o Google Sheets para organizar informações e gerir tarefas. Para este exercício, você precisará ter um Google Account e estar conectado à Internet.\n1. Faça o download do Google Sheets e crie uma nova planilha.\n2. Insira o nome da sua planilha na célula A1.\n3. Em seguida, insira as informações que deseja armazenar em cada coluna da planilha. Por exemplo, se quiser armazenar os nomes dos alunos, use a célula B1 e insira o texto \"Nome\". Se quiser armazenar as notas de cada aluno, use a célula C1 e insira o texto \"Nota\".\n4. Em seguida, use a célula D1 para armazenar a data de nascimento do aluno.\n5. Use a célula E1 para armazenar a data de entrada do aluno.\n6. Use a célula F1 para armazenar a data de saída do aluno.\n7. Use a célula G1 para armazenar a quantidade de horas trabalhadas por dia.\n8. Use a célula H"
+    },
+    {
+        "id": "SLM_BASE_template-based_Q4",
+        "modelo": "SLM_BASE",
+        "base_model": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+        "tecnica": "template-based",
+        "questao_n": 4,
+        "temperatura": 0.2,
+        "conteudo_gerado": ""
+    },
+    {
+        "id": "SLM_BASE_template-based_Q5",
+        "modelo": "SLM_BASE",
+        "base_model": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+        "tecnica": "template-based",
+        "questao_n": 5,
+        "temperatura": 0.5,
+        "conteudo_gerado": ""
+    }
+]
