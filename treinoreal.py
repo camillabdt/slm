@@ -1,4 +1,5 @@
 import os
+import json
 import torch
 from datasets import load_dataset
 from transformers import (
@@ -11,7 +12,7 @@ from transformers import (
 from peft import LoraConfig, get_peft_model
 
 # =========================
-# CONFIGURAÇÕES GERAIS
+# CONFIGURAÇÕES
 # =========================
 BASE_MODEL = "TinyLlama/TinyLlama-1.1B-Chat-v1.0"
 DATA_FILE  = "mcq_train.jsonl"
@@ -26,10 +27,55 @@ SAVE_STEPS = 200
 SEED       = 42
 MAX_LEN    = 512
 
-DEVICE = "cpu"
+DEVICE = "cpu"  # compatível com seu ambiente atual
 
 # =========================
-# FUNÇÃO PRINCIPAL
+# HELPERS
+# =========================
+def safe_json_loads(s):
+    if not s or not isinstance(s, str):
+        return None
+    try:
+        return json.loads(s)
+    except Exception:
+        return None
+
+def build_text_from_record(instruction, inp, mcq_obj):
+    """
+    Monta um texto de treino causal LM:
+    prompt (instruction+input) -> completion (output JSON MCQ)
+    """
+    out_json = json.dumps(mcq_obj, ensure_ascii=False)
+
+    text = (
+        "<|system|>\nYou are a cybersecurity teacher.\n<|end|>\n"
+        "<|user|>\n"
+        f"{instruction}\n"
+        f"{inp}\n"
+        "<|end|>\n"
+        "<|assistant|>\n"
+        f"{out_json}\n"
+        "<|end|>\n"
+    )
+    return text
+
+def normalize_mcq(mcq_obj):
+    """
+    Garante que MCQ tem chaves esperadas e opcoes 4 itens.
+    """
+    if not isinstance(mcq_obj, dict):
+        return None
+    needed = ["pergunta", "opcoes", "correta", "feedback"]
+    if not all(k in mcq_obj for k in needed):
+        return None
+    if not isinstance(mcq_obj["opcoes"], list) or len(mcq_obj["opcoes"]) != 4:
+        return None
+    if not isinstance(mcq_obj["correta"], int) or not (0 <= mcq_obj["correta"] <= 3):
+        return None
+    return mcq_obj
+
+# =========================
+# MAIN
 # =========================
 def main():
     print("📌 Device:", DEVICE)
@@ -53,24 +99,30 @@ def main():
 
     def format_example(example):
         """
-        Converte cada MCQ em texto de treino (causal LM)
+        Seu mcq_train.jsonl tem: instruction, input, output (string JSON)
         """
-        text = (
-            "<|system|>\n"
-            "You are a cybersecurity teacher.\n"
-            "<|end|>\n"
-            "<|user|>\n"
-            f"{example['question']}\n"
-            + "\n".join(example["options"]) +
-            "\n<|end|>\n"
-            "<|assistant|>\n"
-            f"Correct answer: {example['answer']}\n"
-            f"{example['feedback']}\n"
-            "<|end|>"
-        )
+        instruction = example.get("instruction", "").strip()
+        inp = example.get("input", "").strip()
+        output_str = example.get("output", "")
+
+        mcq_obj = safe_json_loads(output_str)
+        mcq_obj = normalize_mcq(mcq_obj)
+
+        # Se algum exemplo estiver ruim, retorna texto vazio (vai ser filtrado depois)
+        if not instruction or not mcq_obj:
+            return {"text": ""}
+
+        text = build_text_from_record(instruction, inp, mcq_obj)
         return {"text": text}
 
-    dataset = dataset.map(format_example, remove_columns=dataset["train"].column_names)
+    # cria coluna "text"
+    dataset = dataset.map(format_example)
+
+    # filtra exemplos vazios
+    dataset["train"] = dataset["train"].filter(lambda x: isinstance(x["text"], str) and len(x["text"]) > 20)
+    dataset["test"]  = dataset["test"].filter(lambda x: isinstance(x["text"], str) and len(x["text"]) > 20)
+
+    print(f"✅ After filtering: train={len(dataset['train'])} | eval={len(dataset['test'])}")
 
     def tokenize(batch):
         return tokenizer(
@@ -80,7 +132,7 @@ def main():
             max_length=MAX_LEN
         )
 
-    dataset = dataset.map(tokenize, batched=True)
+    dataset = dataset.map(tokenize, batched=True, remove_columns=dataset["train"].column_names)
 
     # -------------------------
     # MODELO BASE
@@ -89,6 +141,7 @@ def main():
         BASE_MODEL,
         torch_dtype=torch.float32
     )
+    model.to(DEVICE)
 
     # -------------------------
     # LoRA
@@ -101,12 +154,11 @@ def main():
         bias="none",
         task_type="CAUSAL_LM"
     )
-
     model = get_peft_model(model, lora_config)
     model.print_trainable_parameters()
 
     # -------------------------
-    # TREINAMENTO
+    # TRAINING ARGS (compatível com transformers antigos)
     # -------------------------
     args = TrainingArguments(
         output_dir=OUT_DIR,
@@ -123,10 +175,7 @@ def main():
         remove_unused_columns=False
     )
 
-    data_collator = DataCollatorForLanguageModeling(
-        tokenizer=tokenizer,
-        mlm=False
-    )
+    data_collator = DataCollatorForLanguageModeling(tokenizer=tokenizer, mlm=False)
 
     trainer = Trainer(
         model=model,
@@ -149,9 +198,7 @@ def main():
     tokenizer.save_pretrained(OUT_DIR)
 
     print("✅ Fine-tuning finalizado com sucesso!")
+    print("📦 Adapter salvo em:", OUT_DIR)
 
-# =========================
-# ENTRYPOINT
-# =========================
 if __name__ == "__main__":
     main()
