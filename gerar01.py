@@ -5,7 +5,7 @@ from peft import LoraConfig, get_peft_model
 from trl import SFTTrainer
 from datasets import Dataset
 
-# 1. Função de carregamento corrigida (mantendo sua estrutura original)
+# 1. Função de carregamento corrigida para processar MCQs e conteúdo educativo
 def load_and_fix_jsonl(file_path):
     data_rows = []
     with open(file_path, "r", encoding="utf-8") as f:
@@ -13,6 +13,7 @@ def load_and_fix_jsonl(file_path):
             row = json.loads(line)
             assistant_content = row["messages"][-1]["content"]
             
+            # Converte o objeto de múltipla escolha em texto legível para o modelo
             if isinstance(assistant_content, dict):
                 mcq = assistant_content
                 text = f"Question: {mcq['stem']}\n"
@@ -24,19 +25,18 @@ def load_and_fix_jsonl(file_path):
             data_rows.append(row)
     return Dataset.from_list(data_rows)
 
-# 2. Modelo e Tokenizer
+# 2. Modelo e Tokenizer (Configurados para CPU)
 model_id = "tinyllama/tinyllama-1.1b-chat-v1.0"
 tokenizer = AutoTokenizer.from_pretrained(model_id)
 tokenizer.pad_token = tokenizer.eos_token
-tokenizer.chat_template = "{% for message in messages %}{{'<|' + message['role'] + '|>' + '\n' + message['content'] + '</s>' + '\n'}}{% endfor %}"
 
 model = AutoModelForCausalLM.from_pretrained(
     model_id, 
     device_map={"": "cpu"}, 
-    dtype=torch.float32 # Corrigido de torch_dtype
+    torch_dtype=torch.float32 
 )
 
-# 3. LoRA
+# 3. Aplicação do LoRA (Apenas uma vez aqui)
 lora_config = LoraConfig(
     r=8,
     lora_alpha=16,
@@ -47,10 +47,10 @@ lora_config = LoraConfig(
 )
 model = get_peft_model(model, lora_config)
 
-# 4. Dataset
+# 4. Carregar o seu dataset de cibersegurança
 dataset = load_and_fix_jsonl("datasetoficial.jsonl")
 
-# 5. Configurar Treino
+# 5. Configurar Treino para CPU
 training_args = TrainingArguments(
     output_dir="./tinyllama-cyber-cpu",
     per_device_train_batch_size=1,
@@ -58,18 +58,19 @@ training_args = TrainingArguments(
     learning_rate=2e-4,
     num_train_epochs=1,
     logging_steps=1,
-    use_cpu=True, # Corrigido para remover aviso de no_cuda
+    use_cpu=True, # Substitui o antigo no_cuda
     report_to="none"
 )
 
-# 6. Treinador (Sem o argumento problemático)
+# 6. Treinador (Sem o argumento peft_config, pois o modelo já é Peft)
 trainer = SFTTrainer(
     model=model,
     train_dataset=dataset,
     args=training_args,
-    peft_config=lora_config,
-    # O SFTTrainer detecta a coluna 'messages' automaticamente se não passarmos dataset_text_field
 )
 
-print("Agora vai! Iniciando treino na CPU...")
+print("Tudo pronto! Iniciando o treinamento do seu tutor de cibersegurança...")
 trainer.train()
+
+# 7. Salvar o resultado
+trainer.save_model("./modelo_final_cpu")
