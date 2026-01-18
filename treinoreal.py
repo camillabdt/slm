@@ -1,120 +1,160 @@
-import json, torch, os
-from datasets import Dataset
-from peft import LoraConfig, get_peft_model, TaskType
-from transformers import (
-    AutoModelForCausalLM,
-    AutoTokenizer,
-    TrainingArguments,
-    Trainer,
-    DataCollatorForLanguageModeling
-)
+import os
+import json
+import random
+import torch
+from datasets import load_dataset
+from transformers import AutoTokenizer, AutoModelForCausalLM, TrainingArguments
+from peft import LoraConfig
+from trl import SFTTrainer
 
-# Configurações de Caminho e Modelo
-MODEL_NAME = "TinyLlama/TinyLlama-1.1B-Chat-v1.0"
-DATASET_FILE = "mcq_train.jsonl"
-LORA_DIR = "tinyllama_lora_final"
-MAX_LENGTH = 384
+# =========================
+# CONFIG
+# =========================
+BASE_MODEL = "TinyLlama/TinyLlama-1.1B-Chat-v1.0"
+DATA_PATH = "mcq_train.jsonl"
+OUT_DIR = "tinyllama_lora_mcq"
 
-def load_jsonl(path):
-    if not os.path.exists(path):
-        print(f"Erro: Arquivo {path} não encontrado.")
-        return []
-    with open(path, "r", encoding="utf-8") as f:
-        return [json.loads(line) for line in f if line.strip()]
+# Treino (ajuste se quiser)
+SEED = 42
+TRAIN_SPLIT = 0.9          # 90% treino, 10% validação
+EPOCHS = 4                 # com ~300 linhas, 3-5 é ok
+LR = 2e-4
+BATCH = 2
+GRAD_ACCUM = 8
+MAX_SEQ_LEN = 768          # MCQ em JSON costuma caber bem aqui
+LOG_STEPS = 10
+SAVE_STEPS = 200
 
-def format_chat(messages, tokenizer):
-    fixed = []
-    for m in messages:
-        c = m.get("content", "")
-        if isinstance(c, dict):
-            c = json.dumps(c, ensure_ascii=False)
-        fixed.append({"role": m["role"], "content": c})
-
-    if hasattr(tokenizer, "apply_chat_template"):
-        return tokenizer.apply_chat_template(
-            fixed, tokenize=False, add_generation_prompt=False
-        )
-    return "\n".join([f"{m['role'].upper()}: {m['content']}" for m in fixed])
-
-def build_dataset(items, tokenizer):
-    formatted = [{"text": format_chat(x["messages"], tokenizer)} for x in items]
-    ds = Dataset.from_list(formatted)
-    ds = ds.map(
-        lambda x: tokenizer(x["text"], truncation=True, max_length=MAX_LENGTH),
-        batched=True,
-        remove_columns=["text"]
+# =========================
+# Helpers
+# =========================
+def format_row(ex):
+    # ex tem: instruction, input, output (output é string JSON)
+    return (
+        f"### Instruction:\n{ex['instruction']}\n"
+        f"### Input:\n{ex['input']}\n"
+        f"### Output:\n{ex['output']}"
     )
-    return ds
 
-def make_trainer(model, tokenizer, ds, lr, steps, phase_name):
-    # Definindo diretório específico para os checkpoints desta fase
-    output_dir = f"./checkpoints_{phase_name}"
-    
+def main():
+    random.seed(SEED)
+    torch.manual_seed(SEED)
+
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+    print(f"📌 Device: {device}")
+    print(f"📌 Base model: {BASE_MODEL}")
+    print(f"📌 Data: {DATA_PATH}")
+    print(f"📌 Out:  {OUT_DIR}")
+
+    # -------------------------
+    # Load dataset + split
+    # -------------------------
+    ds = load_dataset("json", data_files=DATA_PATH, split="train")
+    ds = ds.shuffle(seed=SEED)
+    split = ds.train_test_split(test_size=(1 - TRAIN_SPLIT), seed=SEED)
+    train_ds = split["train"]
+    eval_ds = split["test"]
+
+    print(f"✅ Dataset loaded: train={len(train_ds)} | eval={len(eval_ds)}")
+
+    # -------------------------
+    # Load tokenizer + model
+    # -------------------------
+    tokenizer = AutoTokenizer.from_pretrained(BASE_MODEL, use_fast=True)
+    if tokenizer.pad_token is None:
+        tokenizer.pad_token = tokenizer.eos_token
+
+    # dtype: float16 na GPU, float32 na CPU
+    dtype = torch.float16 if torch.cuda.is_available() else torch.float32
+
+    model = AutoModelForCausalLM.from_pretrained(
+        BASE_MODEL,
+        dtype=dtype
+    )
+    model.to(device)
+
+    # -------------------------
+    # LoRA config (estável)
+    # -------------------------
+    lora = LoraConfig(
+        r=16,
+        lora_alpha=32,
+        lora_dropout=0.05,
+        target_modules=["q_proj", "k_proj", "v_proj", "o_proj"],
+        bias="none",
+        task_type="CAUSAL_LM",
+    )
+
+    # -------------------------
+    # Training args
+    # -------------------------
     args = TrainingArguments(
-        output_dir=output_dir,
-        per_device_train_batch_size=1,
-        gradient_accumulation_steps=8,
-        max_steps=steps,
-        learning_rate=lr,
-        logging_steps=20,
-        
-        # --- Configurações de Salvamento ---
-        save_strategy="steps",       # Salva por passos, não por época
-        save_steps=100,              # Salva a cada 100 passos
-        save_total_limit=2,          # Mantém apenas os 2 últimos checkpoints (evita encher o disco)
-        # ----------------------------------
-        
-        report_to=[],
-        fp16=torch.cuda.is_available()
+        output_dir=OUT_DIR,
+        num_train_epochs=EPOCHS,
+        learning_rate=LR,
+        per_device_train_batch_size=BATCH,
+        per_device_eval_batch_size=BATCH,
+        gradient_accumulation_steps=GRAD_ACCUM,
+        logging_steps=LOG_STEPS,
+        save_steps=SAVE_STEPS,
+        evaluation_strategy="steps",
+        eval_steps=SAVE_STEPS,
+        save_total_limit=2,
+        fp16=torch.cuda.is_available(),
+        bf16=False,
+        report_to="none",
+        seed=SEED,
+        optim="adamw_torch",
+        lr_scheduler_type="cosine",
+        warmup_ratio=0.05,
     )
-    
-    return Trainer(
+
+    # -------------------------
+    # Trainer (SFT)
+    # -------------------------
+    trainer = SFTTrainer(
         model=model,
+        tokenizer=tokenizer,
+        train_dataset=train_ds,
+        eval_dataset=eval_ds,
+        peft_config=lora,
+        formatting_func=format_row,
+        max_seq_length=MAX_SEQ_LEN,
         args=args,
-        train_dataset=ds,
-        data_collator=DataCollatorForLanguageModeling(tokenizer, mlm=False),
     )
 
-# 1. Preparação
-tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
-tokenizer.pad_token = tokenizer.eos_token
+    print("🚀 Training started...")
+    trainer.train()
 
-raw_data = load_jsonl(DATASET_FILE)
-if not raw_data:
-    exit()
+    print("💾 Saving LoRA adapter...")
+    trainer.save_model(OUT_DIR)
+    print(f"✅ Saved to: {OUT_DIR}")
 
-ds_content = build_dataset([x for x in raw_data if x.get("task") == "content"], tokenizer)
-ds_mcq = build_dataset([x for x in raw_data if x.get("task") == "mcq"], tokenizer)
+    # -------------------------
+    # Quick sanity test (1 sample)
+    # -------------------------
+    sample_topic = "phishing"
+    prompt = (
+        "### Instruction:\nGenerate one multiple-choice question (4 options) for 9th-grade cybersecurity education. Output ONLY JSON.\n"
+        f"### Input:\nTopic bucket: {sample_topic}\n"
+        "### Output:\n"
+    )
 
-# 2. Carregamento do Modelo
-base_model = AutoModelForCausalLM.from_pretrained(
-    MODEL_NAME,
-    torch_dtype=torch.float16 if torch.cuda.is_available() else torch.float32,
-    device_map="auto" if torch.cuda.is_available() else None
-)
+    inputs = tokenizer(prompt, return_tensors="pt").to(device)
+    with torch.no_grad():
+        out = trainer.model.generate(
+            **inputs,
+            max_new_tokens=220,
+            do_sample=True,
+            temperature=0.2,
+            top_p=0.9,
+            repetition_penalty=1.12,
+            eos_token_id=tokenizer.eos_token_id,
+            pad_token_id=tokenizer.eos_token_id,
+        )
 
-peft_config = LoraConfig(
-    task_type=TaskType.CAUSAL_LM,
-    r=16,
-    lora_alpha=32,
-    lora_dropout=0.05,
-    target_modules=["q_proj", "k_proj", "v_proj", "o_proj"]
-)
-model = get_peft_model(base_model, peft_config)
+    gen = tokenizer.decode(out[0][inputs.input_ids.shape[1]:], skip_special_tokens=True)
+    print("\n🧪 Sample generation:\n", gen)
 
-# 3. Treinamento - Fase 1
-print("\n--- Phase 1 (Content) ---")
-trainer_content = make_trainer(model, tokenizer, ds_content, 1e-4, 400, "content")
-# Para retomar de um erro, use: trainer_content.train(resume_from_checkpoint=True)
-trainer_content.train() 
-
-# 4. Treinamento - Fase 2
-print("\n--- Phase 2 (MCQ) ---")
-trainer_mcq = make_trainer(model, tokenizer, ds_mcq, 8e-5, 250, "mcq")
-# Para retomar de um erro, use: trainer_mcq.train(resume_from_checkpoint=True)
-trainer_mcq.train()
-
-# 5. Salvamento Final
-model.save_pretrained(LORA_DIR)
-tokenizer.save_pretrained(LORA_DIR)
-print(f"\nSucesso! Modelo final salvo em: {LORA_DIR}")
+if __name__ == "__main__":
+    main()
