@@ -1,24 +1,46 @@
 import torch
+import json
 from transformers import AutoModelForCausalLM, AutoTokenizer, TrainingArguments
 from peft import LoraConfig, get_peft_model
 from trl import SFTTrainer
-from datasets import load_dataset
+from datasets import Dataset
 
-# 1. Carregar Modelo e Tokenizador (Sem quantização 4-bit, que exige GPU)
+# 1. Função para carregar e converter o JSONL manualmente (evita o erro do PyArrow)
+def load_and_fix_jsonl(file_path):
+    data_rows = []
+    with open(file_path, "r", encoding="utf-8") as f:
+        for line in f:
+            row = json.loads(line)
+            # Acessa a última mensagem (do assistente)
+            assistant_content = row["messages"][-1]["content"]
+            
+            # Se for um dicionário (MCQ), converte para string
+            if isinstance(assistant_content, dict):
+                mcq = assistant_content
+                text = f"Question: {mcq['stem']}\n"
+                for i, opt in enumerate(mcq['options']):
+                    text += f"{i}) {opt}\n"
+                text += f"Correct Answer: {mcq['correctOption']}\n"
+                text += f"Explanation: {mcq['explanation']}"
+                row["messages"][-1]["content"] = text
+            
+            data_rows.append(row)
+    return Dataset.from_list(data_rows)
+
+# 2. Configurações do Modelo e Tokenizer
 model_id = "tinyllama/tinyllama-1.1b-chat-v1.0"
 tokenizer = AutoTokenizer.from_pretrained(model_id)
 tokenizer.pad_token = tokenizer.eos_token
 
-# Carregar modelo em modo CPU
 model = AutoModelForCausalLM.from_pretrained(
     model_id, 
-    device_map={"": "cpu"}, # Força o uso da CPU
+    device_map={"": "cpu"}, 
     torch_dtype=torch.float32
 )
 
-# 2. Configurar LoRA (Reduz o peso do treino na CPU)
+# 3. Configurar LoRA
 lora_config = LoraConfig(
-    r=8, # Reduzi para 8 para ser mais leve
+    r=8,
     lora_alpha=16,
     target_modules=["q_proj", "v_proj"],
     lora_dropout=0.05,
@@ -27,29 +49,28 @@ lora_config = LoraConfig(
 )
 model = get_peft_model(model, lora_config)
 
-# 3. Carregar seu dataset
-dataset = load_dataset("json", data_files="datasetoficial.jsonl", split="train")
+# 4. Carregar o dataset usando nossa função de correção
+dataset = load_and_fix_jsonl("datasetoficial.jsonl")
 
-# 4. Configurar Treino para CPU
+# 5. Configurar Treino para CPU
 training_args = TrainingArguments(
     output_dir="./tinyllama-cyber-cpu",
-    per_device_train_batch_size=1, # Mínimo possível para não travar a RAM
-    gradient_accumulation_steps=8,
+    per_device_train_batch_size=1,
+    gradient_accumulation_steps=4,
     learning_rate=2e-4,
     num_train_epochs=1,
     logging_steps=1,
-    use_cpu=True, # Garante o uso da CPU
-    no_cuda=True,
-    report_to="none"
+    use_cpu=True,
+    no_cuda=True
 )
 
-# 5. Iniciar Treinador
+# 6. Treinador
 trainer = SFTTrainer(
     model=model,
     train_dataset=dataset,
     args=training_args,
-    dataset_text_field="messages",
+    dataset_text_field="messages", 
 )
 
-print("Iniciando treino na CPU... Prepare o café, isso vai demorar.")
+print("Iniciando treinamento na CPU com correção automática de MCQ...")
 trainer.train()
