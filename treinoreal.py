@@ -1,160 +1,157 @@
 import os
-import json
-import random
 import torch
 from datasets import load_dataset
-from transformers import AutoTokenizer, AutoModelForCausalLM, TrainingArguments
-from peft import LoraConfig
-from trl import SFTTrainer
+from transformers import (
+    AutoTokenizer,
+    AutoModelForCausalLM,
+    TrainingArguments,
+    Trainer,
+    DataCollatorForLanguageModeling
+)
+from peft import LoraConfig, get_peft_model
 
 # =========================
-# CONFIG
+# CONFIGURAÇÕES GERAIS
 # =========================
 BASE_MODEL = "TinyLlama/TinyLlama-1.1B-Chat-v1.0"
-DATA_PATH = "mcq_train.jsonl"
-OUT_DIR = "tinyllama_lora_mcq"
+DATA_FILE  = "mcq_train.jsonl"
+OUT_DIR    = "tinyllama_lora_mcq"
 
-# Treino (ajuste se quiser)
-SEED = 42
-TRAIN_SPLIT = 0.9          # 90% treino, 10% validação
-EPOCHS = 4                 # com ~300 linhas, 3-5 é ok
-LR = 2e-4
-BATCH = 2
+EPOCHS     = 3
+BATCH      = 1
 GRAD_ACCUM = 8
-MAX_SEQ_LEN = 768          # MCQ em JSON costuma caber bem aqui
-LOG_STEPS = 10
+LR         = 2e-4
+LOG_STEPS  = 10
 SAVE_STEPS = 200
+SEED       = 42
+MAX_LEN    = 512
+
+DEVICE = "cpu"
 
 # =========================
-# Helpers
+# FUNÇÃO PRINCIPAL
 # =========================
-def format_row(ex):
-    # ex tem: instruction, input, output (output é string JSON)
-    return (
-        f"### Instruction:\n{ex['instruction']}\n"
-        f"### Input:\n{ex['input']}\n"
-        f"### Output:\n{ex['output']}"
-    )
-
 def main():
-    random.seed(SEED)
-    torch.manual_seed(SEED)
-
-    device = "cuda" if torch.cuda.is_available() else "cpu"
-    print(f"📌 Device: {device}")
-    print(f"📌 Base model: {BASE_MODEL}")
-    print(f"📌 Data: {DATA_PATH}")
-    print(f"📌 Out:  {OUT_DIR}")
+    print("📌 Device:", DEVICE)
+    print("📌 Base model:", BASE_MODEL)
+    print("📌 Data:", DATA_FILE)
+    print("📌 Out:", OUT_DIR)
 
     # -------------------------
-    # Load dataset + split
+    # TOKENIZER
     # -------------------------
-    ds = load_dataset("json", data_files=DATA_PATH, split="train")
-    ds = ds.shuffle(seed=SEED)
-    split = ds.train_test_split(test_size=(1 - TRAIN_SPLIT), seed=SEED)
-    train_ds = split["train"]
-    eval_ds = split["test"]
-
-    print(f"✅ Dataset loaded: train={len(train_ds)} | eval={len(eval_ds)}")
+    tokenizer = AutoTokenizer.from_pretrained(BASE_MODEL)
+    tokenizer.pad_token = tokenizer.eos_token
 
     # -------------------------
-    # Load tokenizer + model
+    # DATASET
     # -------------------------
-    tokenizer = AutoTokenizer.from_pretrained(BASE_MODEL, use_fast=True)
-    if tokenizer.pad_token is None:
-        tokenizer.pad_token = tokenizer.eos_token
+    dataset = load_dataset("json", data_files=DATA_FILE)["train"]
+    dataset = dataset.train_test_split(test_size=0.1, seed=SEED)
 
-    # dtype: float16 na GPU, float32 na CPU
-    dtype = torch.float16 if torch.cuda.is_available() else torch.float32
+    print(f"✅ Dataset loaded: train={len(dataset['train'])} | eval={len(dataset['test'])}")
 
+    def format_example(example):
+        """
+        Converte cada MCQ em texto de treino (causal LM)
+        """
+        text = (
+            "<|system|>\n"
+            "You are a cybersecurity teacher.\n"
+            "<|end|>\n"
+            "<|user|>\n"
+            f"{example['question']}\n"
+            + "\n".join(example["options"]) +
+            "\n<|end|>\n"
+            "<|assistant|>\n"
+            f"Correct answer: {example['answer']}\n"
+            f"{example['feedback']}\n"
+            "<|end|>"
+        )
+        return {"text": text}
+
+    dataset = dataset.map(format_example, remove_columns=dataset["train"].column_names)
+
+    def tokenize(batch):
+        return tokenizer(
+            batch["text"],
+            truncation=True,
+            padding="max_length",
+            max_length=MAX_LEN
+        )
+
+    dataset = dataset.map(tokenize, batched=True)
+
+    # -------------------------
+    # MODELO BASE
+    # -------------------------
     model = AutoModelForCausalLM.from_pretrained(
         BASE_MODEL,
-        dtype=dtype
+        torch_dtype=torch.float32
     )
-    model.to(device)
 
     # -------------------------
-    # LoRA config (estável)
+    # LoRA
     # -------------------------
-    lora = LoraConfig(
-        r=16,
-        lora_alpha=32,
-        lora_dropout=0.05,
+    lora_config = LoraConfig(
+        r=8,
+        lora_alpha=16,
         target_modules=["q_proj", "k_proj", "v_proj", "o_proj"],
+        lora_dropout=0.05,
         bias="none",
-        task_type="CAUSAL_LM",
+        task_type="CAUSAL_LM"
     )
 
+    model = get_peft_model(model, lora_config)
+    model.print_trainable_parameters()
+
     # -------------------------
-    # Training args
+    # TREINAMENTO
     # -------------------------
     args = TrainingArguments(
         output_dir=OUT_DIR,
         num_train_epochs=EPOCHS,
         learning_rate=LR,
         per_device_train_batch_size=BATCH,
-        per_device_eval_batch_size=BATCH,
         gradient_accumulation_steps=GRAD_ACCUM,
         logging_steps=LOG_STEPS,
         save_steps=SAVE_STEPS,
-        evaluation_strategy="steps",
-        eval_steps=SAVE_STEPS,
         save_total_limit=2,
-        fp16=torch.cuda.is_available(),
-        bf16=False,
+        fp16=False,
         report_to="none",
         seed=SEED,
-        optim="adamw_torch",
-        lr_scheduler_type="cosine",
-        warmup_ratio=0.05,
+        remove_unused_columns=False
     )
 
-    # -------------------------
-    # Trainer (SFT)
-    # -------------------------
-    trainer = SFTTrainer(
-        model=model,
+    data_collator = DataCollatorForLanguageModeling(
         tokenizer=tokenizer,
-        train_dataset=train_ds,
-        eval_dataset=eval_ds,
-        peft_config=lora,
-        formatting_func=format_row,
-        max_seq_length=MAX_SEQ_LEN,
-        args=args,
+        mlm=False
     )
 
-    print("🚀 Training started...")
+    trainer = Trainer(
+        model=model,
+        args=args,
+        train_dataset=dataset["train"],
+        data_collator=data_collator,
+        tokenizer=tokenizer
+    )
+
+    # -------------------------
+    # TREINAR
+    # -------------------------
+    print("🚀 Starting fine-tuning...")
     trainer.train()
 
-    print("💾 Saving LoRA adapter...")
-    trainer.save_model(OUT_DIR)
-    print(f"✅ Saved to: {OUT_DIR}")
-
     # -------------------------
-    # Quick sanity test (1 sample)
+    # SALVAR
     # -------------------------
-    sample_topic = "phishing"
-    prompt = (
-        "### Instruction:\nGenerate one multiple-choice question (4 options) for 9th-grade cybersecurity education. Output ONLY JSON.\n"
-        f"### Input:\nTopic bucket: {sample_topic}\n"
-        "### Output:\n"
-    )
+    model.save_pretrained(OUT_DIR)
+    tokenizer.save_pretrained(OUT_DIR)
 
-    inputs = tokenizer(prompt, return_tensors="pt").to(device)
-    with torch.no_grad():
-        out = trainer.model.generate(
-            **inputs,
-            max_new_tokens=220,
-            do_sample=True,
-            temperature=0.2,
-            top_p=0.9,
-            repetition_penalty=1.12,
-            eos_token_id=tokenizer.eos_token_id,
-            pad_token_id=tokenizer.eos_token_id,
-        )
+    print("✅ Fine-tuning finalizado com sucesso!")
 
-    gen = tokenizer.decode(out[0][inputs.input_ids.shape[1]:], skip_special_tokens=True)
-    print("\n🧪 Sample generation:\n", gen)
-
+# =========================
+# ENTRYPOINT
+# =========================
 if __name__ == "__main__":
     main()
