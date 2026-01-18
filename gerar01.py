@@ -1,76 +1,54 @@
 import torch
-import json
-from transformers import AutoModelForCausalLM, AutoTokenizer, TrainingArguments
-from peft import LoraConfig, get_peft_model
-from trl import SFTTrainer
-from datasets import Dataset
+from transformers import AutoModelForCausalLM, AutoTokenizer
+from peft import PeftModel
 
-# 1. Função de carregamento corrigida para processar MCQs e conteúdo educativo
-def load_and_fix_jsonl(file_path):
-    data_rows = []
-    with open(file_path, "r", encoding="utf-8") as f:
-        for line in f:
-            row = json.loads(line)
-            assistant_content = row["messages"][-1]["content"]
-            
-            # Converte o objeto de múltipla escolha em texto legível para o modelo
-            if isinstance(assistant_content, dict):
-                mcq = assistant_content
-                text = f"Question: {mcq['stem']}\n"
-                for i, opt in enumerate(mcq['options']):
-                    text += f"{i}) {opt}\n"
-                text += f"Correct Answer: {mcq['correctOption']}\n"
-                text += f"Explanation: {mcq['explanation']}"
-                row["messages"][-1]["content"] = text
-            data_rows.append(row)
-    return Dataset.from_list(data_rows)
-
-# 2. Modelo e Tokenizer (Configurados para CPU)
+# Configurações de ambiente
 model_id = "tinyllama/tinyllama-1.1b-chat-v1.0"
-tokenizer = AutoTokenizer.from_pretrained(model_id)
-tokenizer.pad_token = tokenizer.eos_token
+adapter_path = "./modelo_final_cpu" 
 
-model = AutoModelForCausalLM.from_pretrained(
+tokenizer = AutoTokenizer.from_pretrained(model_id)
+# O Chat Template define como o modelo separa System, User e Assistant
+tokenizer.chat_template = "{% for message in messages %}{{'<|' + message['role'] + '|>' + '\n' + message['content'] + '</s>' + '\n'}}{% endfor %}"
+
+base_model = AutoModelForCausalLM.from_pretrained(
     model_id, 
     device_map={"": "cpu"}, 
-    torch_dtype=torch.float32 
+    dtype=torch.float32
 )
+model = PeftModel.from_pretrained(base_model, adapter_path)
 
-# 3. Aplicação do LoRA (Apenas uma vez aqui)
-lora_config = LoraConfig(
-    r=8,
-    lora_alpha=16,
-    target_modules=["q_proj", "v_proj"],
-    lora_dropout=0.05,
-    bias="none",
-    task_type="CAUSAL_LM"
-)
-model = get_peft_model(model, lora_config)
+def gerar_resposta_com_template(role_system, user_query):
+    # Organiza a conversa no formato que o modelo foi treinado
+    messages = [
+        {"role": "system", "content": role_system},
+        {"role": "user", "content": user_query}
+    ]
+    
+    # Converte para os tokens especiais <|user|>, etc.
+    input_ids = tokenizer.apply_chat_template(
+        messages, 
+        add_generation_prompt=True, 
+        return_tensors="pt"
+    ).to("cpu")
 
-# 4. Carregar o seu dataset de cibersegurança
-dataset = load_and_fix_jsonl("datasetoficial.jsonl")
+    outputs = model.generate(
+        input_ids, 
+        max_new_tokens=200, 
+        temperature=0.3, # Baixa temperatura evita que ele fale do Boris Johnson
+        do_sample=True,
+        pad_token_id=tokenizer.eos_token_id
+    )
+    
+    # Decodifica apenas a parte que o modelo respondeu
+    return tokenizer.decode(outputs[0][len(input_ids[0]):], skip_special_tokens=True)
 
-# 5. Configurar Treino para CPU
-training_args = TrainingArguments(
-    output_dir="./tinyllama-cyber-cpu",
-    per_device_train_batch_size=1,
-    gradient_accumulation_steps=4,
-    learning_rate=2e-4,
-    num_train_epochs=1,
-    logging_steps=1,
-    use_cpu=True, # Substitui o antigo no_cuda
-    report_to="none"
-)
+# --- Executando os Testes ---
 
-# 6. Treinador (Sem o argumento peft_config, pois o modelo já é Peft)
-trainer = SFTTrainer(
-    model=model,
-    train_dataset=dataset,
-    args=training_args,
-)
+system_prompt = "You are an educational cybersecurity tutor for 9th-grade students. Use clear language."
 
-print("Tudo pronto! Iniciando o treinamento do seu tutor de cibersegurança...")
-trainer.train()
+print("\n--- Zero-Shot (Cibersegurança) ---")
+print(gerar_resposta_com_template(system_prompt, "What is phishing?"))
 
-# 7. Salvar o resultado
-trainer.save_model("./modelo_final_cpu")
+print("\n--- Template-Based (Gerando Questão MCQ) ---")
+template = "Create a multiple-choice question about digital safety. Format: Question, Options, Correct Answer, Explanation."
+print(gerar_resposta_com_template(system_prompt, template))
