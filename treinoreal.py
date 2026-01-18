@@ -11,7 +11,7 @@ from transformers import (
 
 # Configurações de Caminho e Modelo
 MODEL_NAME = "TinyLlama/TinyLlama-1.1B-Chat-v1.0"
-DATASET_FILE = "datasetoficial.jsonl"
+DATASET_FILE = "mcq_train.jsonl"
 LORA_DIR = "tinyllama_lora_final"
 MAX_LENGTH = 384
 
