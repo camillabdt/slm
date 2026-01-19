@@ -66,7 +66,7 @@ trainer = SFTTrainer(
     args=training_args,
 )
 
-print("Iniciando TREINO RIGOROSO (5 épocas)...")
+print("Iniciando pesado agora rapaiz (5 épocas)...")
 trainer.train()
 
 trainer.save_model("./modelo_final_cpu_v2")
