@@ -2,11 +2,11 @@ import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from peft import PeftModel
 
-# 1. Carregamento do Modelo V2
+# 1. Configuração de Carregamento
 model_id = "tinyllama/tinyllama-1.1b-chat-v1.0"
 adapter_path = "./modelo_final_cpu_v2" 
 
-print("Carregando Tutor de Cibersegurança V2 ...")
+print("Carregando Tutor V2 com Attention Mask corrigida...")
 tokenizer = AutoTokenizer.from_pretrained(model_id)
 tokenizer.pad_token = tokenizer.eos_token
 
@@ -16,39 +16,61 @@ base_model = AutoModelForCausalLM.from_pretrained(
     dtype=torch.float32
 )
 model = PeftModel.from_pretrained(base_model, adapter_path)
+model.eval()
 
-def gerar(system_prompt, user_prompt, temp=0.3, max_tokens=200):
+def gerar_com_rigor(system_prompt, user_prompt, temp=0.2):
     messages = [
         {"role": "system", "content": system_prompt},
         {"role": "user", "content": user_prompt}
     ]
-    input_ids = tokenizer.apply_chat_template(messages, add_generation_prompt=True, return_tensors="pt").to("cpu")
     
+    # Aplica o template de chat
+    input_ids = tokenizer.apply_chat_template(
+        messages, 
+        add_generation_prompt=True, 
+        return_tensors="pt"
+    ).to("cpu")
+    
+    # SOLUÇÃO DA MENSAGEM: Criando a máscara de atenção explicitamente
+    attention_mask = torch.ones(input_ids.shape, device="cpu", dtype=torch.long)
+
     outputs = model.generate(
         input_ids,
-        max_new_tokens=max_tokens,
+        attention_mask=attention_mask, # Define onde o modelo deve focar
+        max_new_tokens=256,
         do_sample=True,
         temperature=temp,
         top_p=0.9,
-        repetition_penalty=1.15,
-        pad_token_id=tokenizer.eos_token_id
+        repetition_penalty=1.2,
+        pad_token_id=tokenizer.eos_token_id,
+        eos_token_id=tokenizer.eos_token_id
     )
+    
+    # Decodifica apenas a resposta nova
     return tokenizer.decode(outputs[0][len(input_ids[0]):], skip_special_tokens=True)
 
-# --- Configuração das Engenharias ---
-sys_msg = "You are an educational cybersecurity tutor for 9th-grade students. Use clear and simple language, short explanations, and focus on safe behavior."
+# --- Prompts Otimizados ---
+sys_msg = "You are an educational cybersecurity tutor. Create one high-quality question for 9th-grade students."
 
-prompts = {
-    "1": ("Zero-Shot", "Create a multiple-choice question about the risks of sharing location online."),
-    "2": ("Few-Shot", "User: What is phishing?\nAssistant: Phishing is a scam where someone pretends to be trusted to steal info.\nUser: What is a digital footprint?\nAssistant:"),
-    "3": ("Chain-of-Thought", "Explain why urgent messages are a red flag for scams. Think step-by-step before giving a final answer."),
-    "4": ("Exemplar-Guided", "Follow this style: 'Phishing is like a digital fishing hook.' Now, explain 'Two-Factor Authentication' using a simple analogy."),
-    "5": ("Template-Based", "Topic: Passwords\nQuestion: [Insert]\nOptions: [A,B,C,D]\nCorrect: [Answer]\nExplanation: [Why]")
+engenharias = {
+    "1": ("Zero-Shot", "Create a multiple-choice question about Phishing risks. Include: Question, Options A-D, Correct Answer, and Explanation."),
+    "2": ("Few-Shot", "### Example:\nQ: What is 2FA?\nA) Virus B) Extra security C) Game\nAns: B\n\n### Task:\nCreate a question about 'Digital Footprint'."),
+    "3": ("Chain-of-Thought", "Explain step-by-step why urgent messages are dangerous in scams. Then, create a question about this."),
+    "4": ("Exemplar-Guided", "Using the style: 'A password is like a key to your house'. Explain 'Two-Factor Authentication' and create a question."),
+    "5": ("Template-Based", "Fill exactly:\nTopic: Privacy\nQuestion: [..]\nOptions: A) [..] B) [..] C) [..] D) [..]\nCorrect: [..]\nExplanation: [..]")
 }
 
-print("\n--- TESTE DE ENGENHARIAS V2 ---")
-for k, v in prompts.items():
-    print(f"\n[{v[0]}]")
-    # Temperatura baixa para templates e fatos, alta para analogias
-    t = 0.1 if k in ["1", "5"] else 0.5
-    print(gerar(sys_msg, v[1], temp=t))
+print("\n--- MENU DE ENGENHARIAS ---")
+for k, v in engenharias.items():
+    print(f"{k}. {v[0]}")
+
+escolha = input("\nEscolha a técnica: ")
+
+if escolha in engenharias:
+    nome, prompt_texto = engenharias[escolha]
+    print(f"\n[Gerando com {nome}...]\n")
+    # Temperatura mais baixa para ser mais fiel ao treino
+    resultado = gerar_com_rigor(sys_msg, prompt_texto, temp=0.15)
+    print(resultado)
+else:
+    print("Opção inválida.")
