@@ -2,53 +2,49 @@ import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from peft import PeftModel
 
-# Configurações de ambiente
 model_id = "tinyllama/tinyllama-1.1b-chat-v1.0"
 adapter_path = "./modelo_final_cpu" 
 
 tokenizer = AutoTokenizer.from_pretrained(model_id)
-# O Chat Template define como o modelo separa System, User e Assistant
-tokenizer.chat_template = "{% for message in messages %}{{'<|' + message['role'] + '|>' + '\n' + message['content'] + '</s>' + '\n'}}{% endfor %}"
+# Forçamos o pad_token para evitar erros de geração
+tokenizer.pad_token = tokenizer.eos_token
 
 base_model = AutoModelForCausalLM.from_pretrained(
     model_id, 
     device_map={"": "cpu"}, 
-    dtype=torch.float32
+    torch_dtype=torch.float32
 )
+
+# Carregar o modelo com o seu treinamento
 model = PeftModel.from_pretrained(base_model, adapter_path)
 
-def gerar_resposta_com_template(role_system, user_query):
-    # Organiza a conversa no formato que o modelo foi treinado
+def responder(pergunta):
+    # System Prompt IGUAL ao do seu dataset para ativar o conhecimento
+    system_message = "You are an educational cybersecurity tutor for 9th-grade students. Use clear and simple language."
+    
+    # IMPORTANTE: Use inglês se o seu dataset estiver em inglês para testar se funcionou
     messages = [
-        {"role": "system", "content": role_system},
-        {"role": "user", "content": user_query}
+        {"role": "system", "content": system_message},
+        {"role": "user", "content": pergunta}
     ]
     
-    # Converte para os tokens especiais <|user|>, etc.
+    # O template coloca as tags <|user|> e <|assistant|> corretamente
     input_ids = tokenizer.apply_chat_template(
-        messages, 
-        add_generation_prompt=True, 
-        return_tensors="pt"
+        messages, add_generation_prompt=True, return_tensors="pt"
     ).to("cpu")
 
     outputs = model.generate(
         input_ids, 
-        max_new_tokens=200, 
-        temperature=0.3, # Baixa temperatura evita que ele fale do Boris Johnson
+        max_new_tokens=100,
         do_sample=True,
-        pad_token_id=tokenizer.eos_token_id
+        temperature=0.1, # Quase zero para ele não inventar
+        top_p=0.9,
+        repetition_penalty=1.2, # FORÇA o modelo a não repetir a mesma frase
+        eos_token_id=tokenizer.eos_token_id
     )
     
-    # Decodifica apenas a parte que o modelo respondeu
     return tokenizer.decode(outputs[0][len(input_ids[0]):], skip_special_tokens=True)
 
-# --- Executando os Testes ---
-
-system_prompt = "You are an educational cybersecurity tutor for 9th-grade students. Use clear language."
-
-print("\n--- Zero-Shot (Cibersegurança) ---")
-print(gerar_resposta_com_template(system_prompt, "What is phishing?"))
-
-print("\n--- Template-Based (Gerando Questão MCQ) ---")
-template = "Create a multiple-choice question about digital safety. Format: Question, Options, Correct Answer, Explanation."
-print(gerar_resposta_com_template(system_prompt, template))
+# Teste com algo que está no seu dataset (Phishing ou 2FA)
+print("Resposta do Tutor:")
+print(responder("Explain what is phishing to a student."))
