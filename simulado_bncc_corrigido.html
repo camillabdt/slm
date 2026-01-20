@@ -1,0 +1,610 @@
+
+    <!DOCTYPE html>
+    <html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <title>Simulado BNCC 9º Ano - Computação</title>
+        <style>
+            body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #f0f2f5; padding: 40px; color: #1c1e21; }
+            .container { max-width: 800px; margin: auto; }
+            h1 { text-align: center; color: #1877f2; border-bottom: 2px solid #ddd; padding-bottom: 10px; }
+            .card { background: white; border-radius: 12px; padding: 25px; margin-bottom: 30px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border-top: 8px solid #007bff; }
+            .pilar { font-size: 11px; font-weight: bold; color: #65676b; text-transform: uppercase; margin-bottom: 10px; }
+            .stem { font-size: 18px; font-weight: 600; line-height: 1.4; margin-bottom: 20px; }
+            .option { background: #f7f8fa; border: 1px solid #ebedf0; padding: 12px; margin: 8px 0; border-radius: 8px; cursor: default; }
+            .answer-btn { background: #42b72a; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; margin-top: 15px; }
+            .answer-content { display: none; margin-top: 20px; padding: 15px; background: #fff9e6; border-left: 4px solid #ffba00; border-radius: 4px; }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>📚 Banco de Questões BNCC (9º Ano)</h1>
+    
+            <div class="card" style="border-top-color: #007bff">
+                <div class="pilar">Pensamento Computacional | Weighted Graphs | Técnica: zero-shot</div>
+                <div class="stem">1. Why is weighted graph a better representation of social networks than random networks?</div>
+                <div class="options">
+            <div class="option">It is more realistic</div><div class="option">It is more efficient</div><div class="option">It is more visual</div><div class="option">It is more scalable</div><div class="option">It is more accurate</div>
+                </div>
+                <button class="answer-btn" onclick="this.nextElementSibling.style.display='block'">Ver Gabarito</button>
+                <div class="answer-content">
+                    <strong>Gabarito:</strong> 2<br><br>
+                    <strong>Explicação:</strong> Weighted graphs are more efficient for large-scale analysis.
+                </div>
+            </div>
+            
+            <div class="card" style="border-top-color: #007bff">
+                <div class="pilar">Pensamento Computacional | Weighted Graphs | Técnica: few-shot</div>
+                <div class="stem">2. What is a node?</div>
+                <div class="options">
+            <div class="option">A point</div><div class="option">A line</div><div class="option">A polygon</div><div class="option">A tree</div><div class="option">A star</div>
+                </div>
+                <button class="answer-btn" onclick="this.nextElementSibling.style.display='block'">Ver Gabarito</button>
+                <div class="answer-content">
+                    <strong>Gabarito:</strong> A node<br><br>
+                    <strong>Explicação:</strong> A node is the basic unit of a graph, which can be connected through edges.
+                </div>
+            </div>
+            
+            <div class="card" style="border-top-color: #007bff">
+                <div class="pilar">Pensamento Computacional | Weighted Graphs | Técnica: chain-of-thought</div>
+                <div class="stem">3. What is the main idea of a weighted graph?</div>
+                <div class="options">
+            <div class="option">It is a graph with no edges</div><div class="option">It is a graph with no edges and vertices with weights</div><div class="option">It is a graph with no edges and vertices with scores</div><div class="option">It is a graph with no edges and vertices with colors</div><div class="option">It is a graph with no edges and vertices with distances</div>
+                </div>
+                <button class="answer-btn" onclick="this.nextElementSibling.style.display='block'">Ver Gabarito</button>
+                <div class="answer-content">
+                    <strong>Gabarito:</strong> 2<br><br>
+                    <strong>Explicação:</strong> In a weighted graph, vertices have scores or weights assigned to them, which represent their importance or importance level.
+                </div>
+            </div>
+            
+            <div class="card" style="border-top-color: #007bff">
+                <div class="pilar">Pensamento Computacional | Weighted Graphs | Técnica: exemplar-guided</div>
+                <div class="stem">4. What is a feature of a weighted graph?</div>
+                <div class="options">
+            <div class="option">It has no edges</div><div class="option">It has a weight for each edge</div><div class="option">It has a weight for each vertex</div><div class="option">It has no edges</div><div class="option">It has no vertices</div>
+                </div>
+                <button class="answer-btn" onclick="this.nextElementSibling.style.display='block'">Ver Gabarito</button>
+                <div class="answer-content">
+                    <strong>Gabarito:</strong> 2<br><br>
+                    <strong>Explicação:</strong> Weighted graphs have a weight for each edge.
+                </div>
+            </div>
+            
+            <div class="card" style="border-top-color: #007bff">
+                <div class="pilar">Pensamento Computacional | Weighted Graphs | Técnica: template-based</div>
+                <div class="stem">5. Which of the following is a key property of weighted graphs?</div>
+                <div class="options">
+            <div class="option">The number of edges</div><div class="option">The number of vertices</div><div class="option">The size of the graph</div><div class="option">The average degree</div><div class="option">The number of paths</div>
+                </div>
+                <button class="answer-btn" onclick="this.nextElementSibling.style.display='block'">Ver Gabarito</button>
+                <div class="answer-content">
+                    <strong>Gabarito:</strong> 2<br><br>
+                    <strong>Explicação:</strong> Weighted graphs have a larger average degree than unweighted graphs.
+                </div>
+            </div>
+            
+            <div class="card" style="border-top-color: #007bff">
+                <div class="pilar">Pensamento Computacional | Recursion | Técnica: zero-shot</div>
+                <div class="stem">6. What is the key difference between recursion and recursion-less algorithms?</div>
+                <div class="options">
+            <div class="option">Recursion is faster</div><div class="option">Recursion uses more memory than recursion-less algorithms</div><div class="option">Recursion can be used for loops</div><div class="option">Recursion is used for functions</div><div class="option">Recursion is used for loops</div>
+                </div>
+                <button class="answer-btn" onclick="this.nextElementSibling.style.display='block'">Ver Gabarito</button>
+                <div class="answer-content">
+                    <strong>Gabarito:</strong> 1<br><br>
+                    <strong>Explicação:</strong> Recursion-less algorithms use fewer resources than recursion.
+                </div>
+            </div>
+            
+            <div class="card" style="border-top-color: #007bff">
+                <div class="pilar">Pensamento Computacional | Recursion | Técnica: few-shot</div>
+                <div class="stem">7. What is a node in a graph?</div>
+                <div class="options">
+            <div class="option">A point in a graph</div><div class="option">A line in a graph</div><div class="option">A function in a programming language</div><div class="option">A color in a computer screen</div><div class="option">A tree in a computer system</div>
+                </div>
+                <button class="answer-btn" onclick="this.nextElementSibling.style.display='block'">Ver Gabarito</button>
+                <div class="answer-content">
+                    <strong>Gabarito:</strong> A node<br><br>
+                    <strong>Explicação:</strong> A node is a basic element of a graph that represents a point, line, function, color, or tree in a computer system.
+                </div>
+            </div>
+            
+            <div class="card" style="border-top-color: #007bff">
+                <div class="pilar">Pensamento Computacional | Recursion | Técnica: chain-of-thought</div>
+                <div class="stem">8. What is the recursive function doing?</div>
+                <div class="options">
+            <div class="option">Returning the base value</div><div class="option">Calling itself with the base value as argument</div><div class="option">Returning the result of the previous recursive call</div><div class="option">Returning the base value plus the recursive call</div><div class="option">Returning the base value minus the recursive call</div>
+                </div>
+                <button class="answer-btn" onclick="this.nextElementSibling.style.display='block'">Ver Gabarito</button>
+                <div class="answer-content">
+                    <strong>Gabarito:</strong> 2<br><br>
+                    <strong>Explicação:</strong> The recursive function calls itself with the base value as argument, which results in the recursive call being executed again, and the result of the previous recursive call is returned.
+                </div>
+            </div>
+            
+            <div class="card" style="border-top-color: #007bff">
+                <div class="pilar">Pensamento Computacional | Recursion | Técnica: exemplar-guided</div>
+                <div class="stem">9. What is the main benefit of Recursion?</div>
+                <div class="options">
+            <div class="option">It reduces the number of steps</div><div class="option">It allows for loops</div><div class="option">It increases the number of steps</div><div class="option">It reduces the number of variables</div><div class="option">It simplifies the algorithm</div>
+                </div>
+                <button class="answer-btn" onclick="this.nextElementSibling.style.display='block'">Ver Gabarito</button>
+                <div class="answer-content">
+                    <strong>Gabarito:</strong> 1<br><br>
+                    <strong>Explicação:</strong> Recursion allows for loops and reduces the number of steps.
+                </div>
+            </div>
+            
+            <div class="card" style="border-top-color: #007bff">
+                <div class="pilar">Pensamento Computacional | Recursion | Técnica: template-based</div>
+                <div class="stem">10. Which algorithm is used to sort an array in ascending order?</div>
+                <div class="options">
+            
+                </div>
+                <button class="answer-btn" onclick="this.nextElementSibling.style.display='block'">Ver Gabarito</button>
+                <div class="answer-content">
+                    <strong>Gabarito:</strong> A<br><br>
+                    <strong>Explicação:</strong> Bubble Sort is a simple and efficient algorithm used to sort an array in ascending order.
+Explanation: Bubble Sort is a simple and efficient algorithm used to sort an array in ascending order. It works by comparing adjacent elements and swapping them if they are in the wrong order.
+                </div>
+            </div>
+            
+            <div class="card" style="border-top-color: #007bff">
+                <div class="pilar">Pensamento Computacional | State Machines | Técnica: zero-shot</div>
+                <div class="stem">11. What is a key characteristic of a state machine?</div>
+                <div class="options">
+            <div class="option">It has many states</div><div class="option">It has a single state</div><div class="option">It can be in a fixed state</div><div class="option">It has many possible actions</div><div class="option">It has a single action</div>
+                </div>
+                <button class="answer-btn" onclick="this.nextElementSibling.style.display='block'">Ver Gabarito</button>
+                <div class="answer-content">
+                    <strong>Gabarito:</strong> 1<br><br>
+                    <strong>Explicação:</strong> State machines are characterized by a single state that can transition to other states based on inputs.
+                </div>
+            </div>
+            
+            <div class="card" style="border-top-color: #007bff">
+                <div class="pilar">Pensamento Computacional | State Machines | Técnica: few-shot</div>
+                <div class="stem">12. What is a node in a graph?</div>
+                <div class="options">
+            <div class="option">A point</div><div class="option">A line</div><div class="option">A tree</div><div class="option">A polygon</div>
+                </div>
+                <button class="answer-btn" onclick="this.nextElementSibling.style.display='block'">Ver Gabarito</button>
+                <div class="answer-content">
+                    <strong>Gabarito:</strong> A node<br><br>
+                    <strong>Explicação:</strong> A node is a point, line, or tree that is connected to other nodes through edges or branches.
+                </div>
+            </div>
+            
+            <div class="card" style="border-top-color: #007bff">
+                <div class="pilar">Pensamento Computacional | State Machines | Técnica: chain-of-thought</div>
+                <div class="stem">13. What is the primary function of a state machine?</div>
+                <div class="options">
+            <div class="option">To simulate a physical system</div><div class="option">To control the flow of data</div><div class="option">To implement a recursive algorithm</div><div class="option">To manage events</div><div class="option">To perform data processing</div>
+                </div>
+                <button class="answer-btn" onclick="this.nextElementSibling.style.display='block'">Ver Gabarito</button>
+                <div class="answer-content">
+                    <strong>Gabarito:</strong> 1<br><br>
+                    <strong>Explicação:</strong> State machines are designed to simulate complex systems by allowing the state of the system to be controlled.
+                </div>
+            </div>
+            
+            <div class="card" style="border-top-color: #007bff">
+                <div class="pilar">Pensamento Computacional | State Machines | Técnica: exemplar-guided</div>
+                <div class="stem">14. Which of the following is a state machine?</div>
+                <div class="options">
+            <div class="option">A single event</div><div class="option">A system that responds to events</div><div class="option">A set of rules</div><div class="option">A program</div><div class="option">A database</div>
+                </div>
+                <button class="answer-btn" onclick="this.nextElementSibling.style.display='block'">Ver Gabarito</button>
+                <div class="answer-content">
+                    <strong>Gabarito:</strong> 2<br><br>
+                    <strong>Explicação:</strong> State machines are systems that respond to events and change state based on the outcome.
+                </div>
+            </div>
+            
+            <div class="card" style="border-top-color: #007bff">
+                <div class="pilar">Pensamento Computacional | State Machines | Técnica: template-based</div>
+                <div class="stem">15. What is the primary goal of a state machine?</div>
+                <div class="options">
+            <div class="option">To simulate a physical system</div><div class="option">To implement a specific algorithm</div><div class="option">To provide a user interface</div><div class="option">To perform data manipulation</div><div class="option">To handle errors</div>
+                </div>
+                <button class="answer-btn" onclick="this.nextElementSibling.style.display='block'">Ver Gabarito</button>
+                <div class="answer-content">
+                    <strong>Gabarito:</strong> 2<br><br>
+                    <strong>Explicação:</strong> State machines are used to simulate complex systems and provide a user-friendly interface.
+                </div>
+            </div>
+            
+            <div class="card" style="border-top-color: #f39c12">
+                <div class="pilar">Mundo Digital | Packet Switching | Técnica: zero-shot</div>
+                <div class="stem">16. Which is a benefit of packet switching?</div>
+                <div class="options">
+            <div class="option">It reduces latency</div><div class="option">It supports multiple devices</div><div class="option">It improves reliability</div><div class="option">It reduces bandwidth</div><div class="option">It provides a single path</div>
+                </div>
+                <button class="answer-btn" onclick="this.nextElementSibling.style.display='block'">Ver Gabarito</button>
+                <div class="answer-content">
+                    <strong>Gabarito:</strong> 2<br><br>
+                    <strong>Explicação:</strong> Packet switching supports multiple devices and improves reliability.
+                </div>
+            </div>
+            
+            <div class="card" style="border-top-color: #f39c12">
+                <div class="pilar">Mundo Digital | Packet Switching | Técnica: few-shot</div>
+                <div class="stem">17. What is a packet?</div>
+                <div class="options">
+            <div class="option">A point</div><div class="option">A line</div><div class="option">A bus</div><div class="option">A bus stop</div><div class="option">A tree</div>
+                </div>
+                <button class="answer-btn" onclick="this.nextElementSibling.style.display='block'">Ver Gabarito</button>
+                <div class="answer-content">
+                    <strong>Gabarito:</strong> 1<br><br>
+                    <strong>Explicação:</strong> A packet is a unit of data that is transmitted over a network.
+                </div>
+            </div>
+            
+            <div class="card" style="border-top-color: #f39c12">
+                <div class="pilar">Mundo Digital | Packet Switching | Técnica: chain-of-thought</div>
+                <div class="stem">18. What is the main purpose of Packet Switching?</div>
+                <div class="options">
+            <div class="option">To reduce latency</div><div class="option">To improve reliability</div><div class="option">To reduce bandwidth</div><div class="option">To increase speed</div><div class="option">To improve security</div>
+                </div>
+                <button class="answer-btn" onclick="this.nextElementSibling.style.display='block'">Ver Gabarito</button>
+                <div class="answer-content">
+                    <strong>Gabarito:</strong> 2<br><br>
+                    <strong>Explicação:</strong> Packet Switching improves reliability by reducing packet loss.
+                </div>
+            </div>
+            
+            <div class="card" style="border-top-color: #f39c12">
+                <div class="pilar">Mundo Digital | Packet Switching | Técnica: exemplar-guided</div>
+                <div class="stem">19. What is the primary function of a router?</div>
+                <div class="options">
+            <div class="option">It is a spider web</div><div class="option">It is a switch</div><div class="option">It is a firewall</div><div class="option">It is a switch</div><div class="option">It is a router</div>
+                </div>
+                <button class="answer-btn" onclick="this.nextElementSibling.style.display='block'">Ver Gabarito</button>
+                <div class="answer-content">
+                    <strong>Gabarito:</strong> 1<br><br>
+                    <strong>Explicação:</strong> Router is a switch that connects multiple networks together.
+                </div>
+            </div>
+            
+            <div class="card" style="border-top-color: #f39c12">
+                <div class="pilar">Mundo Digital | Packet Switching | Técnica: template-based</div>
+                <div class="stem">20. Which packet routing protocol is used to ensure the delivery of packets in a network?</div>
+                <div class="options">
+            <div class="option">RIP</div><div class="option">OSPF</div><div class="option">BGP</div><div class="option">IS-IS</div><div class="option">EGP</div>
+                </div>
+                <button class="answer-btn" onclick="this.nextElementSibling.style.display='block'">Ver Gabarito</button>
+                <div class="answer-content">
+                    <strong>Gabarito:</strong> 2<br><br>
+                    <strong>Explicação:</strong> BGP is used to ensure the delivery of packets in a network by using a routing table to route packets based on their destination address.
+                </div>
+            </div>
+            
+            <div class="card" style="border-top-color: #f39c12">
+                <div class="pilar">Mundo Digital | Asymmetric Encryption | Técnica: zero-shot</div>
+                <div class="stem">21. What is the primary purpose of asymmetric encryption?</div>
+                <div class="options">
+            <div class="option">To encrypt data</div><div class="option">To decrypt data</div><div class="option">To protect data</div><div class="option">To encrypt files</div><div class="option">To store passwords</div>
+                </div>
+                <button class="answer-btn" onclick="this.nextElementSibling.style.display='block'">Ver Gabarito</button>
+                <div class="answer-content">
+                    <strong>Gabarito:</strong> 2<br><br>
+                    <strong>Explicação:</strong> Asymmetric encryption uses two different keys to encrypt and decrypt data.
+                </div>
+            </div>
+            
+            <div class="card" style="border-top-color: #f39c12">
+                <div class="pilar">Mundo Digital | Asymmetric Encryption | Técnica: few-shot</div>
+                <div class="stem">22. What is the primary purpose of asymmetric encryption?</div>
+                <div class="options">
+            <div class="option">To encrypt data using public keys</div><div class="option">To decrypt data using private keys</div><div class="option">To encrypt data using both public and private keys</div><div class="option">To encrypt data using a combination of public and private keys</div><div class="option">To encrypt data using a single public key</div>
+                </div>
+                <button class="answer-btn" onclick="this.nextElementSibling.style.display='block'">Ver Gabarito</button>
+                <div class="answer-content">
+                    <strong>Gabarito:</strong> To encrypt data using both public and private keys<br><br>
+                    <strong>Explicação:</strong> Asymmetric encryption uses two different keys, one for encryption and the other for decryption, to ensure that only the correct key can access the data.
+                </div>
+            </div>
+            
+            <div class="card" style="border-top-color: #f39c12">
+                <div class="pilar">Mundo Digital | Asymmetric Encryption | Técnica: chain-of-thought</div>
+                <div class="stem">23. Why is Asymmetric Encryption used?</div>
+                <div class="options">
+            <div class="option">To hide passwords</div><div class="option">To share data</div><div class="option">To encrypt files</div><div class="option">To store passwords</div><div class="option">To share images</div>
+                </div>
+                <button class="answer-btn" onclick="this.nextElementSibling.style.display='block'">Ver Gabarito</button>
+                <div class="answer-content">
+                    <strong>Gabarito:</strong> 1<br><br>
+                    <strong>Explicação:</strong> Asymmetric Encryption uses different keys for encryption and decryption, making it harder to crack.
+                </div>
+            </div>
+            
+            <div class="card" style="border-top-color: #f39c12">
+                <div class="pilar">Mundo Digital | Asymmetric Encryption | Técnica: exemplar-guided</div>
+                <div class="stem">24. What is the main advantage of using Asymmetric Encryption?</div>
+                <div class="options">
+            <div class="option">It is faster</div><div class="option">It is more secure</div><div class="option">It is more efficient</div><div class="option">It is more scalable</div><div class="option">It is more affordable</div>
+                </div>
+                <button class="answer-btn" onclick="this.nextElementSibling.style.display='block'">Ver Gabarito</button>
+                <div class="answer-content">
+                    <strong>Gabarito:</strong> 1<br><br>
+                    <strong>Explicação:</strong> Asymmetric Encryption is more secure because it uses two different keys for encryption and decryption.
+                </div>
+            </div>
+            
+            <div class="card" style="border-top-color: #f39c12">
+                <div class="pilar">Mundo Digital | Asymmetric Encryption | Técnica: template-based</div>
+                <div class="stem">25. How does asymmetric encryption use different keys for communication and encryption?</div>
+                <div class="options">
+            <div class="option">Both keys are the same</div><div class="option">One key is used for both communication and encryption</div><div class="option">The other key is used for encryption</div><div class="option">The key is used for both communication and encryption</div><div class="option">The key is not used at all</div>
+                </div>
+                <button class="answer-btn" onclick="this.nextElementSibling.style.display='block'">Ver Gabarito</button>
+                <div class="answer-content">
+                    <strong>Gabarito:</strong> 1<br><br>
+                    <strong>Explicação:</strong> Asymmetric encryption uses different keys for communication and encryption, allowing for more secure communication.
+                </div>
+            </div>
+            
+            <div class="card" style="border-top-color: #f39c12">
+                <div class="pilar">Mundo Digital | Malware Types | Técnica: zero-shot</div>
+                <div class="stem">26. Which type of malware is most likely to be found on a school's computer?</div>
+                <div class="options">
+            <div class="option">Ransomware</div><div class="option">Spyware</div><div class="option">Phishing</div><div class="option">Rootkit</div><div class="option">Scamware</div>
+                </div>
+                <button class="answer-btn" onclick="this.nextElementSibling.style.display='block'">Ver Gabarito</button>
+                <div class="answer-content">
+                    <strong>Gabarito:</strong> 2<br><br>
+                    <strong>Explicação:</strong> Spyware and rootkit are more common types of malware.
+                </div>
+            </div>
+            
+            <div class="card" style="border-top-color: #f39c12">
+                <div class="pilar">Mundo Digital | Malware Types | Técnica: few-shot</div>
+                <div class="stem">27. What is a type of malware?</div>
+                <div class="options">
+            <div class="option">A. Ransomware</div><div class="option">B. Phishing</div><div class="option">C. Rootkit</div><div class="option">D. Scamware</div>
+                </div>
+                <button class="answer-btn" onclick="this.nextElementSibling.style.display='block'">Ver Gabarito</button>
+                <div class="answer-content">
+                    <strong>Gabarito:</strong> A<br><br>
+                    <strong>Explicação:</strong> Ransomware is a type of malware that encrypts a victim's files and demands payment to unlock them.
+                </div>
+            </div>
+            
+            <div class="card" style="border-top-color: #f39c12">
+                <div class="pilar">Mundo Digital | Malware Types | Técnica: chain-of-thought</div>
+                <div class="stem">28. What is the primary goal of malware?</div>
+                <div class="options">
+            <div class="option">To steal data</div><div class="option">To cause system crashes</div><div class="option">To spread to other devices</div><div class="option">To provide security</div><div class="option">To perform online tasks</div>
+                </div>
+                <button class="answer-btn" onclick="this.nextElementSibling.style.display='block'">Ver Gabarito</button>
+                <div class="answer-content">
+                    <strong>Gabarito:</strong> 1<br><br>
+                    <strong>Explicação:</strong> Malware is designed to cause harm to the system, often by spreading to other devices.
+                </div>
+            </div>
+            
+            <div class="card" style="border-top-color: #f39c12">
+                <div class="pilar">Mundo Digital | Malware Types | Técnica: exemplar-guided</div>
+                <div class="stem">29. What is a key feature of a malware?</div>
+                <div class="options">
+            <div class="option">A virus</div><div class="option">A worm</div><div class="option">A Trojan</div><div class="option">A ransomware</div><div class="option">A rootkit</div>
+                </div>
+                <button class="answer-btn" onclick="this.nextElementSibling.style.display='block'">Ver Gabarito</button>
+                <div class="answer-content">
+                    <strong>Gabarito:</strong> 2<br><br>
+                    <strong>Explicação:</strong> Malware is a type of software designed to infect and harm a computer.
+                </div>
+            </div>
+            
+            <div class="card" style="border-top-color: #f39c12">
+                <div class="pilar">Mundo Digital | Malware Types | Técnica: template-based</div>
+                <div class="stem">30. Which malware is most commonly used in targeted attacks?</div>
+                <div class="options">
+            <div class="option">Ransomware</div><div class="option">Phishing</div><div class="option">Malware that infects only specific devices</div><div class="option">Rootkit</div><div class="option">Scamware</div>
+                </div>
+                <button class="answer-btn" onclick="this.nextElementSibling.style.display='block'">Ver Gabarito</button>
+                <div class="answer-content">
+                    <strong>Gabarito:</strong> 2<br><br>
+                    <strong>Explicação:</strong> Malware that infects only specific devices is known as rootkit or scamware.
+                </div>
+            </div>
+            
+            <div class="card" style="border-top-color: #27ae60">
+                <div class="pilar">Cultura Digital | Digital Divide | Técnica: zero-shot</div>
+                <div class="stem">31. Why is digital inequality a problem?</div>
+                <div class="options">
+            <div class="option">It reduces creativity</div><div class="option">It limits access to information</div><div class="option">It promotes hate speech</div><div class="option">It improves learning</div><div class="option">It reduces stress</div>
+                </div>
+                <button class="answer-btn" onclick="this.nextElementSibling.style.display='block'">Ver Gabarito</button>
+                <div class="answer-content">
+                    <strong>Gabarito:</strong> 1<br><br>
+                    <strong>Explicação:</strong> Digital inequality can limit access to information and education.
+                </div>
+            </div>
+            
+            <div class="card" style="border-top-color: #27ae60">
+                <div class="pilar">Cultura Digital | Digital Divide | Técnica: few-shot</div>
+                <div class="stem">32. What is a node in a graph?</div>
+                <div class="options">
+            <div class="option">A point in a graph</div><div class="option">A line in a graph</div><div class="option">A circle in a graph</div><div class="option">A square in a graph</div><div class="option">A triangle in a graph</div>
+                </div>
+                <button class="answer-btn" onclick="this.nextElementSibling.style.display='block'">Ver Gabarito</button>
+                <div class="answer-content">
+                    <strong>Gabarito:</strong> A node<br><br>
+                    <strong>Explicação:</strong> A node is a point, line, or circle in a graph that represents a vertex or a point of interest.
+                </div>
+            </div>
+            
+            <div class="card" style="border-top-color: #27ae60">
+                <div class="pilar">Cultura Digital | Digital Divide | Técnica: chain-of-thought</div>
+                <div class="stem">33. Why is digital divide a problem?</div>
+                <div class="options">
+            <div class="option">It is cost-free</div><div class="option">It creates a digital divide</div><div class="option">It is easy to use</div><div class="option">It is only for poor people</div><div class="option">It is only for rural areas</div>
+                </div>
+                <button class="answer-btn" onclick="this.nextElementSibling.style.display='block'">Ver Gabarito</button>
+                <div class="answer-content">
+                    <strong>Gabarito:</strong> 2<br><br>
+                    <strong>Explicação:</strong> Digital divide occurs when the technology is not available or affordable for all, creating a digital divide between the haves and have-nots.
+                </div>
+            </div>
+            
+            <div class="card" style="border-top-color: #27ae60">
+                <div class="pilar">Cultura Digital | Digital Divide | Técnica: exemplar-guided</div>
+                <div class="stem">34. Why is digital divide a problem?</div>
+                <div class="options">
+            <div class="option">It is only a game</div><div class="option">It is a lack of access</div><div class="option">It is only a virus</div><div class="option">It is only a language</div><div class="option">It is only a country</div>
+                </div>
+                <button class="answer-btn" onclick="this.nextElementSibling.style.display='block'">Ver Gabarito</button>
+                <div class="answer-content">
+                    <strong>Gabarito:</strong> 1<br><br>
+                    <strong>Explicação:</strong> Digital divide is a gap in access to digital technologies.
+                </div>
+            </div>
+            
+            <div class="card" style="border-top-color: #27ae60">
+                <div class="pilar">Cultura Digital | Digital Divide | Técnica: template-based</div>
+                <div class="stem">35. Which of the following is a key factor in the digital divide?</div>
+                <div class="options">
+            <div class="option">Access to devices</div><div class="option">Internet speed</div><div class="option">Content filtering</div><div class="option">Education</div>
+                </div>
+                <button class="answer-btn" onclick="this.nextElementSibling.style.display='block'">Ver Gabarito</button>
+                <div class="answer-content">
+                    <strong>Gabarito:</strong> C<br><br>
+                    <strong>Explicação:</strong> Content filtering is a key factor in the digital divide as it limits access to educational and cultural content.
+                </div>
+            </div>
+            
+            <div class="card" style="border-top-color: #27ae60">
+                <div class="pilar">Cultura Digital | LGPD Privacy | Técnica: zero-shot</div>
+                <div class="stem">36. What is the main purpose of LGPD?</div>
+                <div class="options">
+            <div class="option">To reduce data sharing</div><div class="option">To protect personal data</div><div class="option">To simplify privacy settings</div><div class="option">To improve online safety</div><div class="option">To reduce GDPR compliance</div>
+                </div>
+                <button class="answer-btn" onclick="this.nextElementSibling.style.display='block'">Ver Gabarito</button>
+                <div class="answer-content">
+                    <strong>Gabarito:</strong> 2<br><br>
+                    <strong>Explicação:</strong> LGPD aims to simplify privacy settings and reduce data sharing.
+                </div>
+            </div>
+            
+            <div class="card" style="border-top-color: #27ae60">
+                <div class="pilar">Cultura Digital | LGPD Privacy | Técnica: few-shot</div>
+                <div class="stem">37. What is a key aspect of privacy in the digital age?</div>
+                <div class="options">
+            <div class="option">A person's home address is private</div><div class="option">The internet is a public space</div><div class="option">The only way to access personal data is through a password</div><div class="option">The government has access to all personal data</div><div class="option">The only way to access personal data is through a mobile app</div>
+                </div>
+                <button class="answer-btn" onclick="this.nextElementSibling.style.display='block'">Ver Gabarito</button>
+                <div class="answer-content">
+                    <strong>Gabarito:</strong> 1<br><br>
+                    <strong>Explicação:</strong> The primary aspect of privacy in the digital age is the need to control who has access to personal data, regardless of the platform or the medium used.
+                </div>
+            </div>
+            
+            <div class="card" style="border-top-color: #27ae60">
+                <div class="pilar">Cultura Digital | LGPD Privacy | Técnica: chain-of-thought</div>
+                <div class="stem">38. What is the purpose of the LGPD step-by-step?</div>
+                <div class="options">
+            <div class="option">To scare people</div><div class="option">To explain how to use a service</div><div class="option">To limit privacy</div><div class="option">To remove information</div><div class="option">To make the rules complicated</div>
+                </div>
+                <button class="answer-btn" onclick="this.nextElementSibling.style.display='block'">Ver Gabarito</button>
+                <div class="answer-content">
+                    <strong>Gabarito:</strong> 1<br><br>
+                    <strong>Explicação:</strong> LGPD is a law that requires companies to explain how they collect and use personal data.
+                </div>
+            </div>
+            
+            <div class="card" style="border-top-color: #27ae60">
+                <div class="pilar">Cultura Digital | LGPD Privacy | Técnica: exemplar-guided</div>
+                <div class="stem">39. What is the main difference between a spider web and a personal data management system?</div>
+                <div class="options">
+            <div class="option">The web is circular</div><div class="option">The web is permanent</div><div class="option">The web is private</div><div class="option">The web is public</div><div class="option">The web is temporary</div>
+                </div>
+                <button class="answer-btn" onclick="this.nextElementSibling.style.display='block'">Ver Gabarito</button>
+                <div class="answer-content">
+                    <strong>Gabarito:</strong> 1<br><br>
+                    <strong>Explicação:</strong> Personal data management systems are permanent while spider webs are temporary.
+                </div>
+            </div>
+            
+            <div class="card" style="border-top-color: #27ae60">
+                <div class="pilar">Cultura Digital | LGPD Privacy | Técnica: template-based</div>
+                <div class="stem">40. How can the General Data Protection Regulation (GDPR) protect personal data online?</div>
+                <div class="options">
+            <div class="option">It restricts data sharing</div><div class="option">It requires data storage</div><div class="option">It allows data sharing</div><div class="option">It limits privacy</div><div class="option">It eliminates data</div>
+                </div>
+                <button class="answer-btn" onclick="this.nextElementSibling.style.display='block'">Ver Gabarito</button>
+                <div class="answer-content">
+                    <strong>Gabarito:</strong> 2<br><br>
+                    <strong>Explicação:</strong> The GDPR requires data storage and protection, while the General Data Protection Regulation (GDPR) protects personal data online.
+                </div>
+            </div>
+            
+            <div class="card" style="border-top-color: #27ae60">
+                <div class="pilar">Cultura Digital | AI Ethics | Técnica: zero-shot</div>
+                <div class="stem">41. What is the primary responsibility of an AI system?</div>
+                <div class="options">
+            <div class="option">To generate more content</div><div class="option">To provide personalized recommendations</div><div class="option">To solve complex problems</div><div class="option">To improve human-machine communication</div><div class="option">To create entertainment</div>
+                </div>
+                <button class="answer-btn" onclick="this.nextElementSibling.style.display='block'">Ver Gabarito</button>
+                <div class="answer-content">
+                    <strong>Gabarito:</strong> 2<br><br>
+                    <strong>Explicação:</strong> AI systems are designed to solve problems, not create content.
+                </div>
+            </div>
+            
+            <div class="card" style="border-top-color: #27ae60">
+                <div class="pilar">Cultura Digital | AI Ethics | Técnica: few-shot</div>
+                <div class="stem">42. What is a key characteristic of the internet?</div>
+                <div class="options">
+            <div class="option">It is a network of computers connected by cables</div><div class="option">It is a collection of programs</div><div class="option">It is a way to share files</div><div class="option">It is a way to communicate</div><div class="option">It is a tool for learning</div>
+                </div>
+                <button class="answer-btn" onclick="this.nextElementSibling.style.display='block'">Ver Gabarito</button>
+                <div class="answer-content">
+                    <strong>Gabarito:</strong> 1<br><br>
+                    <strong>Explicação:</strong> The internet is a network of computers connected by cables, which is the key characteristic.
+                </div>
+            </div>
+            
+            <div class="card" style="border-top-color: #27ae60">
+                <div class="pilar">Cultura Digital | AI Ethics | Técnica: chain-of-thought</div>
+                <div class="stem">43. What is the primary goal of AI Ethics?</div>
+                <div class="options">
+            <div class="option">To make AI more intelligent</div><div class="option">To create more harmful AI</div><div class="option">To protect privacy</div><div class="option">To simplify decision-making</div><div class="option">To reduce costs</div>
+                </div>
+                <button class="answer-btn" onclick="this.nextElementSibling.style.display='block'">Ver Gabarito</button>
+                <div class="answer-content">
+                    <strong>Gabarito:</strong> 1<br><br>
+                    <strong>Explicação:</strong> AI Ethics aims to prevent harmful behavior in AI systems.
+                </div>
+            </div>
+            
+            <div class="card" style="border-top-color: #27ae60">
+                <div class="pilar">Cultura Digital | AI Ethics | Técnica: exemplar-guided</div>
+                <div class="stem">44. What is the most important responsibility of an AI?</div>
+                <div class="options">
+            <div class="option">To make money</div><div class="option">To protect privacy</div><div class="option">To solve problems</div><div class="option">To learn</div><div class="option">To be happy</div>
+                </div>
+                <button class="answer-btn" onclick="this.nextElementSibling.style.display='block'">Ver Gabarito</button>
+                <div class="answer-content">
+                    <strong>Gabarito:</strong> 1<br><br>
+                    <strong>Explicação:</strong> AI must respect human rights and avoid harming people.
+                </div>
+            </div>
+            
+            <div class="card" style="border-top-color: #27ae60">
+                <div class="pilar">Cultura Digital | AI Ethics | Técnica: template-based</div>
+                <div class="stem">45. Which of the following is a key aspect of responsible AI design?</div>
+                <div class="options">
+            <div class="option">Considering the impact on human rights</div><div class="option">Ensuring transparency and accountability</div><div class="option">Ensuring data privacy and protection</div><div class="option">Ensuring fair and equal access to information</div>
+                </div>
+                <button class="answer-btn" onclick="this.nextElementSibling.style.display='block'">Ver Gabarito</button>
+                <div class="answer-content">
+                    <strong>Gabarito:</strong> B<br><br>
+                    <strong>Explicação:</strong> Responsible AI must prioritize the well-being of individuals and communities over short-term gains.
+Correct Answer: B
+Explanation: AI must be designed to avoid harm and promote social justice.
+                </div>
+            </div>
+            </div></body></html>
