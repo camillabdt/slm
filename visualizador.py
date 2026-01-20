@@ -30,8 +30,8 @@ def processar_texto_sujo(texto):
     return stem, options, correct, explanation
 
 def gerar_html():
-    file_input = "banco_final_seguro.jsonl"
-    file_output = "simulado_bncc_corrigido.html"
+    file_input = "QuestoesSLM.jsonl"
+    file_output = "Bncc.html"
     
     if not os.path.exists(file_input):
         print(f"Erro: O arquivo {file_input} não foi encontrado!")
