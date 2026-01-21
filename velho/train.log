@@ -1,69 +1,0 @@
-nohup: a ignorar a entrada
-[info] Dispositivo: cpu
-[info] Carregando modelo: TinyLlama/TinyLlama-1.1B-Chat-v1.0
-[ok] Dataset bruto: 21 linhas
-Map:   0%|          | 0/21 [00:00<?, ? examples/s]Map: 100%|██████████| 21/21 [00:00<00:00, 1341.48 examples/s]
-Filter:   0%|          | 0/21 [00:00<?, ? examples/s]Filter: 100%|██████████| 21/21 [00:00<00:00, 2328.07 examples/s]
-[ok] Após conversão → 'text': 21 exemplos
-Map:   0%|          | 0/21 [00:00<?, ? examples/s]Map: 100%|██████████| 21/21 [00:00<00:00, 332.84 examples/s]
-Filter:   0%|          | 0/21 [00:00<?, ? examples/s]Filter: 100%|██████████| 21/21 [00:00<00:00, 913.92 examples/s]
-/home/camilla/AILASLM/.venv/lib/python3.12/site-packages/transformers/training_args.py:1568: FutureWarning: `evaluation_strategy` is deprecated and will be removed in version 4.46 of 🤗 Transformers. Use `eval_strategy` instead
-  warnings.warn(
-/home/camilla/AILASLM/train_novo2.py:265: FutureWarning: `tokenizer` is deprecated and will be removed in version 5.0.0 for `Trainer.__init__`. Use `processing_class` instead.
-  trainer = Trainer(
-[info] steps/epoch (aprox): 21, exemplos: 21
-  0%|          | 0/2 [00:00<?, ?it/s]Traceback (most recent call last):
-  File "/home/camilla/AILASLM/.venv/lib/python3.12/site-packages/transformers/tokenization_utils_base.py", line 776, in convert_to_tensors
-    tensor = as_tensor(value)
-             ^^^^^^^^^^^^^^^^
-  File "/home/camilla/AILASLM/.venv/lib/python3.12/site-packages/transformers/tokenization_utils_base.py", line 738, in as_tensor
-    return torch.tensor(value)
-           ^^^^^^^^^^^^^^^^^^^
-ValueError: too many dimensions 'str'
-
-The above exception was the direct cause of the following exception:
-
-Traceback (most recent call last):
-  File "/home/camilla/AILASLM/train_novo2.py", line 283, in <module>
-    main()
-  File "/home/camilla/AILASLM/train_novo2.py", line 275, in main
-    trainer.train(resume_from_checkpoint=last_ckpt)
-  File "/home/camilla/AILASLM/.venv/lib/python3.12/site-packages/transformers/trainer.py", line 2123, in train
-    return inner_training_loop(
-           ^^^^^^^^^^^^^^^^^^^^
-  File "/home/camilla/AILASLM/.venv/lib/python3.12/site-packages/transformers/trainer.py", line 2427, in _inner_training_loop
-    batch_samples, num_items_in_batch = self.get_batch_samples(epoch_iterator, num_batches)
-                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/camilla/AILASLM/.venv/lib/python3.12/site-packages/transformers/trainer.py", line 5045, in get_batch_samples
-    batch_samples += [next(epoch_iterator)]
-                      ^^^^^^^^^^^^^^^^^^^^
-  File "/home/camilla/AILASLM/.venv/lib/python3.12/site-packages/accelerate/data_loader.py", line 567, in __iter__
-    current_batch = next(dataloader_iter)
-                    ^^^^^^^^^^^^^^^^^^^^^
-  File "/home/camilla/AILASLM/.venv/lib/python3.12/site-packages/torch/utils/data/dataloader.py", line 732, in __next__
-    data = self._next_data()
-           ^^^^^^^^^^^^^^^^^
-  File "/home/camilla/AILASLM/.venv/lib/python3.12/site-packages/torch/utils/data/dataloader.py", line 788, in _next_data
-    data = self._dataset_fetcher.fetch(index)  # may raise StopIteration
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/camilla/AILASLM/.venv/lib/python3.12/site-packages/torch/utils/data/_utils/fetch.py", line 55, in fetch
-    return self.collate_fn(data)
-           ^^^^^^^^^^^^^^^^^^^^^
-  File "/home/camilla/AILASLM/.venv/lib/python3.12/site-packages/transformers/data/data_collator.py", line 45, in __call__
-    return self.torch_call(features)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/camilla/AILASLM/.venv/lib/python3.12/site-packages/transformers/data/data_collator.py", line 807, in torch_call
-    batch = pad_without_fast_tokenizer_warning(
-            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/camilla/AILASLM/.venv/lib/python3.12/site-packages/transformers/data/data_collator.py", line 66, in pad_without_fast_tokenizer_warning
-    padded = tokenizer.pad(*pad_args, **pad_kwargs)
-             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/camilla/AILASLM/.venv/lib/python3.12/site-packages/transformers/tokenization_utils_base.py", line 3541, in pad
-    return BatchEncoding(batch_outputs, tensor_type=return_tensors)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/camilla/AILASLM/.venv/lib/python3.12/site-packages/transformers/tokenization_utils_base.py", line 240, in __init__
-    self.convert_to_tensors(tensor_type=tensor_type, prepend_batch_axis=prepend_batch_axis)
-  File "/home/camilla/AILASLM/.venv/lib/python3.12/site-packages/transformers/tokenization_utils_base.py", line 792, in convert_to_tensors
-    raise ValueError(
-ValueError: Unable to create tensor, you should probably activate truncation and/or padding with 'padding=True' 'truncation=True' to have batched tensors with the same length. Perhaps your features (`text` in this case) have excessive nesting (inputs type `list` where type `int` is expected).
-  0%|          | 0/2 [00:00<?, ?it/s]

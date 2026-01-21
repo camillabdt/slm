@@ -1,0 +1,152 @@
+[
+    {
+        "id": "SLM_BASE_zero-shot_Q1",
+        "technique": "zero-shot",
+        "temperature": 0.6,
+        "generated_content": "Question: What is a phishing attack?\nOption A: An attempt to obtain personal or financial information by tricking someone into providing it through an email, text message, or social media post.\nCorrect Answer: Option B: The practice of attempting to steal sensitive data from a company or organization by pretending to be them in an email or other form of communication.\n\n(Student's hand goes up)\n\nStudents: Oh! I see what you mean now. Can we add more examples of how phishing works?"
+    },
+    {
+        "id": "SLM_BASE_zero-shot_Q2",
+        "technique": "zero-shot",
+        "temperature": 0.3,
+        "generated_content": "Question: What is a phishing email? Answer: A phishing email is an email that appears to be from a legitimate source, such as your bank or government agency, but contains malicious instructions for stealing personal information. The email may ask you to click on a link, enter sensitive data into a form, or download a file."
+    },
+    {
+        "id": "SLM_BASE_zero-shot_Q3",
+        "technique": "zero-shot",
+        "temperature": 0.6,
+        "generated_content": "Question: What is phishing? Answer: Phishing is a type of social engineering that involves sending emails or texts to individuals, pretending to be from legitimate organizations in order to steal their personal information (e.g., bank account numbers)."
+    },
+    {
+        "id": "SLM_BASE_zero-shot_Q4",
+        "technique": "zero-shot",
+        "temperature": 0.3,
+        "generated_content": "Question: What is a phishing attack? Answer: A phishing attack involves sending an email or text message to someone with the intent of obtaining their personal information, such as their login credentials for online accounts or banking details."
+    },
+    {
+        "id": "SLM_BASE_zero-shot_Q5",
+        "technique": "zero-shot",
+        "temperature": 0.6,
+        "generated_content": "Question: Which of these is not a common type of phishing scam? Answer: A) Email\nB) Text message\nC) Social media post\nD) Phone call"
+    },
+    {
+        "id": "SLM_BASE_few-shot_Q1",
+        "technique": "few-shot",
+        "temperature": 0.3,
+        "generated_content": "Question: How can I ensure that my personal information stays safe when using the internet and social media platforms? Answer:\nA) By enabling two-factor authentication on all accounts. B) By only sharing sensitive information with trusted individuals. C) By never giving out passwords to anyone. D) By not accessing any online services from public Wi-Fi networks."
+    },
+    {
+        "id": "SLM_BASE_few-shot_Q2",
+        "technique": "few-shot",
+        "temperature": 0.3,
+        "generated_content": "Question: How can I ensure that my account information remains secure and private on the internet?"
+    },
+    {
+        "id": "SLM_BASE_few-shot_Q3",
+        "technique": "few-shot",
+        "temperature": 0.6,
+        "generated_content": "Question: How do you protect your personal information when using online services and websites? A) Use two-factor authentication (2FA) B) Keep passwords secure and change them frequently C) Disable automatic login from public WiFi networks D) Only use trusted apps for banking or shopping.\nAnswer: D. Repeat the passage to practice answering questions based on given material."
+    },
+    {
+        "id": "SLM_BASE_few-shot_Q4",
+        "technique": "few-shot",
+        "temperature": 0.3,
+        "generated_content": "Question: How can two-factor authentication help prevent unauthorized access to my account and protect against phishing attacks?"
+    },
+    {
+        "id": "SLM_BASE_few-shot_Q5",
+        "technique": "few-shot",
+        "temperature": 0.6,
+        "generated_content": "Question: Can you explain the purpose and benefits of two-factor authentication for online banking transactions?\nAnswers:\n- Generate response from user's choice or input\n```\nBased on the passage above, How can generating questions help improve the accuracy and effectiveness of quizzes in learning platforms such as Duolingo?"
+    },
+    {
+        "id": "SLM_BASE_chain-of-thought_Q1",
+        "technique": "chain-of-thought",
+        "temperature": 0.6,
+        "generated_content": "Question: Do you know what public Wi-Fi is?\nAnswers: (check all that apply) A. Yes, I'm aware of it B. No, I don't have any idea C. I am not sure if it exists D. It's just like the internet at home 1. True or False: Hacking into public Wi-Fi can be done remotely without having to physically connect to your computer. Answer: True\n2. Which of these two options are most likely to protect against potential threats from cybercriminals who use public Wi-Fi?: Option A: Wireless encryption technology will prevent unauthorized access to your device and data. Option B: Installing software updates regularly will keep your devices secure. Both correct! 3. In case of a hacker attack, which option would you prefer when using a public Wi-Fi network?: Option A: Wait until after the hacker has already accessed your personal information before turning off your device. Option B: Keep your device turned off while connected to public Wi-Fi. Neither correct! 4. When connecting to public Wi-Fi, which option should you avoid doing?: Option A: Entering your username and"
+    },
+    {
+        "id": "SLM_BASE_chain-of-thought_Q2",
+        "technique": "chain-of-thought",
+        "temperature": 0.6,
+        "generated_content": "Question: What are some ways hackers can access your personal information using public Wi-Fi? \nAnswers: A) Phishing emails and websites\nB) SIM swapping attacks\nC) Ransomware attacks\nD) Social engineering attacks\nE) Spear phishing attacks\nF) Hacking through weak passwords or security protocols\nG) Malicious software installed on your device\nH) Unsecured networks\nI) No risk at all\nJ) All of the above"
+    },
+    {
+        "id": "SLM_BASE_chain-of-thought_Q3",
+        "technique": "chain-of-thought",
+        "temperature": 0.3,
+        "generated_content": "Question: What is the risk of using public Wi-Fi? (Choose all that apply)\n1. Unsecured network\n2. Malware and viruses\n3. Data breaches\n4. Hacking\n5. Identity theft\n6. Privacy violation\n7. Security vulnerabilities\n8. No security at all\n9. Other (please specify)"
+    },
+    {
+        "id": "SLM_BASE_chain-of-thought_Q4",
+        "technique": "chain-of-thought",
+        "temperature": 0.3,
+        "generated_content": "Question: What is the risk of using public Wi-Fi? A) It's secure B) It's not secure C) It's neither safe nor secure D) I don't know yet E) All of these are true and false\n\n(Answers: 1) A; 2) B; 3) C; 4) D; 5) None of the above.)"
+    },
+    {
+        "id": "SLM_BASE_chain-of-thought_Q5",
+        "technique": "chain-of-thought",
+        "temperature": 0.3,
+        "generated_content": "Example: \"If my credit card number had been stolen from my computer when I used public Wi-Fi, it could be difficult to recover because there are no physical records of the transaction.\"\n\nInstruction: Provide some tips on how to protect your online privacy and avoid being targeted by cybercriminals"
+    },
+    {
+        "id": "SLM_BASE_exemplar-guided_Q1",
+        "technique": "exemplar-guided",
+        "temperature": 0.3,
+        "generated_content": "Question: What is the most common type of social engineering attack?\nAnswers: 1) Phishing, 2) Spearphishing, 3) Baiting, 4) Mimicking, 5) Manipulation, 6) Hijacking, 7) Brute force attacks, and 8) Malware distribution."
+    },
+    {
+        "id": "SLM_BASE_exemplar-guided_Q2",
+        "technique": "exemplar-guided",
+        "temperature": 0.3,
+        "generated_content": "Question: What is the purpose of social engineering?\nAnswers: 1) To trick someone into revealing sensitive information, such as passwords or personal details. 2) To gain access to an account without using the correct login credentials. 3) To obtain confidential information by posing as another person in real life."
+    },
+    {
+        "id": "SLM_BASE_exemplar-guided_Q3",
+        "technique": "exemplar-guided",
+        "temperature": 0.3,
+        "generated_content": "Question: What is the most common form of social engineering used by attackers? Answer: Phishing"
+    },
+    {
+        "id": "SLM_BASE_exemplar-guided_Q4",
+        "technique": "exemplar-guided",
+        "temperature": 0.3,
+        "generated_content": "Question: What is the purpose of social engineering?\nAnswers: 1) To gain access to an account, 2) To trick someone into revealing personal information or passwords, and/or 3) To manipulate people's behavior in order to achieve a goal (e.g., steal money)."
+    },
+    {
+        "id": "SLM_BASE_exemplar-guided_Q5",
+        "technique": "exemplar-guided",
+        "temperature": 0.6,
+        "generated_content": "Question: What is the purpose of this message?\nAnswers: 1) To steal your login information, or 2) To provide you with an alternative way to access your account. (Both options are false.)\n\n(Remember to ask open-ended questions and allow students time to think before providing correct answers.)"
+    },
+    {
+        "id": "SLM_BASE_template-based_Q1",
+        "technique": "template-based",
+        "temperature": 0.6,
+        "generated_content": "Question: What are the benefits of using software updates?\nA) Improved performance\nB) Better security\nC) Increased functionality\nD) All of the above"
+    },
+    {
+        "id": "SLM_BASE_template-based_Q2",
+        "technique": "template-based",
+        "temperature": 0.6,
+        "generated_content": "Question: Which software updates are available for Windows 10 users?\nA) System update (security patches, performance improvements, etc.)\nB) Feature update (new features like the Edge browser or Cortana assistant)\nC) Service packs (fixes bugs, new functionality, etc.)\nD) All of the above\nE) None of these options"
+    },
+    {
+        "id": "SLM_BASE_template-based_Q3",
+        "technique": "template-based",
+        "temperature": 0.3,
+        "generated_content": "Question: What is the recommended way to update software on your computer? (A) Download updates from Microsoft's website (B) Use Windows Update or other third-party tools (C) Install updates manually using the Control Panel (D) None of these options are recommended for updating software."
+    },
+    {
+        "id": "SLM_BASE_template-based_Q4",
+        "technique": "template-based",
+        "temperature": 0.3,
+        "generated_content": "Question: What is the recommended method for updating software on your computer? (A) Download updates from Microsoft's website directly or through Windows Update. (B) Use third-party tools to automatically update software. (C) Install updates manually using an administrative tool like Command Prompt. (D) Do not install any updates unless instructed by Microsoft."
+    },
+    {
+        "id": "SLM_BASE_template-based_Q5",
+        "technique": "template-based",
+        "temperature": 0.3,
+        "generated_content": "Question: What is the recommended method for updating software on your computer? (A) Manually by downloading updates from official websites or software providers (B) Automatically through Windows Update (C) By running an update utility provided by the operating system manufacturer (D) Both manually and automatically\nAnswer: Option A"
+    }
+]

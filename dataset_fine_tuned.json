@@ -1,0 +1,177 @@
+[
+    {
+        "id": "SLM_FT_zero-shot_Q1",
+        "model": "SLM_FINE_TUNED",
+        "technique": "zero-shot",
+        "temperature": 0.5,
+        "generated_content": "Question: What is the primary goal of phishing scams?\n0) To install software\n1) To steal information\n2) To provide technical support\n3) To improve website performance\n4) To sell products online\nCorrect Answer: B\nExplanation: They aim to obtain sensitive data such as passwords or credit card details."
+    },
+    {
+        "id": "SLM_FT_zero-shot_Q2",
+        "model": "SLM_FINE_TUNED",
+        "technique": "zero-shot",
+        "temperature": 0.2,
+        "generated_content": "Question: What is the primary goal of phishing scams?\n0) To install malware\n1) To steal personal information\n2) To spread viruses\n3) To improve computer performance\n4) To provide technical support\nCorrect Answer: B\nExplanation: Phishers aim to trick victims into revealing sensitive data or installing malicious software."
+    },
+    {
+        "id": "SLM_FT_zero-shot_Q3",
+        "model": "SLM_FINE_TUNED",
+        "technique": "zero-shot",
+        "temperature": 0.2,
+        "generated_content": "Question: What is the primary goal of phishing scams?\n0) To install malware\n1) To steal personal information\n2) To spread viruses\n3) To improve computer performance\n4) To provide technical support\nCorrect Answer: B\nExplanation: Phishers aim to trick victims into revealing sensitive data or installing malicious software."
+    },
+    {
+        "id": "SLM_FT_zero-shot_Q4",
+        "model": "SLM_FINE_TUNED",
+        "technique": "zero-shot",
+        "temperature": 0.2,
+        "generated_content": "Question: What is the primary goal of phishing scams?\n0) To install malware\n1) To steal personal information\n2) To spread viruses\n3) To improve computer performance\n4) To provide technical support\nCorrect Answer: B\nExplanation: Phishers aim to gain access to sensitive data or systems through social engineering techniques."
+    },
+    {
+        "id": "SLM_FT_zero-shot_Q5",
+        "model": "SLM_FINE_TUNED",
+        "technique": "zero-shot",
+        "temperature": 0.2,
+        "generated_content": "Question: What is the main goal of phishing scams?\n0) To install malware\n1) To steal personal information\n2) To spread viruses\n3) To improve computer performance\n4) To provide technical support\nCorrect Answer: B\nExplanation: Phishers aim to gain access to sensitive data or systems through deception."
+    },
+    {
+        "id": "SLM_FT_few-shot_Q1",
+        "model": "SLM_FINE_TUNED",
+        "technique": "few-shot",
+        "temperature": 0.5,
+        "generated_content": "Question: Why should passwords be strong?\n0) They can be guessed easily\n1) They need to be long and complex\n2) They only last a few months\n3) They do not protect data\n4) They use the same password everywhere\nCorrect Answer: #1\nExplanation: Long and complex passwords help prevent guessing or brute force attacks."
+    },
+    {
+        "id": "SLM_FT_few-shot_Q2",
+        "model": "SLM_FINE_TUNED",
+        "technique": "few-shot",
+        "temperature": 0.5,
+        "generated_content": "Question: Which password protection method increases the risk of attack?\n0) Simple password\n1) Two-factor authentication\n2) Encrypted files\n3) Random passwords\n4) Shared account\nCorrect Answer: 2\nExplanation: Two-factor authentication adds an extra layer of security to access data."
+    },
+    {
+        "id": "SLM_FT_few-shot_Q3",
+        "model": "SLM_FINE_TUNED",
+        "technique": "few-shot",
+        "temperature": 0.5,
+        "generated_content": "Question: Why should passwords be strong?\n0) They last forever\n1) They save money\n2) They use apps\n3) They are easy to guess\n4) They protect only data\nCorrect Answer: 2\nExplanation: Strong passwords help prevent hacking and theft of sensitive information."
+    },
+    {
+        "id": "SLM_FT_few-shot_Q4",
+        "model": "SLM_FINE_TUNED",
+        "technique": "few-shot",
+        "temperature": 0.2,
+        "generated_content": "Question: Why should passwords be long and complex?\n0) They last longer\n1) They protect many accounts\n2) They use the same password everywhere\n3) They can be guessed easily\n4) They are easy to remember\nCorrect Answer: 2\nExplanation: Long and complex passwords help prevent unauthorized access."
+    },
+    {
+        "id": "SLM_FT_few-shot_Q5",
+        "model": "SLM_FINE_TUNED",
+        "technique": "few-shot",
+        "temperature": 0.5,
+        "generated_content": "Question: Why should passwords be strong?\n0) They can be guessed easily\n1) They reduce access to accounts\n2) They slow websites\n3) They limit apps\n4) They allow all users\nCorrect Answer: #2\nExplanation: Strong passwords help protect devices and data."
+    },
+    {
+        "id": "SLM_FT_chain-of-thought_Q1",
+        "model": "SLM_FINE_TUNED",
+        "technique": "chain-of-thought",
+        "temperature": 0.5,
+        "generated_content": "Question: What is the primary reason behind phishing messages?\n0) To trick you with fake websites\n1) To spread malware quickly\n2) To ask personal information\n3) To show ads\n4) To send updates\nCorrect Answer: 1\nExplanation: Phishers want to deceive their targets and gain access to sensitive data."
+    },
+    {
+        "id": "SLM_FT_chain-of-thought_Q2",
+        "model": "SLM_FINE_TUNED",
+        "technique": "chain-of-thought",
+        "temperature": 0.5,
+        "generated_content": "Question: Why do phishers wait?\n0) To be fast\n1) So they can see if it works\n2) Because they want to surprise you\n3) To check the date\n4) To test their software\nCorrect Answer: 1\nExplanation: Waiting helps them verify that the message is legitimate before acting."
+    },
+    {
+        "id": "SLM_FT_chain-of-thought_Q3",
+        "model": "SLM_FINE_TUNED",
+        "technique": "chain-of-thought",
+        "temperature": 0.5,
+        "generated_content": "Question: Why do phishers use urgent messages?\n0) To trick people quickly\n1) To show trustworthiness\n2) To avoid scams\n3) To be informative\n4) To show excitement\nCorrect Answer: 1\nExplanation: Urgency helps to convince the recipient that it is important and legitimate, making them more likely to act."
+    },
+    {
+        "id": "SLM_FT_chain-of-thought_Q4",
+        "model": "SLM_FINE_TUNED",
+        "technique": "chain-of-thought",
+        "temperature": 0.2,
+        "generated_content": "Question: Why do phishers use urgency?\n0) To scare people\n1) To make it look official\n2) To avoid detection\n3) To ask for personal data\n4) To share news\nCorrect Answer: 1\nExplanation: Urgent messages often contain links to malicious websites, making them more likely to be clicked."
+    },
+    {
+        "id": "SLM_FT_chain-of-thought_Q5",
+        "model": "SLM_FINE_TUNED",
+        "technique": "chain-of-thought",
+        "temperature": 0.5,
+        "generated_content": "Question: What is the main reason why phishers use urgency?\n0) To create surprise attacks\n1) To make scams more believable\n2) To reduce risk\n3) To increase speed\n4) To avoid detection\nCorrect Answer: 1\nExplanation: Urgent messages can trigger fear and compliance, making them easier to trick[cite: 75]."
+    },
+    {
+        "id": "SLM_FT_exemplar-guided_Q1",
+        "model": "SLM_FINE_TUNED",
+        "technique": "exemplar-guided",
+        "temperature": 0.5,
+        "generated_content": "Question: Why should you trust the first program that starts?\n0) It's free\n1) It has many stars\n2) It checks your online activity\n3) It runs in the background\n4) It uses the internet\nCorrect Answer: 1\nExplanation: Many programs can be fake or malicious, so it’s important to check if they start automatically."
+    },
+    {
+        "id": "SLM_FT_exemplar-guided_Q2",
+        "model": "SLM_FINE_TUNED",
+        "technique": "exemplar-guided",
+        "temperature": 0.5,
+        "generated_content": "Question: What does an antivirus scanner do?\n0) It checks if the system has been infected with malware\n1) It detects and removes viruses from the system\n2) It helps to improve computer performance by removing unnecessary programs\n3) It protects against phishing attacks\n4) It blocks access to websites that contain harmful content\nCorrect Answer: 2\nExplanation: An antivirus program uses scanning techniques to identify and remove malicious software, such as viruses or spyware."
+    },
+    {
+        "id": "SLM_FT_exemplar-guided_Q3",
+        "model": "SLM_FINE_TUNED",
+        "technique": "exemplar-guided",
+        "temperature": 0.5,
+        "generated_content": "Question: Which is better, a strong antivirus or a good firewall?\n0) A strong antivirus with no protection\n1) A good firewall without an antivirus\n2) Both a strong and a good antivirus\n3) Only a good firewall\n4) A weak antivirus with no protection\nCorrect Answer: 2\nExplanation: Good firewalls also protect against viruses, malware, and other threats."
+    },
+    {
+        "id": "SLM_FT_exemplar-guided_Q4",
+        "model": "SLM_FINE_TUNED",
+        "technique": "exemplar-guided",
+        "temperature": 0.5,
+        "generated_content": "Question: Which action happens when you scan files with antivirus software?\n0) It stops the computer from running\n1) It shows warnings and asks if it should be installed\n2) It deletes important data\n3) It blocks access to websites\n4) It checks only one file at a time\nCorrect Answer: 2\nExplanation: Scanning can remove or slow down programs, so it's not always safe."
+    },
+    {
+        "id": "SLM_FT_exemplar-guided_Q5",
+        "model": "SLM_FINE_TUNED",
+        "technique": "exemplar-guided",
+        "temperature": 0.2,
+        "generated_content": "Question: Which of the following actions is not considered by antivirus software?\n0) Installing new programs\n1) checking system logs regularly\n2) updating drivers automatically\n3) scanning files with specialized tools\n4) disabling all applications\nCorrect Answer: 2\nExplanation: Updating drivers and running regular checks help prevent malware infections."
+    },
+    {
+        "id": "SLM_FT_template-based_Q1",
+        "model": "SLM_FINE_TUNED",
+        "technique": "template-based",
+        "temperature": 0.2,
+        "generated_content": "Question: Why is strong password security important?\n0) To use passwords only\n1) To protect accounts from hacking\n2) To store personal data\n3) To improve online safety\n4) To reduce login times\nCorrect Answer: 2\nExplanation: Strong passwords help prevent unauthorized access to accounts and data."
+    },
+    {
+        "id": "SLM_FT_template-based_Q2",
+        "model": "SLM_FINE_TUNED",
+        "technique": "template-based",
+        "temperature": 0.2,
+        "generated_content": "Question: Why is strong password security important?\n0) To use passwords only\n1) To protect accounts\n2) To hide information\n3) To save time\n4) To share data\nCorrect Answer: 1\nExplanation: Strong passwords help prevent unauthorized access and theft of personal data."
+    },
+    {
+        "id": "SLM_FT_template-based_Q3",
+        "model": "SLM_FINE_TUNED",
+        "technique": "template-based",
+        "temperature": 0.2,
+        "generated_content": "Question: Why is two-factor authentication important?\n0) To protect passwords only\n1) To improve security by adding an extra layer of protection\n2) To reduce login times\n3) To allow access to sensitive data\n4) To increase privacy\nCorrect Answer: 2\nExplanation: Two-factor authentication adds an additional step beyond just a password, making it more secure and less prone to hacking attempts."
+    },
+    {
+        "id": "SLM_FT_template-based_Q4",
+        "model": "SLM_FINE_TUNED",
+        "technique": "template-based",
+        "temperature": 0.2,
+        "generated_content": "Question: Why is strong password security important?\n0) To use passwords only\n1) To protect accounts online\n2) To share with friends\n3) To hide from hackers\n4) To store data safely\nCorrect Answer: 1\nExplanation: Strong passwords help prevent unauthorized access to accounts and data."
+    },
+    {
+        "id": "SLM_FT_template-based_Q5",
+        "model": "SLM_FINE_TUNED",
+        "technique": "template-based",
+        "temperature": 0.2,
+        "generated_content": "Question: Why is password reuse dangerous?\n0) It saves time\n1) It reduces security\n2) It improves access control\n3) It increases complexity\n4) It eliminates updates\nCorrect Answer: 2\nExplanation: Reusing passwords weakens two-factor authentication and makes systems more vulnerable to attacks."
+    }
+]
