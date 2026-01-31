@@ -53,7 +53,7 @@ PROMPT_TEMPLATES = {
 # ==========================
 # 4) Parâmetros
 # ==========================
-N_QUESTIONS_PER_TECHNIQUE = 5
+N_QUESTIONS_PER_TECHNIQUE = 20
 TEMPERATURAS = [0.3, 0.6] # Reduzi para evitar que ele divague demais
 MAX_NEW_TOKENS = 256
 
