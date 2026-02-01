@@ -8,20 +8,28 @@ import pandas as pd
 from groq import Groq
 from dotenv import load_dotenv
 
-
 # ==========================
-# 0) Configurações gerais
+# CONFIGURAÇÕES GERAIS
 # ==========================
 INPUT_SLM_JSONL = "questoesSLM.jsonl"
 INPUT_LLM_JSON = "questoesLLM.json"
-OUTPUT_CSV = "relatorio_comparativo_qualidade.csv"
+OUTPUT_CSV = "relatorio_redflag222.csv"
 
+# Controle de custo/erros
 TEMPERATURE = 0.1
-SLEEP_SECONDS = 1.5          # proteção rate limit
-MAX_RETRIES = 3              # tentativas em falhas temporárias
-RETRY_BACKOFF_BASE = 2.0     # backoff exponencial
+MAX_TOKENS_OUT = 140          # bem menor (verdict+explicação curta+key point)
+MAX_CHARS_MCQ = 900           # limite de caracteres do conteúdo enviado ao juiz
 
-# Modelos que atuarão como "Juízes" (avaliadores)
+# Robustez
+SLEEP_SECONDS = 1.2
+MAX_RETRIES = 3
+RETRY_BACKOFF_BASE = 2.0
+
+# Salvar resposta crua? (custa tokens/arquivo). Melhor deixar False.
+SAVE_RAW = False
+RAW_TRUNC_CHARS = 400
+
+# Modelos avaliadores ("juízes")
 JUIZES = {
     "Llama-3.3-70B": "llama-3.3-70b-versatile",
     "GPT-OSS-120B": "openai/gpt-oss-120b",
@@ -29,47 +37,73 @@ JUIZES = {
     "Kimi-K2": "moonshotai/kimi-k2-instruct-0905"
 }
 
-# Prompt do sistema: papel do avaliador (mais específico e defensável)
+# Prompt do sistema (curto e restritivo para evitar textos longos)
 SYSTEM_PROMPT = (
-    "You are an expert evaluator in basic Computing education, with experience in the "
-    "Brazilian National Common Curriculum Base (BNCC). "
-    "You critically assess the pedagogical quality of multiple-choice questions for 9th-grade students."
+    "You are an expert evaluator in basic Computing education aligned with BNCC. "
+    "Be strict and concise."
 )
 
-# Prompt do usuário (avaliação pedagógica)
+# Prompt do usuário (curto, sem exemplos, sem indução de categorias)
 PROMPT_AVALIACAO = (
-    "Analyze the following multiple-choice question (MCQ) designed for 9th-grade "
-    "Computing education according to the Brazilian National Common Curriculum Base (BNCC).\n\n"
-    "Classify the MCQ strictly as 'GOOD' or 'BAD'. Your decision must be based on the following criteria:\n"
-    "(i) technical correctness of the computing concepts,\n"
-    "(ii) clarity and suitability for 14-year-old students, and\n"
-    "(iii) correctness and consistency of the indicated answer key.\n\n"
-    "Response format:\n"
-    "Start with 'VERDICT: GOOD' or 'VERDICT: BAD', followed by a brief justification.\n\n"
-    "MCQ Content:\n{}"
+    "Read the MCQ (9th-grade Computing, BNCC). Decide if it is GOOD or BAD.\n"
+    "Do NOT include reasoning steps.\n"
+    "Write EXPLANATION in max 2 sentences.\n"
+    "Write KEY POINT as max 5 words.\n\n"
+    "Format exactly:\n"
+    "VERDICT: GOOD|BAD\n"
+    "EXPLANATION: ...\n"
+    "KEY POINT: ...\n\n"
+    "MCQ:\n{}"
 )
-
 
 # ==========================
-# 1) Inicialização Groq
+# INICIALIZAÇÃO DO CLIENTE
 # ==========================
 def init_client() -> Groq:
     load_dotenv()
     api_key = os.getenv("GROQ_API_KEY")
     if not api_key:
-        raise RuntimeError(
-            "GROQ_API_KEY não encontrado. Verifique seu .env ou variável de ambiente."
-        )
+        raise RuntimeError("GROQ_API_KEY não encontrado. Verifique seu .env.")
     return Groq(api_key=api_key)
 
+# ==========================
+# COMPACTAÇÃO DO TEXTO (REDUZ TOKENS)
+# ==========================
+def normalize_text(s: str) -> str:
+    s = (s or "").strip()
+    s = re.sub(r"\s+", " ", s)
+    return s
+
+def compact_mcq(text: str, max_chars: int = MAX_CHARS_MCQ) -> str:
+    """
+    Compacta o texto para reduzir tokens e evitar estouro de contexto.
+    Tenta manter partes típicas: Question / Options / Answer / Explanation.
+    """
+    t = normalize_text(text)
+
+    # tenta extrair um "núcleo" se a MCQ tiver marcações
+    pattern = re.compile(
+        r"(Question:.*?)(Correct Answer:.*?|Answer:.*?|Resposta correta:.*?|$)(Explanation:.*?|Feedback:.*?|$)",
+        re.IGNORECASE
+    )
+    m = pattern.search(t)
+    core = " ".join([x for x in m.groups() if x]).strip() if m else t
+
+    if len(core) <= max_chars:
+        return core
+
+    # corte seguro: mantém início e uma parte final (onde muitas vezes está a resposta)
+    head = core[: int(max_chars * 0.70)]
+    tail = core[-int(max_chars * 0.20):]
+    return head + " ... [TRUNCATED] ... " + tail
 
 # ==========================
-# 2) Carregamento dos dados
+# CARREGAMENTO DOS DADOS
 # ==========================
 def carregar_e_unificar_dados() -> pd.DataFrame:
     consolidado: List[Dict[str, Any]] = []
 
-    # Carregar do SLM (.jsonl)
+    # SLM (.jsonl)
     if os.path.exists(INPUT_SLM_JSONL):
         with open(INPUT_SLM_JSONL, "r", encoding="utf-8") as f:
             for line_num, line in enumerate(f, 1):
@@ -88,7 +122,7 @@ def carregar_e_unificar_dados() -> pd.DataFrame:
                     "conteudo_avaliar": item.get("output", "")
                 })
 
-    # Carregar das LLMs (.json)
+    # LLMs (.json)
     if os.path.exists(INPUT_LLM_JSON):
         with open(INPUT_LLM_JSON, "r", encoding="utf-8") as f:
             try:
@@ -99,7 +133,7 @@ def carregar_e_unificar_dados() -> pd.DataFrame:
         if not isinstance(llm_data, list):
             raise RuntimeError(f"{INPUT_LLM_JSON} deveria conter uma lista JSON.")
 
-        for idx, item in enumerate(llm_data, 1):
+        for item in llm_data:
             consolidado.append({
                 "origem_modelo": f"LLM ({item.get('llm', 'UNKNOWN')})",
                 "tecnica_prompt": item.get("tecnica", "N/A"),
@@ -108,117 +142,123 @@ def carregar_e_unificar_dados() -> pd.DataFrame:
 
     df = pd.DataFrame(consolidado)
     if df.empty:
-        raise RuntimeError(
-            "Nenhuma questão carregada. Verifique se os arquivos de entrada existem e estão corretos."
-        )
+        raise RuntimeError("Nenhuma questão carregada. Verifique os arquivos de entrada.")
 
-    # limpeza básica: remove linhas sem conteúdo
     df["conteudo_avaliar"] = df["conteudo_avaliar"].fillna("").astype(str)
     df = df[df["conteudo_avaliar"].str.strip() != ""].reset_index(drop=True)
-
     return df
 
-
 # ==========================
-# 3) Parser do veredito
+# PARSER DO OUTPUT (VERDICT/EXPLANATION/KEY POINT)
 # ==========================
 VERDICT_RE = re.compile(r"VERDICT:\s*(GOOD|BAD)", re.IGNORECASE)
+EXPL_RE = re.compile(r"EXPLANATION:\s*(.*)", re.IGNORECASE)
+KEY_RE = re.compile(r"KEY POINT:\s*(.*)", re.IGNORECASE)
 
-def extrair_veredito(resposta: str) -> Tuple[Optional[str], str]:
-    """
-    Retorna (veredito, justificativa curta).
-    veredito ∈ {"GOOD","BAD", None}
-    """
-    if not resposta:
-        return None, ""
+def parse_response(text: str) -> Tuple[str, str, str]:
+    t = (text or "").strip()
 
-    m = VERDICT_RE.search(resposta)
-    verdict = m.group(1).upper() if m else None
+    verdict = "NO_VERDICT"
+    explanation = ""
+    key_point = ""
 
-    # justificativa: remove a linha de VERDICT para deixar um resumo
-    justificativa = resposta
-    justificativa = re.sub(r"^.*?VERDICT:\s*(GOOD|BAD)\s*", "", justificativa, flags=re.IGNORECASE | re.DOTALL).strip()
-    # limita tamanho para CSV ficar leve (opcional)
-    if len(justificativa) > 500:
-        justificativa = justificativa[:500] + "..."
-    return verdict, justificativa
+    m = VERDICT_RE.search(t)
+    if m:
+        verdict = m.group(1).upper()
 
+    m = EXPL_RE.search(t)
+    if m:
+        explanation = m.group(1).strip()
+    else:
+        explanation = t[:200]
+
+    m = KEY_RE.search(t)
+    if m:
+        key_point = m.group(1).strip()
+
+    # limita tamanho para não inflar CSV
+    explanation = explanation[:280]
+    key_point = key_point[:80]
+
+    return verdict, explanation, key_point
 
 # ==========================
-# 4) Consulta ao juiz (com retries)
+# CHAMADA AOS JUÍZES (COM RETRIES)
 # ==========================
 def consultar_juiz(client: Groq, conteudo: str, model_id: str) -> str:
+    compact = compact_mcq(conteudo, MAX_CHARS_MCQ)
     last_err = None
+
     for attempt in range(1, MAX_RETRIES + 1):
         try:
             chat_completion = client.chat.completions.create(
                 model=model_id,
                 messages=[
                     {"role": "system", "content": SYSTEM_PROMPT},
-                    {"role": "user", "content": PROMPT_AVALIACAO.format(conteudo)}
+                    {"role": "user", "content": PROMPT_AVALIACAO.format(compact)}
                 ],
                 temperature=TEMPERATURE,
-                max_tokens=600
+                max_tokens=MAX_TOKENS_OUT
             )
             return chat_completion.choices[0].message.content.strip()
         except Exception as e:
             last_err = e
             wait_s = RETRY_BACKOFF_BASE ** (attempt - 1)
-            print(f"⚠️ Falha ({attempt}/{MAX_RETRIES}) no modelo {model_id}: {e}. Retentando em {wait_s:.1f}s...")
+            print(f"⚠️ Erro {model_id} ({attempt}/{MAX_RETRIES}): {e} | aguardando {wait_s:.1f}s")
             time.sleep(wait_s)
+
     return f"Error: {str(last_err)}"
 
-
 # ==========================
-# 5) Execução
+# EXECUÇÃO
 # ==========================
 def main():
     client = init_client()
     df = carregar_e_unificar_dados()
 
-    print(f"📂 Arquivos carregados. Total de questões a avaliar: {len(df)}")
+    print(f"📂 Total de questões: {len(df)}")
     print(f"🧑‍⚖️ Juízes: {', '.join(JUIZES.keys())}")
-    print(f"⚙️ Temperature={TEMPERATURE} | sleep={SLEEP_SECONDS}s | retries={MAX_RETRIES}")
+    print(f"⚙️ MAX_CHARS_MCQ={MAX_CHARS_MCQ} | MAX_TOKENS_OUT={MAX_TOKENS_OUT} | temp={TEMPERATURE}")
 
-    # Se já existir um CSV anterior, você pode optar por continuar
     if os.path.exists(OUTPUT_CSV):
-        print(f"ℹ️ Arquivo {OUTPUT_CSV} já existe. Vou sobrescrever.")
-        # Se quiser continuar incremental, posso adaptar depois.
+        print(f"ℹ️ {OUTPUT_CSV} já existe. Sobrescrevendo.")
         os.remove(OUTPUT_CSV)
 
-    # Avaliar com cada juiz
     for nome_juiz, id_juiz in JUIZES.items():
-        print(f"\n👨‍⚖️ Juiz {nome_juiz} iniciando avaliações...")
+        print(f"\n👨‍⚖️ Juiz {nome_juiz} iniciando...")
 
-        raw_col = f"veredito_{nome_juiz}"
         verdict_col = f"verdict_{nome_juiz}"
-        just_col = f"just_{nome_juiz}"
+        expl_col = f"explanation_{nome_juiz}"
+        key_col = f"keypoint_{nome_juiz}"
+        raw_col = f"raw_{nome_juiz}"
 
-        raw_out = []
-        v_out = []
-        j_out = []
+        v_out, e_out, k_out = [], [], []
+        raw_out = [] if SAVE_RAW else None
 
         for i, row in df.iterrows():
-            print(f"   -> Avaliando questão {i+1}/{len(df)}...")
-            resposta = consultar_juiz(client, row["conteudo_avaliar"], id_juiz)
-            v, just = extrair_veredito(resposta)
+            print(f"  -> {i+1}/{len(df)}", end="\r")
+            resp = consultar_juiz(client, row["conteudo_avaliar"], id_juiz)
 
-            raw_out.append(resposta)
-            v_out.append(v if v else "")
-            j_out.append(just)
+            if SAVE_RAW and raw_out is not None:
+                raw_out.append(resp[:RAW_TRUNC_CHARS])
+
+            verdict, expl, key = parse_response(resp)
+            v_out.append(verdict)
+            e_out.append(expl)
+            k_out.append(key)
 
             time.sleep(SLEEP_SECONDS)
 
-        df[raw_col] = raw_out
         df[verdict_col] = v_out
-        df[just_col] = j_out
+        df[expl_col] = e_out
+        df[key_col] = k_out
+        if SAVE_RAW and raw_out is not None:
+            df[raw_col] = raw_out
 
-        # salvamento incremental após cada juiz (evita perder progresso)
         df.to_csv(OUTPUT_CSV, index=False, encoding="utf-8")
-        print(f"✅ Parcial salvo após {nome_juiz} em {OUTPUT_CSV}")
+        print(f"\n✅ Parcial salvo após {nome_juiz}: {OUTPUT_CSV}")
 
-    print(f"\n✅ Relatório final '{OUTPUT_CSV}' gerado com sucesso!")
-
+    print(f"\n✅ Finalizado: {OUTPUT_CSV}")
 
 if __name__ == "__main__":
     main()
