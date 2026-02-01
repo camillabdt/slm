@@ -3,11 +3,12 @@ import time
 import os
 import re
 from typing import Dict, Any, Optional, Tuple, List
-
+import random
 import pandas as pd
 from groq import Groq
 from dotenv import load_dotenv
 
+# ==========================
 # ==========================
 # CONFIGURAÇÕES GERAIS
 # ==========================
@@ -17,17 +18,13 @@ OUTPUT_CSV = "relatorio_redflag222.csv"
 
 # Controle de custo/erros
 TEMPERATURE = 0.1
-MAX_TOKENS_OUT = 140          # bem menor (verdict+explicação curta+key point)
-MAX_CHARS_MCQ = 900           # limite de caracteres do conteúdo enviado ao juiz
+MAX_TOKENS_OUT = 140          
+MAX_CHARS_MCQ = 900           
 
 # Robustez
 SLEEP_SECONDS = 1.2
-MAX_RETRIES = 3
+MAX_RETRIES = 5              # <-- Aumentado para dar mais chances em caso de tráfego alto
 RETRY_BACKOFF_BASE = 2.0
-
-# Salvar resposta crua? (custa tokens/arquivo). Melhor deixar False.
-SAVE_RAW = False
-RAW_TRUNC_CHARS = 400
 
 # Modelos avaliadores ("juízes")
 JUIZES = {
@@ -97,9 +94,7 @@ def compact_mcq(text: str, max_chars: int = MAX_CHARS_MCQ) -> str:
     tail = core[-int(max_chars * 0.20):]
     return head + " ... [TRUNCATED] ... " + tail
 
-# ==========================
-# CARREGAMENTO DOS DADOS
-# ==========================
+
 def carregar_e_unificar_dados() -> pd.DataFrame:
     consolidado: List[Dict[str, Any]] = []
 
@@ -148,9 +143,20 @@ def carregar_e_unificar_dados() -> pd.DataFrame:
     df = df[df["conteudo_avaliar"].str.strip() != ""].reset_index(drop=True)
     return df
 
-# ==========================
-# PARSER DO OUTPUT (VERDICT/EXPLANATION/KEY POINT)
-# ==========================
+def call_llm_with_retry(prompt, max_retries=5):
+    for i in range(max_retries):
+        try:
+            # Sua chamada de API aqui
+            # response = client.chat.completions.create(...)
+            return response
+        except Exception as e:
+            if "429" in str(e):
+                wait_time = (2 ** i) + random.random() # Espera 2, 4, 8, 16... segundos
+                print(f"Limite atingido. Esperando {wait_time:.2f}s...")
+                time.sleep(wait_time)
+            else:
+                raise e
+    return "Erro persistente após retentativas"
 VERDICT_RE = re.compile(r"VERDICT:\s*(GOOD|BAD)", re.IGNORECASE)
 EXPL_RE = re.compile(r"EXPLANATION:\s*(.*)", re.IGNORECASE)
 KEY_RE = re.compile(r"KEY POINT:\s*(.*)", re.IGNORECASE)
@@ -185,6 +191,7 @@ def parse_response(text: str) -> Tuple[str, str, str]:
 # ==========================
 # CHAMADA AOS JUÍZES (COM RETRIES)
 # ==========================
+# ==========================
 def consultar_juiz(client: Groq, conteudo: str, model_id: str) -> str:
     compact = compact_mcq(conteudo, MAX_CHARS_MCQ)
     last_err = None
@@ -201,62 +208,59 @@ def consultar_juiz(client: Groq, conteudo: str, model_id: str) -> str:
                 max_tokens=MAX_TOKENS_OUT
             )
             return chat_completion.choices[0].message.content.strip()
+        
         except Exception as e:
             last_err = e
-            wait_s = RETRY_BACKOFF_BASE ** (attempt - 1)
-            print(f"⚠️ Erro {model_id} ({attempt}/{MAX_RETRIES}): {e} | aguardando {wait_s:.1f}s")
-            time.sleep(wait_s)
+            # Se for erro de Rate Limit (429), aplica a espera exponencial
+            if "429" in str(e):
+                # O random.uniform(0, 1) evita que várias instâncias tentem ao mesmo tempo
+                wait_s = (RETRY_BACKOFF_BASE ** attempt) + random.uniform(0, 1)
+                print(f"\n⚠️ Rate Limit no {model_id}. Tentativa {attempt}. Aguardando {wait_s:.2f}s...")
+                time.sleep(wait_s)
+            else:
+                # Para outros erros, espera o tempo padrão de backoff
+                wait_s = RETRY_BACKOFF_BASE ** (attempt - 1)
+                print(f"⚠️ Erro {model_id} ({attempt}/{MAX_RETRIES}): {e} | aguardando {wait_s:.1f}s")
+                time.sleep(wait_s)
 
     return f"Error: {str(last_err)}"
 
 # ==========================
-# EXECUÇÃO
+# REESTRUTURAÇÃO DO LOOP PRINCIPAL (OPCIONAL: PAUSA EXTRA)
 # ==========================
 def main():
     client = init_client()
     df = carregar_e_unificar_dados()
 
-    print(f"📂 Total de questões: {len(df)}")
-    print(f"🧑‍⚖️ Juízes: {', '.join(JUIZES.keys())}")
-    print(f"⚙️ MAX_CHARS_MCQ={MAX_CHARS_MCQ} | MAX_TOKENS_OUT={MAX_TOKENS_OUT} | temp={TEMPERATURE}")
-
-    if os.path.exists(OUTPUT_CSV):
-        print(f"ℹ️ {OUTPUT_CSV} já existe. Sobrescrevendo.")
-        os.remove(OUTPUT_CSV)
+    # ... (exibição de logs)
 
     for nome_juiz, id_juiz in JUIZES.items():
         print(f"\n👨‍⚖️ Juiz {nome_juiz} iniciando...")
-
-        verdict_col = f"verdict_{nome_juiz}"
-        expl_col = f"explanation_{nome_juiz}"
-        key_col = f"keypoint_{nome_juiz}"
-        raw_col = f"raw_{nome_juiz}"
+        # ... (configuração de colunas)
 
         v_out, e_out, k_out = [], [], []
-        raw_out = [] if SAVE_RAW else None
 
         for i, row in df.iterrows():
             print(f"  -> {i+1}/{len(df)}", end="\r")
             resp = consultar_juiz(client, row["conteudo_avaliar"], id_juiz)
-
-            if SAVE_RAW and raw_out is not None:
-                raw_out.append(resp[:RAW_TRUNC_CHARS])
 
             verdict, expl, key = parse_response(resp)
             v_out.append(verdict)
             e_out.append(expl)
             k_out.append(key)
 
+            # Pausa de segurança entre cada questão para não estourar TPM (Tokens Per Minute)
             time.sleep(SLEEP_SECONDS)
 
+        # Atualiza o DataFrame e salva o CSV parcial
         df[verdict_col] = v_out
         df[expl_col] = e_out
         df[key_col] = k_out
-        if SAVE_RAW and raw_out is not None:
-            df[raw_col] = raw_out
-
         df.to_csv(OUTPUT_CSV, index=False, encoding="utf-8")
-        print(f"\n✅ Parcial salvo após {nome_juiz}: {OUTPUT_CSV}")
+        
+        # Pausa extra de 5 segundos ao trocar de modelo (limpa o buffer da API)
+        print(f"\n✅ Parcial salvo após {nome_juiz}. Aguardando respiro do servidor...")
+        time.sleep(5)
 
     print(f"\n✅ Finalizado: {OUTPUT_CSV}")
 
