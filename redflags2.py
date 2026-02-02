@@ -24,7 +24,7 @@ MAX_RETRIES = 5
 RETRY_BACKOFF_BASE = 2.0
 
 JUIZES = {
-    # "Llama-3.3-70B": "llama-3.3-70b-versatile",
+    "Llama-3.3-70B": "llama-3.3-70b-versatile",
     "GPT-OSS-120B": "openai/gpt-oss-120b",
     "Qwen-3-32B": "qwen/qwen3-32b",
     "Kimi-K2": "moonshotai/kimi-k2-instruct-0905"
